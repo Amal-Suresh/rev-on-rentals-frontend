@@ -3,7 +3,7 @@ import UserOtp from '../../Components/User/Otp/UserOtp'
 
 function UserOtpPage() {
   return (
-    <div>
+    <div className='wrapper'>
         <UserOtp/>
     </div>
   )

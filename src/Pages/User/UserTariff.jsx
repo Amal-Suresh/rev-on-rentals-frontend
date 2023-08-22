@@ -3,7 +3,10 @@ import Tariff from '../../Components/User/Tariff/Tariff'
 
 function UserTariff() {
   return (
-   <Tariff/>
+    <div className="wrapper">
+         <Tariff/>
+    </div>
+  
   )
 }
 

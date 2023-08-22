@@ -3,7 +3,10 @@ import Home from '../../Components/User/Home/Home'
 
 function UserHome() {
   return (
-    <Home/>
+    <div className='wrapper'>
+        <Home/>
+    </div>
+    
     
   )
 }

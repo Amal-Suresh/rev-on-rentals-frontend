@@ -3,7 +3,7 @@ import UserRegister from '../../Components/User/Register/UserRegister'
 
 function UserRegisterPage() {
   return (
-    <div>
+    <div className='wrapper'>
         <UserRegister/>
     </div>
   )

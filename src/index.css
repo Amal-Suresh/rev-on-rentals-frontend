@@ -1,7 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body{
+/* body{
     display: flex;
     justify-content: center;
+} */
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+   
 }

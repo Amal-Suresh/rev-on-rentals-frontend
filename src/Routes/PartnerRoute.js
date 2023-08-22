@@ -6,6 +6,7 @@ import PartnerAddBikesPage from '../Pages/Partner/PartnerAddBikesPage'
 import PartnerViewBikesPage from '../Pages/Partner/PartnerViewBikesPage'
 import PartnerNewPassPage from '../Pages/Partner/PartnerNewPassPage'
 import PartnerForgetOtpPage from '../Pages/Partner/PartnerForgetOtpPage'
+import PartnerProfilePage from '../Pages/Partner/PartnerProfilePage'
 
 function Partner() {
   return (
@@ -16,6 +17,7 @@ function Partner() {
     <Route path='/addBikes' element={<PartnerAddBikesPage/>}/>
     <Route path='/forgotpass' element={<PartnerNewPassPage/>}/>
     <Route path='/verifyForgotOtp' element={<PartnerForgetOtpPage/>}/>
+    <Route path='/profile' element={<PartnerProfilePage/>}/>
 
 
   </Routes>

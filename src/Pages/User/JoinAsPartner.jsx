@@ -3,10 +3,12 @@ import JoinUs from '../../Components/User/JoinUs/JoinUs'
 
 function JoinAsPartner() {
   return (
-    <>
-    <JoinUs/>
     
-    </>
+   <div className='wrapper'>
+     <JoinUs/>
+   </div>
+    
+    
     
    
   )

@@ -98,7 +98,7 @@ function JoinUs() {
 
 
     return (
-        <section className='max-w-[1600px]'>
+        <div className='max-w-[1600px]'>
             <Navbar />
             <div className=' flex justify-center items-center md:justify-start bg-cover bg-no-repeat bg-center h-[600px] w-full ' style={{ backgroundImage: `url(${bikeImg})` }}>
                 <div className=' '>
@@ -142,11 +142,7 @@ function JoinUs() {
                     </div>
                 </div>
             </div>
-
-        </section>
-
-
-
+        </div>
     )
 }
 

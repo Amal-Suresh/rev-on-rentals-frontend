@@ -3,7 +3,7 @@ import UserViewBikes from '../../Components/User/ViewBikes/UserViewBikes'
 
 function UserViewBikesPage() {
   return (
-    <div>
+    <div className='wrapper'>
         <UserViewBikes/>
     </div>
   )

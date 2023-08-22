@@ -3,7 +3,7 @@ import UserLogin from '../../Components/User/Login/UserLogin';
 
 function UserLoginPage() {
   return (
-    <div>
+    <div className='wrapper'>
         <UserLogin/>
     </div>
   )

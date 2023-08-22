@@ -15,17 +15,22 @@ function UserLogin() {
         const newvalue = value.trim()
         setFormValues({ ...formValues, [name]: newvalue, });
     };
+    
     const handleSubmit = (e) => {
-        e.preventDefault()
-        setFormErrors(validate(formValues))
-        setIsSubmit(true)
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
-            const  loadOtp = (formValues)=>{
-                navigate('/otp',{state:{formValues}})
-            }
-            loadOtp(formValues)
-        }
+        e.preventDefault();
+        const errors = validate(formValues);
+        setFormErrors(errors);
+        setIsSubmit(true);
     }
+
+    useEffect(() => {
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+                const  loadOtp = (formValues)=>{
+                    navigate('/otp',{state:{formValues}})
+                }
+                loadOtp(formValues)
+            }
+    }, [formErrors, isSubmit]);
     const validate = (values) => {
         const errors = {}
         const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

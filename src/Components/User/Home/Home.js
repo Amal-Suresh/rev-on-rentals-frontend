@@ -4,10 +4,13 @@ import UserFooter from '../Footer/UserFooter'
 
 function Home() {
   return (
-    <>
-    <Navbar/>
-   <UserFooter/>
-    </>
+    <div className='flex flex-col max-w[1600px]'>
+        <Navbar/>
+        <UserFooter/>  
+    </div>
+
+  
+    
    
   )
 }
