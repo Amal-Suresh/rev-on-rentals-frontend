@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import bckimage from '../../../images/loginBackground.png'
+import Axios from 'axios'
+import { userApi } from '../../../API/api'
+import { toast } from 'react-hot-toast'
 
 function UserLogin() {
     const initialValues = { fname: "", email: "", password: "", lname: "",confirmPassword:"",mobile:""}
@@ -16,11 +19,23 @@ function UserLogin() {
         setFormValues({ ...formValues, [name]: newvalue, });
     };
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         const errors = validate(formValues);
         setFormErrors(errors);
-        setIsSubmit(true);
+        try {
+            if (Object.keys(formErrors).length === 0){
+            const response =await Axios.get(`${userApi}checkEmail?email=${formValues.email}`)
+            if(response.data.success){
+                toast.success(response.data.message)
+                setIsSubmit(true);
+            }else{
+                toast.error(response.data.message)
+            }
+            }
+        } catch (error) {
+            console.log(error.message);   
+        }    
     }
 
     useEffect(() => {
@@ -31,6 +46,8 @@ function UserLogin() {
                 loadOtp(formValues)
             }
     }, [formErrors, isSubmit]);
+
+
     const validate = (values) => {
         const errors = {}
         const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -81,7 +98,7 @@ function UserLogin() {
                             <div className="w-full  py-5 px-4" >
                                 <h2 className="text-2xl text-center font-semibold mb-4">User Register</h2>
 
-                                <form onSubmit={handleSubmit}>
+                              
                                     
                                 <div className="grid grid-cols-2 gap-5">
                                         <input type="text" placeholder="First Name" className="border  rounded-md border-gray-400 py-1 px-2" value={formValues.fname} onChange={handleChange} name="fname" />
@@ -105,10 +122,10 @@ function UserLogin() {
                                     </div>
                                     <p className='text-sm text-red-600'>{formErrors.confirmPassword}</p>
                                     <div className="mt-5">
-                                        <button className="w-full bg-black py-2 text-center text-white font-bold text-md hover:bg-gray-900 hover:text-yellow-400 rounded-md ">Register</button>
+                                        <button type='submit' onClick={handleSubmit} className="w-full bg-black py-2 text-center text-white font-bold text-md hover:bg-gray-900 hover:text-yellow-400 rounded-md " >Register</button>
 
                                     </div>
-                                </form>
+                             
                                 
                                    
                             </div>

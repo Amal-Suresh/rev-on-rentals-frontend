@@ -1,25 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const userSlice =createSlice({
-    name:"user",
+const adminSlice =createSlice({
+    name:"admin",
     initialState:{
-        userD:{
+        adminD:{
             token:null,
             name:null
         } 
     },
     reducers:{
-        addUser:(state,action)=>{
+        addAdmin:(state,action)=>{
             console.log(action.payload,"action payload");
             state.userD.token=action.payload.token;
             state.userD.name=action.payload.username;
         },
-        removeUser:(state,action)=>{
+        removeAdmin:(state,action)=>{
             state.userD.id=null
             state.userD.name=null
         }
     }
 })
 
-export const {addUser,removeUser}=userSlice.actions
-export default userSlice.reducer
+export const {addAdmin,removeAdmin}=adminSlice.actions
+export default adminSlice.reducer

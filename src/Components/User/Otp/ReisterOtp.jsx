@@ -14,16 +14,6 @@ function ReisterOtp() {
   console.log(userData,"userdata");
   console.log(userData.email,"userEmail",userEmail);
 
-  const sendOtp =async()=>{
-    const response =await Axios.post(`${userApi}otp`,{email:userEmail})
-    if(response.data.success){
-      toast.success(response.data.message)
-    }else{
-      toast.error(response.data.message)
-    }
-  }
-
-
   const inputRef =useRef({})
   const [otp,setOtp]=useState({
     digitOne:"",
@@ -33,7 +23,6 @@ function ReisterOtp() {
   })
 
   useEffect(()=>{
-    sendOtp()
     inputRef.current[0].focus()
     inputRef.current[0].addEventListener("paste",pasteText);
 
@@ -101,7 +90,7 @@ function ReisterOtp() {
         key={index} 
         name={keys} 
         value={otp[keys]}
-        className='w-16 h-12 text-center text-white rounded-md mr-3 bg-gray-900 text-xl'
+        className='w-16 h-12 text-center text-black rounded-md mr-3 bg-yellow-200 text-xl'
         onChange={(e)=>handleChange(e,index)}
         onKeyUp={(e)=>handleBackSpace(e,index)}
         />
@@ -119,7 +108,6 @@ function ReisterOtp() {
       const response=await Axios.post(`${userApi}verifyOtp`,{data:userData,otp:joinedOtp})
       if(response.data.success){
         toast.success(response.data.message)
-        toast("redirecting to login")
         navigate('/login')
       }else{
         toast.error(response.data.message)
@@ -130,15 +118,15 @@ function ReisterOtp() {
     
   }
   return (
-    <div className='flex justify-center items-center w-screen  py-12'>
-        <div className='w-[22rem] h-[22rem] bg-slate-500 flex justify-center items-center rounded-lg'>
+    <div className='flex justify-center items-center w-screen h-screen  py-12 bg-yellow-300'>
+        <div className='w-[21.5rem] h-[18rem] bg-black flex justify-center  items-center rounded-lg'>
         <form onSubmit={handleSubmit} >
-            <h3 className='text-3xl text-center my-6'>Enter Otp Here</h3>
+            <h3 className='text-3xl text-center mb-4 text-yellow-400'>Enter Otp Here</h3>
             <div className='flex justify-center '>
               {renderInput()}
             </div>
             <div  className='flex justify-center mt-20'>
-                <button className='bg-black font-semibold text-yellow-400 py-2 px-5 rounded-lg hover:bg-yellow-400 hover:text-black ' type='submit'>Verify</button>
+                <button className='bg-black font-semibold border text-yellow-400 py-2 px-5 rounded-lg hover:bg-yellow-400 hover:text-black ' type='submit'>Verify</button>
             </div>
         </form>
         </div>

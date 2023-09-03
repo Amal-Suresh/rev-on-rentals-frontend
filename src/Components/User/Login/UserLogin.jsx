@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-
 import bckimage from '../../../images/loginBackground.png'
 import Axios from 'axios'
 import { userApi } from '../../../API/api'
 import toast from 'react-hot-toast'
+import {useDispatch} from 'react-redux'
+import {addUser} from '../../../utils/userSlice'
 
 function UserLogin() {
+    const dispatch =useDispatch()
+
     const initialValues = { email: "", password: "" }
     const [formValues, setFormValues] = useState(initialValues)
     const [formErrors, setFormErrors] = useState({})
@@ -31,12 +34,13 @@ function UserLogin() {
                 try {
                     const response = await Axios.post(`${userApi}login`, formValues);
                     if (response.data.success) {
+                        localStorage.setItem('user', JSON.stringify(response.data.data));
+                        dispatch(addUser({token:response.data.data.token,username:response.data.data.username}))
                         toast.success(response.data.message);
                     } else {
                         toast.error(response.data.message);
                     }
-                } catch (error) {
-                   
+                } catch (error) {    
                 }
             };
             submitForm(formValues);

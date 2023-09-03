@@ -129,7 +129,7 @@ function UserViewBikes() {
 
           {obj && obj.map((bike) => {
             return (
-              <div className='p-1 m-1 rounded border-2 border-gray-900   bg-yellow-300'>
+              <div key={bike._id} className='p-1 m-1 rounded border-2 border-gray-900   bg-yellow-300'>
                 <div className='flex w-full justify-center'>
                   <p className='font-semibold'>{bike.name}</p>
                 </div>

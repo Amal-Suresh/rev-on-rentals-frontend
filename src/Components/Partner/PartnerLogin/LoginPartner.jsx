@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
-
 import bckimage from '../../../images/loginBackground.png'
 import Axios from 'axios'
 import { partnerApi } from '../../../API/api'
-import  toast  from 'react-hot-toast'
+import { useDispatch } from 'react-redux'
+import {addPartner} from '../../../utils/partnerSlice'
+import {toast} from 'react-hot-toast'
 
 
 function LoginPartner() {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const initialValues = { email: "", password: ""}
     const [formValues, setFormValues] = useState(initialValues)
@@ -20,6 +22,7 @@ function LoginPartner() {
         const newvalue = value.trim()
         setFormValues({ ...formValues, [name]: newvalue, });
     };
+
     const handleSubmit = (e) => {
         e.preventDefault()
         setFormErrors(validate(formValues))
@@ -28,18 +31,16 @@ function LoginPartner() {
             const submitForm = async(formValues)=>{
                 try {
                 const response = await Axios.post(`${partnerApi}/login`,formValues)
-                
                if(response.data.success){
-                    localStorage.setItem("partnerToken",response.data.partnerDetails.token)
-                    toast.success(response.data.message)
-
-                    toast("redirecting to home page")
-                    navigate('/partner')
-                    
+                localStorage.setItem('partner', JSON.stringify(response.data.data));
+                dispatch(addPartner({token:response.data.data.token,username:response.data.data.username}))
+                toast.success(response.data.message);
+                navigate('/partner')   
                }else{
                     toast.error(response.data.message)
                }           
                 } catch (error) {
+                    console.log(error.message);
                     
                 }
             }
