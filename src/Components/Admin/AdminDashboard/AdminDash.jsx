@@ -12,12 +12,12 @@ function AdminDash() {
         <div className={`${!isOpen ? 'none' : 'block'}`}>
           <SideBar isOpen={isOpen} />
         </div>
-        <div className={`absolute flex ${!isOpen ? 'justify-start' : 'justify-end'}z-1   bg-red-600 w-[220px]`}>
+        <div className={`absolute flex ${!isOpen ? 'justify-start' : 'justify-end'}z-1  w-[220px]`}>
           {!isOpen ? <GiHamburgerMenu size={35} onClick={() => setIsOpen(!isOpen)} /> : <AiOutlineClose size={35} onClick={() => setIsOpen(!isOpen)} />}
         </div>
         <div className={`text-4xl text-center ${!isOpen ? 'w-full' : 'w-[83%]'} bg-red-800 `}>
-          <div className='w-full bg-green-600 '>
-            <h1>Admin Dashboard</h1>
+          <div className='w-full bg-yellow-300 '>
+            <h1 className='p-2 text-2xl font-semibold'> Admin Dashboard</h1>
               
           </div>
         </div>

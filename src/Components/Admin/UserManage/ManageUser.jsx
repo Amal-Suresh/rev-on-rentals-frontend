@@ -65,7 +65,7 @@ function ManageUser() {
           <div className='w-full bg-yellow-300 '>
           <h1 className='p-2 text-2xl font-semibold'>User Management</h1>
 
-            <div className='p-5 h-screen bg-gray-100'>
+            <div className='p-5 h-screen  bg-yellow-200'>
               
 
               {userData && 

@@ -103,7 +103,7 @@ function PartnerRequest() {
                       <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Lname</th>
                       <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email</th>
                       <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Reject</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Send Mail</th>
+                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Accept</th>
                       <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>View</th>
 
                     </tr>
@@ -116,7 +116,7 @@ function PartnerRequest() {
                         <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.lname}</td>
                         <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.email}</td>
                         <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>rejectPartner(partner.email)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Reject</button></td>
-                        <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>sendMailPartner(partner.email)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Send Mail</button></td>
+                        <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>sendMailPartner(partner.email)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Accept</button></td>
                         <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>viewPartner(partner)} className='bg-blue-600 rounded-sm p-1 text-white hover:bg-blue-700 text-sm'>View</button></td>
                         
                        </tr>

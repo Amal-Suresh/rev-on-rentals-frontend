@@ -5,8 +5,11 @@ import Axios from 'axios'
 import { userApi } from '../../../API/api'
 import Navbar from '../Navbar/Navbar'
 import {toast} from 'react-hot-toast'
+import { useDispatch } from 'react-redux'
+import {addUser} from '../../../utils/userSlice'
 
 function UserProfile() {
+    const dispatch = useDispatch()
     const [userDetails,setUserDetails]=useState({})
     const [modalStatus,setModalStatus]=useState(false)
     const [editData,setEditData]=useState({})
@@ -76,9 +79,11 @@ function UserProfile() {
           
             // Parse the JSON string from localStorage
             const localUser = JSON.parse(localStorage.getItem('user'));
-          
+
+            const newUserName=userDetails.fname + ' ' + userDetails.lname;
             // Update the username property in the object
-            localUser.username = userDetails.fname + ' ' + userDetails.lname;
+            localUser.username = newUserName
+           
           
             // Convert the updated object back into a JSON string
             const updatedLocalUser = JSON.stringify(localUser);
@@ -96,7 +101,7 @@ function UserProfile() {
         const file=e.target.files[0]
         const name=e.target.name
         setProof({...proof,[name]:file})
-        const url =URL.createObjectURL(file)
+        let url =URL.createObjectURL(file)
         if(name==="licenseFrontSide"){  
             setLFrontSideUrl(url)
         }else{
@@ -242,7 +247,7 @@ function UserProfile() {
                                 <p className='text-gray-800 font-semibold text-sm mb-2'>License Back Side :</p>
                                 <label  className='absolute text-transparent hover:text-black pt-6   ' htmlFor="lbs"> <AiOutlinePlusSquare size={100} /></label>
                                 <input type="file" className='invisible hidden' onChange={handleProofImage} name='licenseBackSide' id='lbs' />
-                                {!lBackSideUrl && userDetails.licenseBackSide? <img className="w-full h-40 rounded-md  mx-auto" src={userDetails.licenseFrontSide} alt="John Doe" />: <img className="w-full h-40 rounded-md  mx-auto" src={`${lFrontSideUrl?lFrontSideUrl:"https://aadhaarcard.co.in/wp-content/uploads/2023/04/aadhaar-card-800x445.webp"}`} alt="John Doe" />}
+                                {!lBackSideUrl && userDetails.licenseBackSide? <img className="w-full h-40 rounded-md  mx-auto" src={userDetails.licenseBackSide} alt="John Doe" />: <img className="w-full h-40 rounded-md  mx-auto" src={`${lBackSideUrl?lBackSideUrl:"https://aadhaarcard.co.in/wp-content/uploads/2023/04/aadhaar-card-800x445.webp"}`} alt="John Doe" />}
                             </div>
                         </div> 
                     </div> 
@@ -258,16 +263,11 @@ function UserProfile() {
                         <p>* Learner License, Photocopy, Color Xerox, Screenshots, Scanned Copies are not Applicable.</p>
                         <p>* Please carry the Original documents for verification at the time of pickup.</p>
                         <p>* Vehicle will be issued only as per the Driving license eligibility.</p>
-                        </div>
-                       
+                        </div>                      
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
   )
 }
 

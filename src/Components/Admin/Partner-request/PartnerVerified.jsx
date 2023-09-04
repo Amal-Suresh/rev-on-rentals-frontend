@@ -70,7 +70,7 @@ function PartnerVerified() {
           </div>
           <div className={`text-4xl text-center ${!isOpen ? 'w-full' : 'w-[83%]'} bg-red-800 `}>
             <div className='w-full bg-yellow-300 '>
-              <h1 className='p-2 text-2xl font-semibold'>Partner Requests</h1>
+              <h1 className='p-2 text-2xl font-semibold'>Partners</h1>
   
               <div className='p-5 h-screen bg-yellow-200'>
                 
