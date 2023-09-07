@@ -6,77 +6,80 @@ import Axios from 'axios'
 import { partnerApi } from '../../../API/api'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 
 function ViewBikesPartner() {
-    const navigate=useNavigate()
-    const [isOpen, setIsOpen] = useState(false)
-    const [bikes, setbikes] = useState([])
-    const token = localStorage.getItem('partnerToken') 
-    
-    const findBikes = async () => {
-      try {
-        const response = await Axios.get(`${partnerApi}/viewBikes`,{
-          headers: {
-              Authorization:`Bearer ${token}`
-          },
-      })
-        if (response.data.success) {
-          setbikes(response.data.data)
-          toast.success(response.data.message)
-        }else{
-          toast.error(response.data.message)
-        }
-      } catch (error) {
-      }
-    }
-    const handleStatus =async(id)=>{
-      try {
-        const response = await Axios.get(`${partnerApi}/changeStatus?id=${id}`,{
-          headers:{
-            Authorization:`Bearer ${token}`
-          }
-        })
-        if(response.data.success){
-          const updatedRequest= response.data.updatedData
-          const updatedDocumentIdString = updatedRequest._id.toString();
-          const updatedIndex = bikes.findIndex(request=>request._id.toString()===updatedDocumentIdString)
-          const updatedDocuments=[...bikes]
-          updatedDocuments[updatedIndex]=updatedRequest
-          setbikes(updatedDocuments)
-          toast.success(response.data.message)
-        }else{
-          toast.error(response.data.message)
-        } 
-      } catch (error ) { 
-      }
-    }
+  const partner = useSelector((store) => store.partner.partnerD)
+  const token = partner.token
+  const navigate = useNavigate()
+  const [isOpen, setIsOpen] = useState(false)
+  const [bikes, setbikes] = useState([])
   
-    useEffect(() => {
-      findBikes()
-    }, [])
-  
-    return (
-      <>
-        <div className={`mx-auto flex w-full ${!isOpen ? 'justify-start' : 'justify-between'} `}>
-          <div className={`${!isOpen ? 'none' : 'block'}`}>
-            <SideBarPartner isOpen={isOpen} />
-          </div>
-          <div className={`absolute flex ${!isOpen ? 'justify-start' : 'justify-end'}z-1  bg-yellow-300 w-[220px]`}>
-            {!isOpen ? <GiHamburgerMenu size={35} onClick={() => setIsOpen(!isOpen)} /> : <AiOutlineClose size={35} onClick={() => setIsOpen(!isOpen)} />}
-          </div>
-          <div className={`text-4xl text-center ${!isOpen ? 'w-full' : 'w-[83%]'} bg-red-800 `}>
-            <div className='w-full bg-yellow-300 '>
-              <h1 className='p-2 text-2xl font-semibold'>Partner Bikes</h1>
-              <div className='w-full flex h-full  bg-yellow-200 pt-2 justify-end'>
-                  <button onClick={()=>{navigate("/partner/addBikes")}} className='px-3 py-2 bg-green-600 rounded-xl text-sm text-white font-semibold hover:bg-green-700 mr-5'>add bikes</button>
 
-              </div>
-  
-              <div className='p-5  bg-yellow-200'>
-                
-  
-                {bikes && 
+  const findBikes = async () => {
+    try {
+      const response = await Axios.get(`${partnerApi}/viewBikes`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      })
+      if (response.data.success) {
+        setbikes(response.data.data)
+        toast.success(response.data.message)
+      } else {
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+    }
+  }
+  const handleStatus = async (id) => {
+    try {
+      const response = await Axios.get(`${partnerApi}/changeStatus?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (response.data.success) {
+        const updatedRequest = response.data.updatedData
+        const updatedDocumentIdString = updatedRequest._id.toString();
+        const updatedIndex = bikes.findIndex(request => request._id.toString() === updatedDocumentIdString)
+        const updatedDocuments = [...bikes]
+        updatedDocuments[updatedIndex] = updatedRequest
+        setbikes(updatedDocuments)
+        toast.success(response.data.message)
+      } else {
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+    }
+  }
+
+  useEffect(() => {
+    findBikes()
+  }, [])
+
+  return (
+    <>
+      <div className={`mx-auto flex w-full ${!isOpen ? 'justify-start' : 'justify-between'} `}>
+        <div className={`${!isOpen ? 'none' : 'block'}`}>
+          <SideBarPartner isOpen={isOpen} />
+        </div>
+        <div className={`absolute flex ${!isOpen ? 'justify-start' : 'justify-end'}z-1  bg-yellow-300 w-[220px]`}>
+          {!isOpen ? <GiHamburgerMenu size={35} onClick={() => setIsOpen(!isOpen)} /> : <AiOutlineClose size={35} onClick={() => setIsOpen(!isOpen)} />}
+        </div>
+        <div className={`text-4xl text-center ${!isOpen ? 'w-full' : 'w-[83%]'} bg-red-800 `}>
+          <div className='w-full bg-yellow-300 '>
+            <h1 className='p-2 text-2xl font-semibold'>Partner Bikes</h1>
+            <div className='w-full flex h-full  bg-yellow-200 pt-2 justify-end'>
+              <button onClick={() => { navigate("/partner/addBikes") }} className='px-3 py-2 bg-green-600 rounded-xl text-sm text-white font-semibold hover:bg-green-700 mr-5'>add bikes</button>
+
+            </div>
+
+            <div className='p-5  bg-yellow-200'>
+
+
+              {bikes &&
                 <div className='overflow-auto rounded-s-lg shadow '>
                   <table className='w-full'>
                     <thead className='bg-gray-50 border-b-2 border-gray-200'>
@@ -93,33 +96,35 @@ function ViewBikesPartner() {
                       </tr>
                     </thead>
                     <tbody className='divide-y divide-gray-100'>
-                      {bikes.map((bike)=>{
-                        return(
-                        <tr key={bike._id}>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><img src={`${bike.image}`} alt="bikeImg" /></td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.name}</td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.brand}</td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.category}</td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.makeYear}</td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.rentPerHour}</td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.plateNumber}</td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.engineCC}</td>
-                          {bike.status?<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>handleStatus(bike._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Block</button></td>:<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>handleStatus(bike._id)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>Unblock</button></td>}
-                         </tr>
-                        )
+                      {bikes.map((bike) => {
+                        return (
+                          <tr key={bike._id}>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><img src={`${bike.image}`} alt="bikeImg" /></td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.name}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.brand}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.category}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.makeYear}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.rentPerHour}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.plateNumber}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.engineCC}</td>
+                            {bike.status ? <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => handleStatus(bike._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Block</button></td> : <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => handleStatus(bike._id)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>Unblock</button></td>}
+                          </tr>
+                        );
                       })}
+
+              
                     </tbody>
                   </table>
                 </div>
-                }
-  
-              </div>
+              }
+
             </div>
           </div>
         </div>
-      </>
-  
-    )
-  }
+      </div>
+    </>
+
+  )
+}
 
 export default ViewBikesPartner

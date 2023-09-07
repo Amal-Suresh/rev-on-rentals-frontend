@@ -3,10 +3,14 @@ import Axios from 'axios'
 import Navbar from '../Navbar/Navbar'
 import UserFooter from '../Footer/UserFooter'
 import { userApi } from "../../../API/api"
+import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 
 
 function UserViewBikes() {
+
+  const user = useSelector(store=>store.user.userD)
 
   const [obj, setObj] = useState([])
   const [sort, setSort] = useState("")
@@ -14,8 +18,18 @@ function UserViewBikes() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const [totalPages, setTotalPages] = useState(0)
+  const [availableLocations,setAvailableLocations]=useState([])
+  const [forCheckAvailability,setForCheckAvailability]=useState({
+      city:"",
+      pickUpDate:"",
+      pickUpTime:"",
+      dropDate:"",
+      dropTime:""
+  })  
 
-  console.log(totalPages, "total page");
+  const [errorValidation,setValidationError]=useState('')
+
+
 
   const handleClick = (index) => {
     setPage(index + 1)
@@ -31,8 +45,7 @@ function UserViewBikes() {
     setSort(value)
   }
 
-  const handlePage = () => {
-  }
+  
   const handleSearch = (e) => {
     const { value } = e.target
     setSearch(value)
@@ -42,33 +55,159 @@ function UserViewBikes() {
     try {
       const response =await Axios.get(`${userApi}retriveCities`)
       if( response.data.success){
-        console.log(response.data.data,"kkkkkkkkkkkkkkkkkkkkkkkkcities");
-
+        setAvailableLocations(response.data.data)
       }
     } catch (error) {
       
     }
   }
 
-  useEffect(() => {
-    findCities()
-    const getAllBikes = async () => {
-      try {
-        const response = await Axios.get(`${userApi}getBikes?page=${page}&sort=${sort}&category=${filterCat}&search=${search}`)
-        if (response.data.success) {
-          console.log(response.data.data);
-          setObj(response.data.data.bikes)
-          setPage(response.data.data.page)
-          setTotalPages(response.data.data.totalPages)
-        }
+//  ----------------------------------------------------
 
-      } catch (error) {
 
-      }
+const handleCheckAvail = async (e) => {
+  const { name, value } = e.target;
+  setForCheckAvailability((prevState) => ({
+    ...prevState,
+    [name]: value
+  }));
+}
+
+
+const validation =()=>{
+  console.log(forCheckAvailability);
+
+
+  if(!forCheckAvailability.city){
+    setValidationError("City is required");
+    return
+  }
+  if(!forCheckAvailability.pickUpDate){
+    setValidationError("pick up date is required");
+    return
+  }
+  if(!forCheckAvailability.pickUpTime){
+    setValidationError("pick up Time is required");
+    return
+  }
+  if(!forCheckAvailability.dropDate){
+    setValidationError("drop date is required");
+    return
+  }
+  if(!forCheckAvailability.dropTime){
+    setValidationError("drop time is required");
+    return
+  }
+
+  // Check if the selected date is prior to the current date
+  const currentDate = new Date();
+  const selectedDate = new Date(forCheckAvailability.pickUpDate);
+
+  if (selectedDate < currentDate) {
+    setValidationError("pick up date cannot be prior to today.");
+    return; // Exit the function to prevent updating the state
+  }
+
+  // Validate pickup and drop dates
+  const pickUpDate = new Date(forCheckAvailability.pickUpDate);
+  const dropDate = new Date(forCheckAvailability.dropDate);
+
+  if (pickUpDate > dropDate) {
+    setValidationError("Drop date cannot be earlier than pickup date.");
+    return; // Exit the function to prevent updating the state
+  }
+
+  // Validate pickup and drop times
+  if (
+    forCheckAvailability.pickUpDate === forCheckAvailability.dropDate &&
+    forCheckAvailability.pickUpTime === forCheckAvailability.dropTime
+  ) {
+    setValidationError("Pickup and drop times cannot be the same.");
+    return; // Exit the function to prevent updating the state
+  }
+
+  // If all validations pass, clear the validation error
+  setValidationError("");
+};
+
+
+
+const getAllBikes = async () => {
+  try {
+    
+    const response = await Axios.get(`${userApi}getBikes?page=${page}&sort=${sort}&category=${filterCat}&search=${search}&city=${forCheckAvailability.city}&pickUpDate=${forCheckAvailability.pickUpDate}&pickUpTime=${forCheckAvailability.pickUpTime}&dropDate=${forCheckAvailability.dropDate}&dropTime=${forCheckAvailability.dropTime}`)
+    if (response.data.success) {
+      setObj(response.data.data.bikes)
+      setPage(response.data.data.page)
+      setTotalPages(response.data.data.totalPages)
     }
 
+  } catch (error) {
+
+  }
+}
+
+
+
+
+
+
+
+
+const handleApply=async(req,res)=>{
+ 
+    if(errorValidation){
+      toast.error(errorValidation) 
+      return
+    }else if(!errorValidation &&
+      forCheckAvailability.city &&
+      forCheckAvailability.pickUpDate &&
+      forCheckAvailability.pickUpTime &&
+      forCheckAvailability.dropDate &&
+      forCheckAvailability.dropTime
+      ){
+        getAllBikes()
+      toast.success("everything ok")
+    }
+}
+
+
+const handleBooking =async(id)=>{
+  try {
+    console.log("booking");
+    
+      console.log(id);
+      const token =user.token
+      console.log(token);
+      const updatedData = {
+        ...forCheckAvailability,
+        bike: id,
+      };
+    
+      const response =await Axios.post(`${userApi}booking`,updatedData,{
+        headers: {
+          Authorization: `Bearer ${token}`
+      }
+      })
+      if(response.data.success){
+        toast.success(response.data.message)
+      }else{
+        toast.error(response.data.message)
+      }
+  } catch (error) {
+    
+  }
+}
+
+  useEffect(() => {
+    validation()
+    findCities()
+   
+
+  
+
     getAllBikes()
-  }, [sort, filterCat, search, page])
+  }, [sort, filterCat, search, page,forCheckAvailability])
 
 
 
@@ -139,21 +278,16 @@ function UserViewBikes() {
             <p className='text-2xl font-bold'>CITY :</p>
             <div className="relative">
               <select
-                name="category"
-                onChange={handleCategory}
+                name="city"
+                onChange={handleCheckAvail}
                 className=" appearance-none h-full rounded-r  sm:rounded-r-none sm:border-r-0 block  w-full bg-white text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none  focus:bg-white ">
                 <option value="">Select</option>
-                <option value="Commuters & Minis">Commuters/Minis</option>
-                <option value="Scooters">Scooters</option>
-                <option value="Modern Classics">Modern Classics</option>
-                <option value="Sport Touring">Sport Touring</option>
-                <option value="Touring">Touring</option>
-                <option value="Electric ">Electric</option>
-                <option value="Standard & Naked">Street/nake</option>
-                <option value="Sportbikes">Sportsbike</option>
-                <option value="Cruisers">Cruisers</option>
-                <option value="Adventure">Adventure</option>
-                <option value="Scrambler">Scrambler </option>
+                {availableLocations && availableLocations.map((name)=>{
+                  return (
+                    <option key={name} value={name}>{name}</option>
+                  )
+                })}
+                
               </select>
               <div
                 className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -177,12 +311,13 @@ function UserViewBikes() {
           <div className='flex justify-evenly w-full md:w-[50%] items-center my-2 '>
             <p className='w-[20%] text-sm font-bold'>FROM :</p>
             <div className='w-[40%]'>
-              <input className='h-[37px] p-2' type="date" />
+              <input name="pickUpDate"  onChange={handleCheckAvail} className='h-[37px] p-2' type="date" /> 
             </div>
 
             <div className="relative">
               <select
                 name="pickUpTime"
+                onChange={handleCheckAvail}
                 className="text-sm appearance-none h-full rounded-r  sm:rounded-r-none sm:border-r-0 border-r border-b block  w-full bg-white border-gray-400 text-gray-700 py-2 px-3 pr-7 leading-tight focus:outline-none focus:bg-white">
                 <option value="">Select pickUp Time</option>
                 <option value="06:00 AM">06:00 AM</option>
@@ -215,12 +350,13 @@ function UserViewBikes() {
           <div className='flex w-full md:w-[50%] justify-evenly items-center'>
             <p className='w-[18%] text-sm font-bold'>TO :</p>
             <div className='w-[40%]'>
-              <input className='h-[37px] p-2' type="date" />
+              <input name='dropDate'  onChange={handleCheckAvail} className='h-[37px] p-2' type="date" />
             </div>
 
             <div className="relative">
               <select
-                name="pickUpTime"
+                name="dropTime"
+                onChange={handleCheckAvail}
                 className="text-sm appearance-none h-full rounded-r sm:rounded-r-none sm:border-r-0 border-r border-b block  w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none   focus:bg-white focus:border-gray-500">
                 <option value="">Select Drop Time</option>
                 <option value="06:00 AM">06:00 AM</option>
@@ -246,7 +382,7 @@ function UserViewBikes() {
             </div>
           </div>
           <div className='flex justify-center p-2 md:p-0'>
-            <button className='bg-yellow-300  rounded-lg hover:bg-yellow-400 hover:text-black font-semibold px-5 py-2 md:h-full md:rounded-r-lg  text-white'>Apply</button>
+            <button onClick={handleApply} className='bg-yellow-300  rounded-lg hover:bg-yellow-400 hover:text-black font-semibold px-5 py-2 md:h-full md:rounded-r-lg  text-white'>Apply</button>
           </div>
 
         </div>
@@ -278,7 +414,7 @@ function UserViewBikes() {
                     <p>Engine {bike.engineCC} CC </p>
                   </div>
                   <div className="p-1">
-                    <button className="w-full rounded font-bold py-1 hover:bg-black hover:text-yellow-400 bg-yellow-400">BOOK NOW</button>
+                    <button onClick={()=>handleBooking(bike._id)} className="w-full rounded font-bold py-1 hover:bg-black hover:text-yellow-400 bg-yellow-400">BOOK NOW</button>
                   </div>
                 </div>
               </div>

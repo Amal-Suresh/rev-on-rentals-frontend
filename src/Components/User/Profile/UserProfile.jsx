@@ -7,6 +7,7 @@ import Navbar from '../Navbar/Navbar'
 import {toast} from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import {addUser} from '../../../utils/userSlice'
+import UserRideHistory from '../RideHistory/UserRideHistory'
 
 function UserProfile() {
     const dispatch = useDispatch()
@@ -18,7 +19,8 @@ function UserProfile() {
     const [proof,setProof]=useState({licenseFrontSide:null,licenseBackSide:null})
     const [lFrontSideUrl,setLFrontSideUrl]=useState(userDetails.licenseFrontSide)
     const [lBackSideUrl,setLBackSideUrl]=useState(userDetails.licenseBackSide)
-
+    const [rideHistory,setRideHistory]=useState(false)
+    
 
     const user =useSelector((store)=>store.user.userD)
     const token =user.token
@@ -35,6 +37,7 @@ function UserProfile() {
                 console.log("user data updated",response.data.data);
                 setUserDetails(response.data.data)
                 setEditData(response.data.data)
+               
             }
         } catch (error) {
             console.log(error.message);
@@ -143,11 +146,11 @@ function UserProfile() {
     }
 
   return (
-    <div className='flex flex-col max-w[1600px]'>
+    <div className='flex flex-col max-w[1600px] h-full'>
    
         <Navbar/>
 
-            <div className='bg-yellow-200  flex justify-center flex-col md:flex-row  p-5'>
+            <div className='bg-yellow-200  flex justify-center flex-col md:flex-row  p-5 h-full'>
 
                 <div className=' w-full md:w-[30%] '>
                     <div className="flex items-center justify-center">
@@ -181,6 +184,10 @@ function UserProfile() {
 
                                     <div className="flex justify-center my-3">
                                         <button className="block text-white bg-gray-900 hover:bg-black  font-medium rounded-lg text-sm px-3 py-2 text-center " type="button" onClick={()=>setModalStatus(true)}>Edit Profile</button>
+                                    </div>
+                                    <div className='bg-black cursor-pointer hover:bg-slate-900' onClick={()=>setRideHistory(!rideHistory)}>
+                                        <h3 className='text-center text-yellow-300 p-2'>MY RIDES</h3>
+
                                     </div>
 
                                     <div className={`flex justify-center items-center fixed top-0 left-0 right-0 z-50 ${modalStatus?'block':'hidden'} w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
@@ -232,40 +239,42 @@ function UserProfile() {
                     </div>
                 </div>
 
+                {rideHistory?<UserRideHistory/>:
                 <div className='bg-yellow-100 rounded-lg h-screen w-full md:w-[65%]'>
 
-                    <div className='mb-3'>
-                        <p className='text-sm font-semibold text-center mt-4'>ID PROOF</p>
-                        <div className='flex md:flex-row flex-col justify-center items-center md:justify-evenly'>
-                             <div className='flex justify-center flex-col  md:w-[35%] w-[70%] p-3'>
-                                <p className='text-gray-800 font-semibold text-sm mb-2'>License Front Side :</p>
-                                <label  className='absolute text-transparent hover:text-black pt-6  ' htmlFor="lfs"> <AiOutlinePlusSquare size={100} /></label>
-                                <input type="file" className='invisible hidden' onChange={handleProofImage} n name='licenseFrontSide'  id='lfs' />
-                                {!lFrontSideUrl && userDetails.licenseFrontSide? <img className="w-full h-40 rounded-md  mx-auto" src={userDetails.licenseFrontSide} alt="John Doe" />: <img className="w-full h-40 rounded-md  mx-auto" src={`${lFrontSideUrl?lFrontSideUrl:"https://aadhaarcard.co.in/wp-content/uploads/2023/04/aadhaar-card-800x445.webp"}`} alt="John Doe" />}
-                            </div>
-                            <div className='flex justify-center flex-col md:w-[35%] w-[70%] p-3'>
-                                <p className='text-gray-800 font-semibold text-sm mb-2'>License Back Side :</p>
-                                <label  className='absolute text-transparent hover:text-black pt-6   ' htmlFor="lbs"> <AiOutlinePlusSquare size={100} /></label>
-                                <input type="file" className='invisible hidden' onChange={handleProofImage} name='licenseBackSide' id='lbs' />
-                                {!lBackSideUrl && userDetails.licenseBackSide? <img className="w-full h-40 rounded-md  mx-auto" src={userDetails.licenseBackSide} alt="John Doe" />: <img className="w-full h-40 rounded-md  mx-auto" src={`${lBackSideUrl?lBackSideUrl:"https://aadhaarcard.co.in/wp-content/uploads/2023/04/aadhaar-card-800x445.webp"}`} alt="John Doe" />}
-                            </div>
-                        </div> 
+                <div className='mb-3'>
+                    <p className='text-sm font-semibold text-center mt-4'>ID PROOF</p>
+                    <div className='flex md:flex-row flex-col justify-center items-center md:justify-evenly'>
+                         <div className='flex justify-center flex-col  md:w-[35%] w-[70%] p-3'>
+                            <p className='text-gray-800 font-semibold text-sm mb-2'>License Front Side :</p>
+                            <label  className='absolute text-transparent hover:text-black pt-6  ' htmlFor="lfs"> <AiOutlinePlusSquare size={100} /></label>
+                            <input type="file" className='invisible hidden' onChange={handleProofImage} n name='licenseFrontSide'  id='lfs' />
+                            {!lFrontSideUrl && userDetails.licenseFrontSide? <img className="w-full h-40 rounded-md  mx-auto" src={userDetails.licenseFrontSide} alt="John Doe" />: <img className="w-full h-40 rounded-md  mx-auto" src={`${lFrontSideUrl?lFrontSideUrl:"https://aadhaarcard.co.in/wp-content/uploads/2023/04/aadhaar-card-800x445.webp"}`} alt="John Doe" />}
+                        </div>
+                        <div className='flex justify-center flex-col md:w-[35%] w-[70%] p-3'>
+                            <p className='text-gray-800 font-semibold text-sm mb-2'>License Back Side :</p>
+                            <label  className='absolute text-transparent hover:text-black pt-6   ' htmlFor="lbs"> <AiOutlinePlusSquare size={100} /></label>
+                            <input type="file" className='invisible hidden' onChange={handleProofImage} name='licenseBackSide' id='lbs' />
+                            {!lBackSideUrl && userDetails.licenseBackSide? <img className="w-full h-40 rounded-md  mx-auto" src={userDetails.licenseBackSide} alt="John Doe" />: <img className="w-full h-40 rounded-md  mx-auto" src={`${lBackSideUrl?lBackSideUrl:"https://aadhaarcard.co.in/wp-content/uploads/2023/04/aadhaar-card-800x445.webp"}`} alt="John Doe" />}
+                        </div>
                     </div> 
-                    <div className='flex justify-center'>
-                        <button className='bg-black text-white px-2 py-1 rounded-md' onClick={handleProofUpload}>upload</button>
-                    </div>
-                    <div className='pt-2 flex flex-col '>
-                        <p className='text-md text-start font-semibold pl-3'>Guidelines to Follow</p>
-                        <div className='flex flex-col justify-start pl-3 mt-2'>
-                        <p>* Upload both sides of the DL in appropriate fields.</p>
-                        <p>* Please upload the picture of the original DL </p>
-                        <p>* Please ensure that the uploaded images of the documents are clear and visible for faster approval.</p>
-                        <p>* Learner License, Photocopy, Color Xerox, Screenshots, Scanned Copies are not Applicable.</p>
-                        <p>* Please carry the Original documents for verification at the time of pickup.</p>
-                        <p>* Vehicle will be issued only as per the Driving license eligibility.</p>
-                        </div>                      
-                    </div>
+                </div> 
+                <div className='flex justify-center'>
+                    <button className='bg-black text-white px-2 py-1 rounded-md' onClick={handleProofUpload}>upload</button>
                 </div>
+                <div className='pt-2 flex flex-col '>
+                    <p className='text-md text-start font-semibold pl-3'>Guidelines to Follow</p>
+                    <div className='flex flex-col justify-start pl-3 mt-2'>
+                    <p>* Upload both sides of the DL in appropriate fields.</p>
+                    <p>* Please upload the picture of the original DL </p>
+                    <p>* Please ensure that the uploaded images of the documents are clear and visible for faster approval.</p>
+                    <p>* Learner License, Photocopy, Color Xerox, Screenshots, Scanned Copies are not Applicable.</p>
+                    <p>* Please carry the Original documents for verification at the time of pickup.</p>
+                    <p>* Vehicle will be issued only as per the Driving license eligibility.</p>
+                    </div>                      
+                </div>
+            </div>
+                }
             </div>
         </div>
   )

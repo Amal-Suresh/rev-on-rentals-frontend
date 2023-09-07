@@ -5,9 +5,13 @@ import bikeImg from '../../../images/HusqvarnaVitpilen701.jpeg'
 import Axios from 'axios'
 import { partnerApi } from '../../../API/api'
 import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 
 function PartnerAddBikes() {
+    const partner = useSelector((store) => store.partner.partnerD)
+    console.log(partner,"partner");
+    const token = partner.token
     const navigate =useNavigate()
     const initialValues = { name: "", brand: "", category: "", makeYear: "", rentPerHour: "", engineCC: "", plateNumber: "" }
     const [bikeImage,setBikeImage] = useState(null)
@@ -26,31 +30,28 @@ function PartnerAddBikes() {
         setBikeImage(file)
         
     }
+   
     const handleSubmit = (e) => {
         e.preventDefault()
         setFormErrors(validate(formValues))
         setIsSubmit(true)
         console.log(Object.keys(formErrors).length);
-        const formData= new FormData()
+        let formData= new FormData()
         formData.append("image",bikeImage)
         for(const [key,value] of Object.entries(formValues)){
             formData.append(key,value)
+            console.log(bikeImage);
         }
-        // for (const [key, value] of formData.entries()) {
-        //     console.log(`${key}: ${value}`);
-        //   }
-
+        for (const [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+          }
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             const submitForm = async (formData) => {
                 try { 
-                    const token = localStorage.getItem('partnerToken') 
-                    // if(!token){
-                    //     navigate('/partner/login')
-                        
-                    // }               
+                    console.log(token,"hhhhhhhhh");
+                              
                     const response = await Axios.post(`${partnerApi}/addBikes`, formData,{
                             headers: {
-                                "Content-Type": "multipart/form-data",
                                 Authorization:`Bearer ${token}`
                             },
                         })
@@ -68,9 +69,15 @@ function PartnerAddBikes() {
 
         }
 
+       
+
 
 
     }
+    useEffect(()=>{
+       
+        
+    },[isSubmit,formErrors])
 
 
     const validate = (values) => {
@@ -128,7 +135,7 @@ function PartnerAddBikes() {
                             <div className="w-full  py-3 px-9" >
                                 <h2 className="text-2xl text-center font-semibold mb-4">ADD BIKE</h2>
 
-                                <form onSubmit={handleSubmit}>
+                                <form >
                                     <div className="grid grid-cols-2 gap-5">
                                         <input type="text" placeholder="Name" className="border border-gray-400 py-1 px-2 rounded-lg" value={formValues.name} onChange={handleChange} name="name" />
                                         <input type="text" placeholder="Brand Name" className="border border-gray-400 py-1 px-2 rounded-lg" value={formValues.brand} onChange={handleChange} name="brand" />
@@ -183,7 +190,7 @@ function PartnerAddBikes() {
                                     <p className='text-sm text-red-600'>{formErrors.plateNumber}</p>
 
                                     <div className="mt-4">
-                                        <button className="w-full bg-gray-700 rounded-lg hover:bg-gray-900 hover:text-yellow-400 py-2 text-center text-white ">SAVE</button>
+                                        <button onClick={handleSubmit} className="w-full bg-gray-700 rounded-lg hover:bg-gray-900 hover:text-yellow-400 py-2 text-center text-white ">SAVE</button>
 
                                     </div>
                                 </form>

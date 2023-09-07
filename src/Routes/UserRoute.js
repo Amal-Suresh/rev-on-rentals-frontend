@@ -19,11 +19,7 @@ function User() {
 
   useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem('user'));
-    
     if (userDetails) {
-      console.log(userDetails.username, "userDetails");
-      console.log(userDetails.token, "userDetails");
-  
       dispatch(addUser({ token: userDetails.token, username: userDetails.username }));
     }
   }, []);

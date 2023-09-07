@@ -9,6 +9,8 @@ import PartnerForgetOtpPage from '../Pages/Partner/PartnerForgetOtpPage'
 import PartnerProfilePage from '../Pages/Partner/PartnerProfilePage'
 import { useDispatch,useSelector } from 'react-redux'
 import { addPartner } from '../utils/partnerSlice'
+import PartnerBookingsPage from '../Pages/Partner/PartnerBookingsPage'
+
 
 
 function Partner() {
@@ -32,6 +34,7 @@ function Partner() {
     <Route path='/forgotpass' element={<PartnerNewPassPage/>}/>
     <Route path='/verifyForgotOtp' element={<PartnerForgetOtpPage/>}/>
     <Route path='/profile' element={partner.token?<PartnerProfilePage/>:<PartnerLoginPage/>}/>
+    <Route path='/bookings' element={partner.token?<PartnerBookingsPage/>:<PartnerLoginPage/>}/>
 
 
   </Routes>
