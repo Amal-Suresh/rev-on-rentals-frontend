@@ -11,6 +11,7 @@ import UserViewBikesPage from '../Pages/User/UserViewBikesPage'
 import UserProfilePage from '../Pages/User/UserProfilePage'
 import { useDispatch,useSelector } from 'react-redux'
 import { addUser } from '../utils/userSlice'
+import CheckOutPage from '../Pages/User/CheckOutPage'
 
 
 
@@ -37,6 +38,8 @@ function User() {
         <Route path='/otp' element={<RegisterOtpPage/>}/>
         <Route path='/viewBikes' element={<UserViewBikesPage/>}/>
         <Route path='/userProfile' element={user.token?<UserProfilePage/>:<UserLoginPage/>}/>
+        <Route path='/checkOut' element={<CheckOutPage/>}/>
+
     </Routes>
     
   )
