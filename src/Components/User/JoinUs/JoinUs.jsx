@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Navbar from '../Navbar/Navbar'
 import bikeImg from '../../../images/HusqvarnaVitpilen701.jpeg'
 import Axios from 'axios'
-import { partnerApi } from '../../../API/api'
+import { partnerApi } from '../../../config/api'
 import  toast  from 'react-hot-toast'
 
 function JoinUs() {

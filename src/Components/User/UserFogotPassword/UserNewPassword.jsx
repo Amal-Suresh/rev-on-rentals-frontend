@@ -1,11 +1,11 @@
 import React,{useState,useEffect} from 'react'
-import { partnerApi } from '../../../config/api'
+import { userApi } from '../../../config/api'
 import Axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
 
-function PartnerNewPassword() {
+function UserNewPassword() {
     const navigate=useNavigate()
 
     const initialValues = {email: "", password: "",confirmPassword:"" }
@@ -26,11 +26,11 @@ function PartnerNewPassword() {
             const submitForm = async(formValues)=>{
                 try {
                    
-                const response = await Axios.post(`${partnerApi}/forgetpassword`,formValues)
+                const response = await Axios.post(`${userApi}forgetpassword`,formValues)
                 
                if(response.data.success){
                     toast.success(response.data.message)
-                    navigate("/partner/verifyForgotOtp",{state:{formValues}})
+                    navigate("/verifyForgetPassword",{state:{formValues}})
                     
                }else{
                     toast.error(response.data.message)
@@ -113,4 +113,4 @@ function PartnerNewPassword() {
   )
 }
 
-export default PartnerNewPassword
+export default UserNewPassword

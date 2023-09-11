@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom'
 
 import bikeImg from '../../../images/HusqvarnaVitpilen701.jpeg'
 import Axios from 'axios'
-import { partnerApi } from '../../../API/api'
+import { partnerApi } from '../../../config/api'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 

@@ -4,7 +4,7 @@ import SideBar from '../AdminSideBar/Sidebar'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineClose } from 'react-icons/ai'
 import  Axios  from 'axios'
-import { adminApi } from '../../../API/api'
+import { adminApi } from '../../../config/api'
 import { toast } from 'react-hot-toast'
 import { FaMapLocationDot } from 'react-icons/fa6'
 

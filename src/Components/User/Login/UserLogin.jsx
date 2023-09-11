@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import bckimage from '../../../images/loginBackground.png'
 import Axios from 'axios'
-import { userApi } from '../../../API/api'
+import { userApi } from '../../../config/api'
 import toast from 'react-hot-toast'
 import {useDispatch} from 'react-redux'
 import {addUser} from '../../../utils/userSlice'
@@ -87,11 +87,11 @@ function UserLogin() {
                             </div>
                             <p className='text-sm text-red-600'>{formErrors.email}</p>
                             <div className="mt-5">
-                                <input type="text" placeholder="Password" className="border rounded-md border-gray-400 py-1 px-2 w-full" value={formValues.password} onChange={handleChange} name="password" />
+                                <input type="password" placeholder="Password" className="border rounded-md border-gray-400 py-1 px-2 w-full" value={formValues.password} onChange={handleChange} name="password" />
                             </div>
                             <p className='text-sm text-red-600'>{formErrors.password}</p>
                             <div className="mt-2 flex justify-end">
-                                <p className='font-semibold text-gray-600 hover:text-black cursor-pointer'>forgot password ?</p>
+                                <p className='font-semibold text-gray-600 hover:text-black cursor-pointer' onClick={()=>{navigate('/forgotPassword')}}>forgot password ?</p>
                             </div>
                             <div className="mt-2">
                                 <button className="w-full bg-black py-2 text-center text-white font-bold text-md hover:bg-gray-900 hover:text-yellow-400 rounded-md ">Login</button>

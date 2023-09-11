@@ -3,7 +3,7 @@ import SideBar from '../AdminSideBar/Sidebar'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineClose } from 'react-icons/ai'
 import Axios from 'axios'
-import { adminApi } from '../../../API/api'
+import { adminApi } from '../../../config/api'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 

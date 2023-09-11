@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import Axios from 'axios';
-import { userApi } from '../../../API/api';
+import { userApi } from '../../../config/api';
 
 function UserRideHistory() {
     const [userBookings, setUserBookings] = useState([])

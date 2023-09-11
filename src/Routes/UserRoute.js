@@ -3,7 +3,6 @@ import {Routes,Route} from 'react-router-dom'
 import UserHome from '../Pages/User/UserHome'
 import JoinUs from '../Components/User/JoinUs/JoinUs'
 import UserTariff from '../Pages/User/UserTariff'
-// import UserOtpPage from '../Pages/User/UserOtpPage'
 import UserRegisterPage from '../Pages/User/UserRegisterPage'
 import UserLoginPage from '../Pages/User/UserLoginPage'
 import RegisterOtpPage from '../Pages/User/RegisterOtpPage'
@@ -12,6 +11,8 @@ import UserProfilePage from '../Pages/User/UserProfilePage'
 import { useDispatch,useSelector } from 'react-redux'
 import { addUser } from '../utils/userSlice'
 import CheckOutPage from '../Pages/User/CheckOutPage'
+import UserNewPasswordPage from '../Pages/User/UserNewPasswordPage'
+import UserForgotPassOtpPage from '../Pages/User/UserForgotPassOtpPage'
 
 
 
@@ -32,14 +33,14 @@ function User() {
         <Route path='/' element={<UserHome/>} />
         <Route path='/join-us'element={<JoinUs/>}/>
         <Route path='/tariff' element={<UserTariff/>}/>
-        {/* <Route path='/otp' element={<UserOtpPage/>}/> */}
         <Route path='/login' element={user.token?<UserHome/>:<UserLoginPage/>}/>
         <Route path='/register' element={user.token?<UserHome/>:<UserRegisterPage/>}/>
-        <Route path='/otp' element={<RegisterOtpPage/>}/>
+        <Route path='/otp' element={user.token?<UserHome/>:<RegisterOtpPage/>}/>
         <Route path='/viewBikes' element={<UserViewBikesPage/>}/>
         <Route path='/userProfile' element={user.token?<UserProfilePage/>:<UserLoginPage/>}/>
         <Route path='/checkOut' element={<CheckOutPage/>}/>
-
+        <Route path='/forgotPassword' element={<UserNewPasswordPage/>}/>
+        <Route path='/verifyForgetPassword' element={<UserForgotPassOtpPage/>}/>
     </Routes>
     
   )

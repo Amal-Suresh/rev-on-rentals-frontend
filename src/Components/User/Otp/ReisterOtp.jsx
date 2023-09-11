@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Axios from 'axios'
 import { toast } from 'react-hot-toast'
-import { userApi } from '../../../API/api'
+import { userApi } from '../../../config/api'
 import {PiClockCountdownFill} from 'react-icons/pi'
+import axios from 'axios'
 
 function ReisterOtp() {
   let [count, setCount] = useState(5)
@@ -37,7 +38,7 @@ function ReisterOtp() {
         clearInterval(countDownTimer)
       }
 
-    }, 1000);
+    }, 500);
     return () => clearInterval(countDownTimer)
   }, [count])
 
@@ -127,7 +128,18 @@ function ReisterOtp() {
 
   }
 
-  const handleResend=()=>{
+  const handleResend=async()=>{
+    try {
+      const response =await Axios.post(`${userApi}resendOtp`,{email:userEmail})
+      if(response.data.success){
+        setCount(5)
+        toast.success(response.data.message)
+      }else{
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      
+    }
     
   }
   return (

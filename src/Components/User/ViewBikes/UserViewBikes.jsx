@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
 import Navbar from '../Navbar/Navbar'
 import UserFooter from '../Footer/UserFooter'
-import { userApi } from "../../../API/api"
+import { userApi } from "../../../config/api"
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 
 
 function UserViewBikes() {
+  const navigate = useNavigate()
 
   const user = useSelector(store=>store.user.userD)
 
@@ -183,17 +185,23 @@ const handleBooking =async(id)=>{
         ...forCheckAvailability,
         bike: id,
       };
-    
-      const response =await Axios.post(`${userApi}booking`,updatedData,{
-        headers: {
-          Authorization: `Bearer ${token}`
-      }
-      })
-      if(response.data.success){
-        toast.success(response.data.message)
+      if(!errorValidation){
+        navigate('/checkOut',{state:{updatedData}})
+            
       }else{
-        toast.error(response.data.message)
+        toast.error("select all the feilds")
       }
+    
+      // const response =await Axios.post(`${userApi}booking`,updatedData,{
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      // }
+      // })
+      // if(response.data.success){
+      //   toast.success(response.data.message)
+      // }else{
+      //   toast.error(response.data.message)
+      // }
   } catch (error) {
     
   }

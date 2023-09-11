@@ -2,10 +2,10 @@ import React,{useState,useRef, useEffect} from 'react'
 import { useLocation,useNavigate } from 'react-router-dom'
 import  Axios  from 'axios'
 import { toast } from 'react-hot-toast'
-import { partnerApi } from '../../../config/api'
+import { userApi } from '../../../config/api'
 import {PiClockCountdownFill} from 'react-icons/pi'
 
-function PartnerForgotOtp() {
+function UserNewPassOtp() {
  
   let [count, setCount] = useState(5)
   const location =useLocation()
@@ -80,11 +80,10 @@ function PartnerForgotOtp() {
     e.preventDefault()
     const joinedOtp = Object.values(otp).join("");
     if(joinedOtp.length===4){
-      const response=await Axios.post(`${partnerApi}/verifyForgotOtp`,{data:userData,otp:joinedOtp})
+      const response=await Axios.post(`${userApi}verifyForgotOtp`,{data:userData,otp:joinedOtp})
       if(response.data.success){
         toast.success(response.data.message)
-        toast("redirecting to login")
-        navigate('/partner/login')
+        navigate('/login')
       }else{
         toast.error(response.data.message)
       }
@@ -94,12 +93,16 @@ function PartnerForgotOtp() {
 
   const handleResend=async()=>{
     try {
-      const response =await Axios.post(`${partnerApi}/resendOtp`,{email:userData.email})
+      const response =await Axios.post(`${userApi}forgetPassResendOtp`,{email:userData.email})
+      console.log(response.data);
       if(response.data.success){
         setCount(5)
         toast.success(response.data.message)
+      }else{
+        toast.error(response.data.message)
       }
     } catch (error) {
+
       
     }
     
@@ -124,4 +127,4 @@ function PartnerForgotOtp() {
 }
 
 
-export default PartnerForgotOtp
+export default UserNewPassOtp

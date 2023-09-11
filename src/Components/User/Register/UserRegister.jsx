@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import bckimage from '../../../images/loginBackground.png'
 import Axios from 'axios'
-import { userApi } from '../../../API/api'
+import { userApi } from '../../../config/api'
 import { toast } from 'react-hot-toast'
 
 function UserLogin() {
@@ -114,11 +114,11 @@ function UserLogin() {
                                     </div>
                                     <p className='text-sm text-red-600'>{formErrors.mobile}</p>
                                     <div className="mt-5">
-                                        <input type="text" placeholder="Password" className="border rounded-md border-gray-400 py-1 px-2 w-full" value={formValues.password} onChange={handleChange} name="password" />
+                                        <input type="password" placeholder="Password" className="border rounded-md border-gray-400 py-1 px-2 w-full" value={formValues.password} onChange={handleChange} name="password" />
                                     </div>
                                     <p className='text-sm text-red-600'>{formErrors.password}</p>
                                     <div className="mt-5">
-                                        <input type="text" placeholder="Confirm Password" className="border rounded-md border-gray-400 py-1 px-2 w-full" value={formValues.confirmPassword} onChange={handleChange} name="confirmPassword" />
+                                        <input type="password" placeholder="Confirm Password" className="border rounded-md border-gray-400 py-1 px-2 w-full" value={formValues.confirmPassword} onChange={handleChange} name="confirmPassword" />
                                     </div>
                                     <p className='text-sm text-red-600'>{formErrors.confirmPassword}</p>
                                     <div className="mt-5">
