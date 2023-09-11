@@ -5,7 +5,7 @@ import axios from 'axios'
 import { userApi } from '../../../config/api'
 import moment from 'moment'
 import toast from 'react-hot-toast'
-import Razorpay from 'razorpay'
+
 
 function CheckOut() {
     const location = useLocation()
