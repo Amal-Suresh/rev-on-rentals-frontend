@@ -240,7 +240,7 @@ function UserProfile() {
                 </div>
 
                 {rideHistory?<UserRideHistory/>:
-                <div className='bg-yellow-100 rounded-lg h-screen w-full md:w-[65%]'>
+                <div className='bg-yellow-100 rounded-lg h-screen  w-full md:w-[65%]'>
 
                 <div className='mb-3'>
                     <p className='text-sm font-semibold text-center mt-4'>ID PROOF</p>

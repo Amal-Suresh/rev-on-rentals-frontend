@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Navbar/Navbar'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { userApi } from '../../../config/api'
 import moment from 'moment'
 import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
+
+
 
 
 function CheckOut() {
+    let user =useSelector((store)=>store.user.userD)
+    const navigate = useNavigate()
+    
     const location = useLocation()
     const [bikeDetails, setBikeDetails] = useState({})
     const [bookingDetails,setBookingDeails] =useState(location.state.updatedData)
@@ -67,12 +73,54 @@ function CheckOut() {
         return totalHours*rentPerHour
     }
 
-    const handleSubmit=()=>{
-        
+    const handleSubmit=async()=>{
+       
+        if(pickDropPoints.pickUpPoint!=='' && pickDropPoints.dropPoint!==''){
+            const response =await axios.post(`${userApi}bookbike`,{amount:grandTotal})
+            initPayment(response.data.data)
+            toast.success("ok good")
+        }else{
+            toast.error("select pick up and drop point")
+        }
+
     }
 
-    const createBooking=()=>{
-        console.log("handle order");
+    const initPayment =(order)=>{
+        var options={
+            key:"rzp_test_lJniWPD4KnfBRI",
+            currency:"INR",
+            name:"rev-on-rentals",
+            description:"for testing",
+            amount:order.amount,
+            order_id:order.id,
+            handler:function(response){
+                createBooking(response)
+            },
+            theme:{
+                color:"#3399cc"
+            },
+        }
+        var pay= new window.Razorpay(options)
+        pay.open()
+    }
+
+    const createBooking=async(details)=>{
+    const token =user.token
+        let dataForBooking={...details,...pickDropPoints,grandTotal,total,helmet,rent,hours,...bookingDetails,partnerId:bikeDetails.partnerId._id}
+        const response=await axios.post(`${userApi}verifyPayment`,dataForBooking, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }})
+        if(response.data.success){
+            toast.success(response.data.message)
+            let id = response.data.data
+            navigate("/paymentSuccess",{state:{id}})
+            
+        }else{
+            toast.error(response.data.message)
+        }
+
+
     }
 
     return (

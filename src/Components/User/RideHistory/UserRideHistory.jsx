@@ -54,7 +54,7 @@ function UserRideHistory() {
     }, [])
     return (
 
-        <div className='bg-yellow-100 rounded-lg h-screen w-full md:w-[65%]'>
+        <div className='bg-yellow-100 rounded-lg h-screen overflow-y-scroll w-full md:w-[65%]'>
             {userBookings && userBookings.map((booking) => {
                 return (
                     <div key={booking._id} className='mb-3 bg-slate-600 rounded-md'>

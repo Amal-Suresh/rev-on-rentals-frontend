@@ -13,6 +13,8 @@ import { addUser } from '../utils/userSlice'
 import CheckOutPage from '../Pages/User/CheckOutPage'
 import UserNewPasswordPage from '../Pages/User/UserNewPasswordPage'
 import UserForgotPassOtpPage from '../Pages/User/UserForgotPassOtpPage'
+import PaymentSuccessPage from '../Pages/User/PaymentSuccessPage'
+import OrderRatingPage from '../Pages/User/OrderRatingPage'
 
 
 
@@ -41,6 +43,10 @@ function User() {
         <Route path='/checkOut' element={<CheckOutPage/>}/>
         <Route path='/forgotPassword' element={<UserNewPasswordPage/>}/>
         <Route path='/verifyForgetPassword' element={<UserForgotPassOtpPage/>}/>
+        <Route path='/paymentSuccess' element={<PaymentSuccessPage/>}/>
+        <Route path='/orderRatingReview' element={<OrderRatingPage/>}/>
+
+
     </Routes>
     
   )
