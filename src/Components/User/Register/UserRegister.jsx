@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-
 import bckimage from '../../../images/loginBackground.png'
-import Axios from 'axios'
-import { userApi } from '../../../config/api'
 import { toast } from 'react-hot-toast'
+import { checkEmialBeforeRegister } from '../../../config/clientEndPoints'
 
 function UserLogin() {
+
     const initialValues = { fname: "", email: "", password: "", lname: "",confirmPassword:"",mobile:""}
     const [formValues, setFormValues] = useState(initialValues)
     const [formErrors, setFormErrors] = useState({})
@@ -25,7 +24,7 @@ function UserLogin() {
         setFormErrors(errors);
         try {
             if (Object.keys(formErrors).length === 0){
-            const response =await Axios.get(`${userApi}checkEmail?email=${formValues.email}`)
+                const response =await checkEmialBeforeRegister(formValues.email)
             if(response.data.success){
                 toast.success(response.data.message)
                 setIsSubmit(true);
@@ -94,12 +93,8 @@ function UserLogin() {
             <img src={bckimage} className='relative w-screen h-screen object-cover lg:object-contain' alt="..." />
             <div className="container mx-auto absolute">
                         <div className="flex flex-col  bg-yellow-300 rounded-xl mx-auto shadow-[0_35px_60px_15px_rgba(0,0,0,0.3)] overflow-hidden w-[21rem]">
-
                             <div className="w-full  py-5 px-4" >
                                 <h2 className="text-2xl text-center font-semibold mb-4">User Register</h2>
-
-                              
-                                    
                                 <div className="grid grid-cols-2 gap-5">
                                         <input type="text" placeholder="First Name" className="border  rounded-md border-gray-400 py-1 px-2" value={formValues.fname} onChange={handleChange} name="fname" />
                                         <input type="text" placeholder="Last Name" className="border  rounded-md border-gray-400 py-1 px-2" value={formValues.lname} onChange={handleChange} name="lname" />
@@ -123,19 +118,12 @@ function UserLogin() {
                                     <p className='text-sm text-red-600'>{formErrors.confirmPassword}</p>
                                     <div className="mt-5">
                                         <button type='submit' onClick={handleSubmit} className="w-full bg-black py-2 text-center text-white font-bold text-md hover:bg-gray-900 hover:text-yellow-400 rounded-md " >Register</button>
-
-                                    </div>
-                             
-                                
-                                   
+                                    </div> 
                             </div>
-                            
-
                         </div>
                         <div className="mt-2 flex justify-center">
                             <p className='font-semibold text-white '>Already Have Account ?</p>
                             <p onClick={()=>navigate('/login')} className='font-semibold text-gray-500 ml-1 hover:text-gray-700 cursor-pointer'>Login Now</p>
-
                         </div>
                     </div>
                 </div>

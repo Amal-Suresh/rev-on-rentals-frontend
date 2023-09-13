@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../Navbar/Navbar'
 import bikeImg from '../../../images/HusqvarnaVitpilen701.jpeg'
-import Axios from 'axios'
-import { partnerApi } from '../../../config/api'
 import  toast  from 'react-hot-toast'
+import { registerPartnerRequest } from '../../../config/partnerEndPoints'
 
 function JoinUs() {
+
     const initialValues = { fname: "", email: "", password: "", lname: "",confirmPassword:"" }
     const [formValues, setFormValues] = useState(initialValues)
     const [formErrors, setFormErrors] = useState({})
@@ -16,6 +16,7 @@ function JoinUs() {
         const newvalue = value.trim()
         setFormValues({ ...formValues, [name]: newvalue, });
     };
+
     const handleSubmit = (e) => {
         e.preventDefault()
         setFormErrors(validate(formValues))
@@ -23,28 +24,20 @@ function JoinUs() {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             const submitForm = async(formValues)=>{
                 try {
-                const response = await Axios.post(`${partnerApi}/join-us`,formValues)
-                
+                    const response =await registerPartnerRequest(formValues)
                if(response.data.success){
                     toast.success(response.data.message)
                }else{
                     toast.error(response.data.message)
-
                }
-              
-        
-                    
                 } catch (error) {
-                    
+                    console.log(error.message); 
                 }
             }
             submitForm(formValues)
-           
         }
-
-  
-
     }
+
     const validate = (values) => {
         const errors = {}
         const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -93,10 +86,6 @@ function JoinUs() {
     // }, [formErrors])
 
 
-
-
-
-
     return (
         <div className='max-w-[1600px]'>
             <Navbar />
@@ -104,11 +93,9 @@ function JoinUs() {
                 <div className=' '>
                     <div className="container mx-auto">
                         <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-xl mx-auto shadow-lg overflow-hidden">
-
                             <div className="w-full  py-6 px-12" >
                                 <h2 className="text-2xl text-center font-semibold mb-4">Register as Partner</h2>
                                 <p className="mb-4 font-light text-md text-gray-900">Create your account its free and only take one minute</p>
-
                                 <form onSubmit={handleSubmit}>
                                     <div className="grid grid-cols-2 gap-5">
                                         <input type="text" placeholder="First Name" className="border border-gray-400 py-1 px-2" value={formValues.fname} onChange={handleChange} name="fname" />
@@ -120,11 +107,11 @@ function JoinUs() {
                                     </div>
                                     <p className='text-sm text-red-600'>{formErrors.email}</p>
                                     <div className="mt-5">
-                                        <input type="text" placeholder="Password" className="border border-gray-400 py-1 px-2 w-full" value={formValues.password} onChange={handleChange} name="password" />
+                                        <input type="password" placeholder="Password" className="border border-gray-400 py-1 px-2 w-full" value={formValues.password} onChange={handleChange} name="password" />
                                     </div>
                                     <p className='text-sm text-red-600'>{formErrors.password}</p>
                                     <div className="mt-5">
-                                        <input type="text" placeholder="Confirm Password" className="border border-gray-400 py-1 px-2 w-full" name='confirmPassword' value={formValues.confirmPassword} onChange={handleChange} />
+                                        <input type="password" placeholder="Confirm Password" className="border border-gray-400 py-1 px-2 w-full" name='confirmPassword' value={formValues.confirmPassword} onChange={handleChange} />
                                     </div>
                                     <p className='text-sm text-red-600'>{formErrors.confirmPassword}</p>
                                     <div className="mt-5">
@@ -133,11 +120,9 @@ function JoinUs() {
                                     </div>
                                     <div className="mt-5">
                                         <button className="w-full bg-purple-500 py-3 text-center text-white ">Register Now</button>
-
                                     </div>
                                 </form>
                             </div>
-
                         </div>
                     </div>
                 </div>
