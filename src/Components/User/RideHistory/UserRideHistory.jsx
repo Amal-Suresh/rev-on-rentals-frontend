@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import Axios from 'axios';
 import { userApi } from '../../../config/api';
+import { useNavigate } from 'react-router-dom';
 
 function UserRideHistory() {
     const [userBookings, setUserBookings] = useState([])
+    const navigate=useNavigate()
 
     const user = useSelector((store) => store.user.userD)
     const token = user.token;
@@ -47,6 +49,15 @@ function UserRideHistory() {
         }
 
     }
+    const handleRating=(bookingId,userId,bikeId)=>{
+        let data={
+            bookingId,
+            userId,
+            bikeId
+        }
+        navigate('/orderRatingReview',{state:{data}})
+        
+    }
 
 
     useEffect(() => {
@@ -88,6 +99,8 @@ function UserRideHistory() {
                                 </div>
                                 <div className='flex justify-center p-2 md:p-0'>
                                     {booking.status==="booked" && <button onClick={()=>{handleRideStatus(booking._id)}} className='bg-yellow-300  rounded-lg hover:bg-yellow-400 hover:text-black font-semibold px-5 py-2 md:h-full md:rounded-r-lg  text-white'>Cancel</button>} 
+                                    {booking.status==="completed" && <button onClick={()=>{handleRating(booking._id,booking.user,booking.bike._id)}} className='bg-yellow-300  rounded-lg hover:bg-yellow-400 hover:text-black font-semibold px-5 py-2 md:h-full md:rounded-r-lg  text-white'>Rateing</button>} 
+
                                 </div>
 
                             </div>

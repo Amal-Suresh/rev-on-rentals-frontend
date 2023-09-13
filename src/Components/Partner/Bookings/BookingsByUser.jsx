@@ -108,27 +108,27 @@ function BookingsByUser() {
                         return (
                           <tr key={booking._id}>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>
-                              <p><span className='font-semibold'>name :</span> {booking.user.fname} {booking.user.lname}</p>
-                              <p><span className='font-semibold'>email :</span> {booking.user.mobile}</p>
+                              <p><span className='font-semibold'>name :</span> {booking?.user?.fname} {booking?.user?.lname}</p>
+                              <p><span className='font-semibold'>email :</span> {booking?.user?.mobile}</p>
                             </td>
 
                             <td className='py-3 whitespace-nowrap  text-sm text-gray-700 text-left'>
 
-                              <p><span className='font-semibold'>name :</span> {booking.bike.name}</p>
-                              <p><span className='font-semibold'>brand :</span> {booking.bike.brand} </p>
-                              <p><span className='font-semibold'>reg no :</span>{booking.bike.plateNumber}</p>
+                              <p><span className='font-semibold'>name :</span> {booking?.bike?.name}</p>
+                              <p><span className='font-semibold'>brand :</span> {booking?.bike?.brand} </p>
+                              <p><span className='font-semibold'>reg no :</span>{booking?.bike?.plateNumber}</p>
 
                             </td>
 
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>
-                              <p><span className='font-semibold'>date :</span> {new Date(booking.pickUpDate).toISOString().split('T')[0]}</p>
-                              <p><span className='font-semibold'>time :</span> {booking.pickUpTime} </p>
-                              <p><span className='font-semibold'>location :</span> {booking.pickUpPoint}</p>
+                              <p><span className='font-semibold'>date :</span> {new Date(booking?.pickUpDate).toISOString().split('T')[0]}</p>
+                              <p><span className='font-semibold'>time :</span> {booking?.pickUpTime} </p>
+                              <p><span className='font-semibold'>location :</span> {booking?.pickUpPoint}</p>
                             </td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>
-                              <p><span className='font-semibold'>date :</span>{new Date(booking.dropDate).toISOString().split('T')[0]}</p>
-                              <p><span className='font-semibold'>time :</span> {booking.dropTime} </p>
-                              <p><span className='font-semibold'>ocation :</span>{booking.dropPoint}</p>
+                              <p><span className='font-semibold'>date :</span>{new Date(booking?.dropDate).toISOString().split('T')[0]}</p>
+                              <p><span className='font-semibold'>time :</span> {booking?.dropTime} </p>
+                              <p><span className='font-semibold'>ocation :</span>{booking?.dropPoint}</p>
                             </td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>
 
@@ -145,8 +145,8 @@ function BookingsByUser() {
                                 disabled={booking.status === 'cancelled'}
                                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                               >
-                                {booking.status==="cancelled" && <option value="">{booking.status }</option>}
-                                <option value="">{booking.status }</option>
+                                {booking.status==="cancelled" && <option value="">{booking?.status }</option>}
+                                <option value="">{booking?.status }</option>
                                 <option value="cancelled">Cancelled</option>
                                 <option value="completed">Completed</option>
                               </select>

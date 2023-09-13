@@ -18,6 +18,8 @@ function PartnerAddBikes() {
     const [formValues, setFormValues] = useState(initialValues)
     const [formErrors, setFormErrors] = useState({})
     const [isSubmit, setIsSubmit] = useState(false)
+    const[files,setFiles]=useState([])
+    
 
     const handleChange = (e) => {
         const { value, name } = e.target;
@@ -26,13 +28,26 @@ function PartnerAddBikes() {
     };
 
     const handleImage=(e)=>{
-        const file=e.target.files[0]
-        setBikeImage(file)
+        // const file=e.target.files[0]
+        // setBikeImage(file)
+        let file=e.target.files
+        for(let i=0;i<file.length;i++){
+            const fileType=file[i]["type"];
+            const validImageTypes =["image/gif","image/jpeg","image/png"]
+            if(validImageTypes.includes(fileType)){
+                setFiles([...files,file[i]])
+            }else{
+                toast.error("select image")
+            }
+        }
+
+
         
     }
    
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log(files,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         setFormErrors(validate(formValues))
         setIsSubmit(true)
         console.log(Object.keys(formErrors).length);
@@ -41,6 +56,11 @@ function PartnerAddBikes() {
         for(const [key,value] of Object.entries(formValues)){
             formData.append(key,value)
             console.log(bikeImage);
+        }
+
+        for(let j=0;j<files.length;j++){
+            formData.append('image',files[j])
+
         }
         for (const [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
@@ -142,7 +162,12 @@ function PartnerAddBikes() {
                                     </div>
                                     <div className='flex justify-between'><p className='text-sm text-red-600'>{formErrors.name}</p><p className='text-sm text-red-600'>{formErrors.brand}</p></div>
                                     <div className="mt-4">
-                                        <input type="file" placeholder="" className=" block text-sm text-gray-900 rounded-lg cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 border bg-yellow-300 border-gray-400 py-1 px-2 w-full" onChange={handleImage} name="image" />
+                                        <input type="file" placeholder="" className=" block text-sm text-gray-900 rounded-lg cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 border bg-yellow-300 border-gray-400 py-1 px-2 w-full" 
+                                        onChange={handleImage}
+                                          name="image"
+                                          multiple='multiple'
+
+                                           />
                                     </div>
                                      {/* <p className='text-sm text-red-600'>{formErrors.email}</p>  */}
                                     <div className="mt-4">

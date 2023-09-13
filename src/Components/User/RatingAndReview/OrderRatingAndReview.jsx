@@ -15,35 +15,31 @@ const OrderRatingAndReview = () => {
   const [review, setReview] = useState('');
   
   const location = useLocation();
-//   const data = location.state;
+  const data = location?.state?.data
 
 
   
   const handleRatingSubmit = async (e) => {
     e.preventDefault();
     try {
+        let newData={
+            ...data,stars:rating,review
+        }
+        console.log(newData,"new data")
+      const response = await axios.post(`${userApi}ratingAndReview`, {newData});
      
-    //   const response = await axios.post(`Rating`, {
-    //    booking:data._id,
-    //    userId: data.userId,
-    //    partnerId: data.partnerId,
-    //    CarId: data.CarId,
-    //     stars: rating,
-    //     review,
-    //   });
-     
-    //   if (response.data.data) {
-    //     toast.success(response.data.message);
-    //     navigate("/BookingHistory")
-    //     setStars(0);
-    //     setReview('');
-    // } else {
+      if (response.data.success) {
+        toast.success(response.data.message);
+        navigate("/userProfile")
+        setStars(0);
+        setReview('');
+    } else {
  
-    //   toast.error(response.data.message);
-    // }
+      toast.error(response.data.message);
+    }
       
     } catch (error) {
-      console.error(error);
+      console.error(error.message,"errrorrrrrrr");
       alert('Error saving rating');
     }
   };

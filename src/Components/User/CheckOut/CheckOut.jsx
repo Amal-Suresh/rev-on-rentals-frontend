@@ -47,6 +47,7 @@ function CheckOut() {
 
     useEffect(() => {
         findBikeDetails()
+       
     }, [])
     
     const handleChange =(e)=>{
