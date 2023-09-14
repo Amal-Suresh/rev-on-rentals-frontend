@@ -413,7 +413,7 @@ const handleBooking =async(id)=>{
                 <div className="block rounded-lg bg-gray-500">
                   <div className="relative overflow-hidden bg-cover bg-no-repeat" >
                     <img className="rounded-t-lg relative"
-                      src={`${bike.image}`}
+                      src={`${bike.image[0]}`}
                       alt="..." />
 
                   </div>

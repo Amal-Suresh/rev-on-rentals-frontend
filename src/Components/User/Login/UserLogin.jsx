@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import bckimage from '../../../images/loginBackground.png'
-import Axios from 'axios'
-import { userApi } from '../../../config/api'
 import toast from 'react-hot-toast'
 import {useDispatch} from 'react-redux'
 import {addUser} from '../../../utils/userSlice'
+import { userLogin } from '../../../config/clientEndPoints'
 
 function UserLogin() {
     const dispatch =useDispatch()
@@ -32,7 +31,7 @@ function UserLogin() {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             const submitForm = async (formValues) => {
                 try {
-                    const response = await Axios.post(`${userApi}login`, formValues);
+                        const response =await userLogin(formValues)
                     if (response.data.success) {
                         localStorage.setItem('user', JSON.stringify(response.data.data));
                         dispatch(addUser({token:response.data.data.token,username:response.data.data.username}))

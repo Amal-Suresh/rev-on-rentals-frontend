@@ -14,11 +14,11 @@ function PartnerAddBikes() {
     const token = partner.token
     const navigate =useNavigate()
     const initialValues = { name: "", brand: "", category: "", makeYear: "", rentPerHour: "", engineCC: "", plateNumber: "" }
-    const [bikeImage,setBikeImage] = useState(null)
+    // const [bikeImage,setBikeImage] = useState(null)
     const [formValues, setFormValues] = useState(initialValues)
     const [formErrors, setFormErrors] = useState({})
     const [isSubmit, setIsSubmit] = useState(false)
-    const[files,setFiles]=useState([])
+    const [files,setFiles]=useState([])
     
 
     const handleChange = (e) => {
@@ -28,18 +28,19 @@ function PartnerAddBikes() {
     };
 
     const handleImage=(e)=>{
-        // const file=e.target.files[0]
+         const file=e.target.files
         // setBikeImage(file)
-        let file=e.target.files
-        for(let i=0;i<file.length;i++){
-            const fileType=file[i]["type"];
-            const validImageTypes =["image/gif","image/jpeg","image/png"]
-            if(validImageTypes.includes(fileType)){
-                setFiles([...files,file[i]])
-            }else{
-                toast.error("select image")
+        for (let i = 0; i < file.length; i++) {
+            const fileType = file[i].type;
+            const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+          
+            if (validImageTypes.includes(fileType)) {
+              setFiles((prevFiles) => [...prevFiles, file[i]]);
+            } else {
+              toast.error("Invalid image type");
             }
-        }
+          }
+          
 
 
         
@@ -52,23 +53,23 @@ function PartnerAddBikes() {
         setIsSubmit(true)
         console.log(Object.keys(formErrors).length);
         let formData= new FormData()
-        formData.append("image",bikeImage)
+        // formData.append("image",bikeImage)
         for(const [key,value] of Object.entries(formValues)){
             formData.append(key,value)
-            console.log(bikeImage);
+           
         }
 
         for(let j=0;j<files.length;j++){
+            console.log(files[j],"oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnnn");
             formData.append('image',files[j])
 
         }
-        for (const [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-          }
+        // for (const [key, value] of formData.entries()) {
+        //     console.log(`${key}: ${value}`);
+        //   }
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             const submitForm = async (formData) => {
                 try { 
-                    console.log(token,"hhhhhhhhh");
                               
                     const response = await Axios.post(`${partnerApi}/addBikes`, formData,{
                             headers: {

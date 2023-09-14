@@ -128,7 +128,7 @@ function PaymentSuccess() {
                         <div className='w-full flex md:flex-row flex-col'>
                             <div className='w-[100%]  md:w-[40%] p-2'>
                                 <p className='text-sm font-semibold underline py-1 text-center'>Bike</p>
-                                <img className='rounded-lg' src={`${orderDetails?.bike?.image}`} alt="" />
+                                <img className='rounded-lg' src={`${orderDetails?.bike?.image[0]}`} alt="" />
                                 <p className='text-gray-700 pl-1 pt-1'>{orderDetails?.bike?.brand} {orderDetails?.bike?.name}</p>
 
 

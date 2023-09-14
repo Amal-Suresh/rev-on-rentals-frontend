@@ -16,8 +16,6 @@ const createAxiosInstanceWithInterceptor=(baseURL,tokenName)=>{
     instance.interceptors.request.use(config=>{
         const details=localStorage.getItem(tokenName)
         const token =details?.token
-        console.log("lllllllllllllllllllllll--------------------token");
-
         if(token){
             config.headers['Authorization']=`Bearer ${token}`
         }
@@ -30,10 +28,9 @@ const createAxiosInstanceWithInterceptor=(baseURL,tokenName)=>{
     instance.interceptors.response.use(
         response=>response,
         error=>{
-
             if(error.response){
                 if(error.response.status===401){
-                    console.log(error.message);
+                    console.log(error.message,"ooooooooooooiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
                     window.location.href='/error404'
 
                 }else if(error.response.status===500){
@@ -48,8 +45,6 @@ const createAxiosInstanceWithInterceptor=(baseURL,tokenName)=>{
         }
     )
     return instance
-
-
 }
 
 const userAxiosInstance = createAxiosInstanceWithInterceptor(userApi, 'user');

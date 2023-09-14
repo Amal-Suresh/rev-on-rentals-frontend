@@ -6,36 +6,44 @@ import { userApi } from '../../../config/api'
 import moment from 'moment'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import UserFooter from '../Footer/UserFooter'
 
 
 
 
 function CheckOut() {
-    let user =useSelector((store)=>store.user.userD)
+    let user = useSelector((store) => store.user.userD)
     const navigate = useNavigate()
-    
+
     const location = useLocation()
     const [bikeDetails, setBikeDetails] = useState({})
-    const [bookingDetails,setBookingDeails] =useState(location.state.updatedData)
+    const [bookingDetails, setBookingDeails] = useState(location.state.updatedData)
     const bike = bookingDetails.bike
-    const [ponits,setPoints]=useState([])
-    const [hours,setHours]=useState()
-    const [rent,setRent]=useState(0)
-    const [helmet,setHelmet]=useState(1)
-    const [total,setTotal]=useState(rent)
-    const [grandTotal,setGrandTotal]=useState(0)
-    const [pickDropPoints,setPickDropPoints]=useState({pickUpPoint:"",dropPoint:""})
-    
+    const [ponits, setPoints] = useState([])
+    const [hours, setHours] = useState()
+    const [rent, setRent] = useState(0)
+    const [helmet, setHelmet] = useState(1)
+    const [total, setTotal] = useState(rent)
+    const [grandTotal, setGrandTotal] = useState(0)
+    const [pickDropPoints, setPickDropPoints] = useState({ pickUpPoint: "", dropPoint: "" })
+
+
+
 
     const findBikeDetails = async () => {
         try {
             const response = await axios.get(`${userApi}getBikeDetails?id=${bike}`)
             if (response.data.success) {
+
+
+                console.log(response.data.data);
                 setBikeDetails(response.data.data)
                 setPoints(response.data.locations)
-                const rentAmount =calculateRent(response.data.data.rentPerHour)
-                const tax=Math.floor(14/100*rentAmount)
-                setGrandTotal(rentAmount+(2*tax))
+                const rentAmount = calculateRent(response.data.data.rentPerHour)
+                const tax = Math.floor(14 / 100 * rentAmount)
+                setGrandTotal(rentAmount + (2 * tax))
                 setRent(rentAmount)
                 setTotal(rentAmount)
             }
@@ -47,15 +55,15 @@ function CheckOut() {
 
     useEffect(() => {
         findBikeDetails()
-       
-    }, [])
-    
-    const handleChange =(e)=>{
 
-        if(e.target.name==='pickUpPoint'){
-            setPickDropPoints({...pickDropPoints,pickUpPoint:e.target.value})
-        }else{
-            setPickDropPoints({...pickDropPoints,dropPoint:e.target.value})
+    }, [])
+
+    const handleChange = (e) => {
+
+        if (e.target.name === 'pickUpPoint') {
+            setPickDropPoints({ ...pickDropPoints, pickUpPoint: e.target.value })
+        } else {
+            setPickDropPoints({ ...pickDropPoints, dropPoint: e.target.value })
         }
 
     }
@@ -71,53 +79,54 @@ function CheckOut() {
         );
         const totalHours = dropDateTime.diff(pickUpDateTime, 'hours');
         setHours(totalHours)
-        return totalHours*rentPerHour
+        return totalHours * rentPerHour
     }
 
-    const handleSubmit=async()=>{
-       
-        if(pickDropPoints.pickUpPoint!=='' && pickDropPoints.dropPoint!==''){
-            const response =await axios.post(`${userApi}bookbike`,{amount:grandTotal})
+    const handleSubmit = async () => {
+
+        if (pickDropPoints.pickUpPoint !== '' && pickDropPoints.dropPoint !== '') {
+            const response = await axios.post(`${userApi}bookbike`, { amount: grandTotal })
             initPayment(response.data.data)
             toast.success("ok good")
-        }else{
+        } else {
             toast.error("select pick up and drop point")
         }
 
     }
 
-    const initPayment =(order)=>{
-        var options={
-            key:"rzp_test_lJniWPD4KnfBRI",
-            currency:"INR",
-            name:"rev-on-rentals",
-            description:"for testing",
-            amount:order.amount,
-            order_id:order.id,
-            handler:function(response){
+    const initPayment = (order) => {
+        var options = {
+            key: "rzp_test_lJniWPD4KnfBRI",
+            currency: "INR",
+            name: "rev-on-rentals",
+            description: "for testing",
+            amount: order.amount,
+            order_id: order.id,
+            handler: function (response) {
                 createBooking(response)
             },
-            theme:{
-                color:"#3399cc"
+            theme: {
+                color: "#3399cc"
             },
         }
-        var pay= new window.Razorpay(options)
+        var pay = new window.Razorpay(options)
         pay.open()
     }
 
-    const createBooking=async(details)=>{
-    const token =user.token
-        let dataForBooking={...details,...pickDropPoints,grandTotal,total,helmet,rent,hours,...bookingDetails,partnerId:bikeDetails.partnerId._id}
-        const response=await axios.post(`${userApi}verifyPayment`,dataForBooking, {
+    const createBooking = async (details) => {
+        const token = user.token
+        let dataForBooking = { ...details, ...pickDropPoints, grandTotal, total, helmet, rent, hours, ...bookingDetails, partnerId: bikeDetails.partnerId._id }
+        const response = await axios.post(`${userApi}verifyPayment`, dataForBooking, {
             headers: {
                 Authorization: `Bearer ${token}`
-            }})
-        if(response.data.success){
+            }
+        })
+        if (response.data.success) {
             toast.success(response.data.message)
             let id = response.data.data
-            navigate("/paymentSuccess",{state:{id}})
-            
-        }else{
+            navigate("/paymentSuccess", { state: { id } })
+
+        } else {
             toast.error(response.data.message)
         }
 
@@ -128,19 +137,38 @@ function CheckOut() {
         <div className='w-full max-w-[1600px]'>
             <Navbar />
             <div className='w-full h-screen pt-5'>
-                <div className='flex  flex-col md:flex-row  justify-center items-center'>
+                <div className='flex  flex-col md:flex-row py-10 justify-center items-center'>
                     <div className='max-w-[750px] md:h-[24rem] p-2 bg-slate-100 w-[95%] rounded-lg mb-3 shadow-2xl border-2'>
                         <p className='text-center text-2xl font-bold py-3'>Booking summery</p>
                         <hr className='' />
                         <div className='w-full flex md:flex-row flex-col'>
-                            <div className='w-[100%]  md:w-[40%] p-2'>
-                                <p className='text-sm font-semibold underline py-1 text-center'>Bike</p>
-                                <img className='rounded-lg' src={bikeDetails.image} alt="" />
-                                <p className='text-gray-700 pl-1 pt-1'>{bikeDetails.brand} {bikeDetails.name}</p>
+                            <div className='w-[100%]  md:w-[45%] p-2'>
+                                <p className='text-gray-700 text-center pl-1'>{bikeDetails.brand} {bikeDetails.name}</p>
+
+                                {/* <p className='text-sm font-semibold underline py-1 text-center'>Bike</p> */}
+                                <Carousel className='w-[300px]'>
+                                    <div>
+                                        {bikeDetails && bikeDetails.image && bikeDetails.image[0] && (
+                                            <img src={bikeDetails.image[0]} alt='' />
+                                        )}
+                                    </div>
+                                    <div>
+                                        {bikeDetails && bikeDetails.image && bikeDetails.image[1] && (
+                                            <img src={bikeDetails.image[1]} alt='' />
+                                        )}
+                                    </div>
+                                    <div>
+                                        {bikeDetails && bikeDetails.image && bikeDetails.image[2] && (
+                                            <img src={bikeDetails.image[2]} alt='' />
+                                        )}
+                                    </div>
+
+                                </Carousel>
+                                {/* <img className='rounded-lg' src={bikeDetails.image} alt="" /> */}
 
 
                             </div>
-                            <div className='w-[100%] md:w-[60%] py-6'>
+                            <div className='w-[100%] md:w-[55%] py-6'>
                                 <div className=' flex justify-between px-2 py-2'>
                                     <div>
                                         <p className='font-semibold '>{bookingDetails.pickUpDate}</p>
@@ -157,47 +185,47 @@ function CheckOut() {
                                     <p className='px-2 font-semibold'>Pick up point</p>
                                     <select onChange={handleChange} className='bg-gray-200 p-1 rounded-md mr-1 font-semibold' name="pickUpPoint">
                                         <option value=''>select pick up location</option>
-                                        {ponits.map((point)=><option value={point.name}>{point.name}</option>)}
+                                        {ponits.map((point) => <option value={point.name}>{point.name}</option>)}
                                     </select>
                                 </div>
                                 <div className='flex flex-row justify-between pb-2'>
                                     <p className='px-2 font-semibold'>Drop point</p>
-                                    <select  onChange={handleChange}  className='bg-gray-200 p-1 rounded-md mr-1 font-semibold' name="dropPoint" >
+                                    <select onChange={handleChange} className='bg-gray-200 p-1 rounded-md mr-1 font-semibold' name="dropPoint" >
                                         <option value=''>select drop location</option>
-                                        {ponits.map((point)=><option value={point.name}>{point.name}</option>)}
+                                        {ponits.map((point) => <option value={point.name}>{point.name}</option>)}
                                     </select>
                                 </div>
-                                {hours<=24?<div className='flex flex-row justify-between pb-2'>
+                                {hours <= 24 ? <div className='flex flex-row justify-between pb-2'>
                                     <p className='px-2 font-semibold'>Minimum 24.0 hour charges applicable</p>
                                     <p className='px-2 font-semibold'>{rent}</p>
-                                </div>:<div className='flex flex-row justify-between pb-2'>
+                                </div> : <div className='flex flex-row justify-between pb-2'>
                                     <p className='px-2 font-semibold'>Total rent for {hours} hours</p>
                                     <p className='px-2 font-semibold'>{rent}</p>
                                 </div>}
 
                                 <div className='flex flex-row justify-between'>
                                     <p className='px-2 font-semibold'>Number of Helmet (?)</p>
-                                    <select onChange={(e)=>{
-                                         e.target.value==="1"? setTotal(total-200):setTotal(rent+200)
-                                         e.target.value==="1"? setGrandTotal(grandTotal-58):setGrandTotal(grandTotal+58)
+                                    <select onChange={(e) => {
+                                        e.target.value === "1" ? setTotal(total - 200) : setTotal(rent + 200)
+                                        e.target.value === "1" ? setGrandTotal(grandTotal - 58) : setGrandTotal(grandTotal + 58)
 
-                                         setHelmet(e.target.value)
-        
-                                       
-                                        }}
-                                     className='mx-2 w-[50px] bg-gray-200 p-1 rounded-md mr-1 font-semibold text-center' name="helmet">
-                                
+                                        setHelmet(e.target.value)
+
+
+                                    }}
+                                        className='mx-2 w-[50px] bg-gray-200 p-1 rounded-md mr-1 font-semibold text-center' name="helmet">
+
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                     </select>
                                 </div>
-                              
+
 
                                 <div className='flex flex-row justify-between pb-2'>
                                     <p className='px-2 font-semibold'>Total</p>
                                     <p className='px-2 font-semibold'>{total}</p>
                                 </div>
-                                
+
 
 
                                 <div className='flex flex-row justify-between'>
@@ -216,11 +244,11 @@ function CheckOut() {
                         <p className='text-center text-2xl font-bold py-2'>Checkout</p>
                         <hr />
 
-                       
-                       {helmet==='2'? <div className='mt-2 flex flex-row justify-between'>
+
+                        {helmet === '2' ? <div className='mt-2 flex flex-row justify-between'>
                             <p className='px-2'>Extra Helmet</p>
                             <p className='px-2'>200</p>
-                        </div>: <div className='mt-2 flex flex-row justify-between'>
+                        </div> : <div className='mt-2 flex flex-row justify-between'>
                             <p className='px-2'>Extra Helmet</p>
                             <p className='px-2'>nil</p>
                         </div>}
@@ -231,11 +259,11 @@ function CheckOut() {
 
                         <div className='mt-2 flex flex-row justify-between'>
                             <p className='px-2'>CGST(14%)</p>
-                            <p className='px-2'>{Math.floor(14/100*total)}</p>
+                            <p className='px-2'>{Math.floor(14 / 100 * total)}</p>
                         </div>
                         <div className='mt-2 flex flex-row justify-between'>
                             <p className='px-2'>SGST(14%)</p>
-                            <p className='px-2'>{Math.floor(14/100*total)}</p>
+                            <p className='px-2'>{Math.floor(14 / 100 * total)}</p>
                         </div>
 
                         <div className='mt-2 flex flex-row justify-between'>
@@ -256,8 +284,12 @@ function CheckOut() {
                         </div>
                     </div>
                 </div>
+                <div>
+                    <UserFooter />
+                </div>
 
             </div>
+
         </div>
     )
 }

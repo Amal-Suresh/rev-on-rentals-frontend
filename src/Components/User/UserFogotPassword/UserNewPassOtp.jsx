@@ -4,6 +4,7 @@ import  Axios  from 'axios'
 import { toast } from 'react-hot-toast'
 import { userApi } from '../../../config/api'
 import {PiClockCountdownFill} from 'react-icons/pi'
+import { forgetPasswordNewpass } from '../../../config/clientEndPoints'
 
 function UserNewPassOtp() {
  
@@ -80,7 +81,9 @@ function UserNewPassOtp() {
     e.preventDefault()
     const joinedOtp = Object.values(otp).join("");
     if(joinedOtp.length===4){
-      const response=await Axios.post(`${userApi}verifyForgotOtp`,{data:userData,otp:joinedOtp})
+      const response =await forgetPasswordNewpass(userData,joinedOtp)
+
+      // const response=await Axios.post(`${userApi}verifyForgotOtp`,{data:userData,otp:joinedOtp})
       if(response.data.success){
         toast.success(response.data.message)
         navigate('/login')

@@ -99,7 +99,7 @@ function ViewBikesPartner() {
                       {bikes.map((bike) => {
                         return (
                           <tr key={bike._id}>
-                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><img src={`${bike.image}`} alt="bikeImg" /></td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><img src={`${bike.image[0]}`} alt="bikeImg" /></td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.name}</td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.brand}</td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.category}</td>

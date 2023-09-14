@@ -34,13 +34,14 @@ function BookingsByUser() {
     } catch (error) {
     }
   }
+
+
   const handleStatus = async (id, e) => {
     try {
-      
+      const value=e.target.value
       const data={
-        value:e.target.value,
-        id:id
-        
+        value,
+        id:id 
       }
       
       console.log(id);
@@ -51,13 +52,25 @@ function BookingsByUser() {
         }
       })
       if (response.data.success) {
-
+        const updatedBookings = bookings.map((booking) => {
+          if (booking._id === id) {
+            return {
+              ...booking,
+              status: value,
+            };
+          }
+          return booking;
+        });
+        setBookings(updatedBookings);
+        toast.success(response.data.message)
       } else {
         toast.error(response.data.message)
       }
     } catch (error) {
     }
   }
+
+
 
 
 
@@ -84,7 +97,7 @@ function BookingsByUser() {
             <h1 className='p-2 text-2xl font-semibold'>BOOKINGS</h1>
 
 
-            <div className='p-5  bg-yellow-200'>
+            <div className='p-5  h-screen bg-yellow-200'>
 
 
               {bookings &&
@@ -128,7 +141,7 @@ function BookingsByUser() {
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>
                               <p><span className='font-semibold'>date :</span>{new Date(booking?.dropDate).toISOString().split('T')[0]}</p>
                               <p><span className='font-semibold'>time :</span> {booking?.dropTime} </p>
-                              <p><span className='font-semibold'>ocation :</span>{booking?.dropPoint}</p>
+                              <p><span className='font-semibold'>location :</span>{booking?.dropPoint}</p>
                             </td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>
 
@@ -142,7 +155,7 @@ function BookingsByUser() {
                                 id="countries"
                                 value={booking.status}
                                 onChange={(e) => handleStatus(booking._id, e)}
-                                disabled={booking.status === 'cancelled'}
+                                disabled={booking.status === 'cancelled' ||booking.status === 'completed'  }
                                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                               >
                                 {booking.status==="cancelled" && <option value="">{booking?.status }</option>}

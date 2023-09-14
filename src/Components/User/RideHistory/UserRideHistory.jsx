@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 function UserRideHistory() {
     const [userBookings, setUserBookings] = useState([])
+    const [reviews, setReviews] = useState(new Map());
     const navigate=useNavigate()
 
     const user = useSelector((store) => store.user.userD)
@@ -21,12 +22,23 @@ function UserRideHistory() {
             if (response.data.success) {
 
                 setUserBookings(response.data.data)
+                console.log(response.data.doneReviews,":::::::::::::::::::::::::::::::::::::::::::::");
+                insertDataIntoMap(response.data.doneReviews)
+
             }
         } catch (error) {
             console.log(error.message);
         }
     }
 
+    const insertDataIntoMap = (data) => {
+        const newMap = new Map(reviews);
+        data.forEach((item) => {
+          newMap.set(item); 
+        });
+        setReviews(newMap);
+      };
+      
 
 
     const handleRideStatus=async(id)=>{
@@ -64,7 +76,7 @@ function UserRideHistory() {
         retriveBookings()
     }, [])
     return (
-
+        
         <div className='bg-yellow-100 rounded-lg h-screen overflow-y-scroll w-full md:w-[65%]'>
             {userBookings && userBookings.map((booking) => {
                 return (
@@ -98,9 +110,9 @@ function UserRideHistory() {
 
                                 </div>
                                 <div className='flex justify-center p-2 md:p-0'>
+                            
                                     {booking.status==="booked" && <button onClick={()=>{handleRideStatus(booking._id)}} className='bg-yellow-300  rounded-lg hover:bg-yellow-400 hover:text-black font-semibold px-5 py-2 md:h-full md:rounded-r-lg  text-white'>Cancel</button>} 
-                                    {booking.status==="completed" && <button onClick={()=>{handleRating(booking._id,booking.user,booking.bike._id)}} className='bg-yellow-300  rounded-lg hover:bg-yellow-400 hover:text-black font-semibold px-5 py-2 md:h-full md:rounded-r-lg  text-white'>Rateing</button>} 
-
+                                    {booking.status==="completed" && !reviews.has(booking._id) && <button onClick={()=>{handleRating(booking._id,booking.user,booking.bike._id)}} className='bg-yellow-300  rounded-lg hover:bg-yellow-400 hover:text-black font-semibold px-5 py-2 md:h-full md:rounded-r-lg  text-white'>Rate Now</button>} 
                                 </div>
 
                             </div>
@@ -131,7 +143,7 @@ function UserRideHistory() {
                             <p className='text-sm font-semibold text-center mt-4'></p>
                             <div className='flex md:flex-row flex-col justify-center items-center md:justify-evenly'>
                                 <div className='flex justify-center flex-col   w-[70%] p-3'>
-                                    <img className="w-full h-40 rounded-md  mx-auto" src={booking.bike.image} alt="John Doe" />
+                                    <img className="w-full h-40 rounded-md  mx-auto" src={booking.bike.image[0]} alt="John Doe" />
                                 </div>
 
                             </div>
