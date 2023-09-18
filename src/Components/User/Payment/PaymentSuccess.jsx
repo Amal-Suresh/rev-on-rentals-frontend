@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react'
-import jsPDF from 'jspdf';
 import Navbar from '../Navbar/Navbar'
 import UserFooter from '../Footer/UserFooter'
 import { useLocation } from 'react-router-dom';
@@ -49,27 +48,6 @@ function PaymentSuccess() {
     useEffect(() => {
         findOrder()
     }, [])
-
-    // const reportTemplateRef = useRef(null);
-    // const handleGeneratePdf = () => {
-    // 	const doc = new jsPDF({
-    // 		format: 'a4',
-    // 		unit: 'px',
-    // 	});
-
-    // 	// Adding the fonts.
-    // 	doc.setFont('Inter-Regular', 'normal');
-
-    // 	doc.html(reportTemplateRef.current, {
-    // 		async callback(doc) {
-    // 			await doc.save('document');
-    // 		},
-    // 	});
-    // };
-
-
-
-
 
     return (
         <div className=''>
