@@ -33,7 +33,7 @@ function UserLogin() {
                 try {
                         const response =await userLogin(formValues)
                     if (response.data.success) {
-                        localStorage.setItem('user', JSON.stringify(response.data.data));
+                        localStorage.setItem('token', JSON.stringify(response.data.data.token));
                         dispatch(addUser({token:response.data.data.token,username:response.data.data.username}))
                         toast.success(response.data.message);
                     } else {

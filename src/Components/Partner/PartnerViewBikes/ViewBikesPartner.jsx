@@ -15,17 +15,22 @@ function ViewBikesPartner() {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const [bikes, setbikes] = useState([])
-  
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
+
 
   const findBikes = async () => {
     try {
-      const response = await Axios.get(`${partnerApi}/viewBikes`, {
+      const response = await Axios.get(`${partnerApi}/viewBikes?page=${page}`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
       })
       if (response.data.success) {
-        setbikes(response.data.data)
+
+        setbikes(response.data.data.bikes)
+        setPage(response.data.data.page)
+        setTotalPages(response.data.data.totalPages)
         toast.success(response.data.message)
       } else {
         toast.error(response.data.message)
@@ -55,9 +60,13 @@ function ViewBikesPartner() {
     }
   }
 
+  const handleClick = (index) => {
+    setPage(index + 1)
+  }
+
   useEffect(() => {
     findBikes()
-  }, [])
+  }, [page])
 
   return (
     <>
@@ -107,16 +116,27 @@ function ViewBikesPartner() {
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.rentPerHour}</td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.plateNumber}</td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.engineCC}</td>
-                            {bike.status ? <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => handleStatus(bike._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Block</button></td> : <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => handleStatus(bike._id)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>Unblock</button></td>}
+                            {bike.status ? <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => handleStatus(bike._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Hide</button></td> : <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => handleStatus(bike._id)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>Unhide</button></td>}
                           </tr>
                         );
                       })}
-
-              
                     </tbody>
                   </table>
                 </div>
               }
+            
+              <div className='max-w-[1600px] bg-gray-500 py-1 flex justify-center'>
+                {totalPages > 0 &&
+                  [...Array(totalPages)].map((val, index) => (
+                    <button
+                      className={`${page === index + 1 ? 'bg-black' : 'bg-black'} text-sm py-2 px-4 rounded-md m-1 text-white ${page === index + 1 ? 'font-bold' : 'font-normal'} focus:outline-none focus:ring focus:ring-offset-2`}
+                      key={index}
+                      onClick={() => handleClick(index)}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+              </div>
 
             </div>
           </div>

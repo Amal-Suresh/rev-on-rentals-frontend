@@ -6,9 +6,11 @@ import { FaMapLocationDot } from 'react-icons/fa6'
 import { partnerApi } from '../../../config/api'
 import { toast } from 'react-hot-toast'
 import Axios from 'axios'
-import { useSelector } from 'react-redux'
+import { useSelector ,useDispatch} from 'react-redux'
+import { addPartner } from '../../../utils/partnerSlice'
 
 function PartnerProfile() {
+    const dispatch=useDispatch()
     const [isOpen, setIsOpen] = useState(false)
     const [partnerDetails, setPartnerDetails] = useState({})
     const [modalStatus, setModalStatus] = useState(false)
@@ -75,18 +77,10 @@ function PartnerProfile() {
 
         if (response.data.success) {
             setPartnerDetails(response.data.data);
+             dispatch(addPartner({ token:token, username: response.data.data.fname +" "+ response.data.data.lname }));
 
-            // Parse the JSON string from localStorage
-            const localUser = JSON.parse(localStorage.getItem('partner'));
-
-            // Update the username property in the object
-            localUser.username = partnerDetails.fname + ' ' + partnerDetails.lname;
-
-            // Convert the updated object back into a JSON string
-            const updatedLocalUser = JSON.stringify(localUser);
-
-            localStorage.setItem('partner', updatedLocalUser);
-
+             setModalStatus(false)
+            
             toast.success(response.data.message);
         } else {
             toast.error(response.data.message);

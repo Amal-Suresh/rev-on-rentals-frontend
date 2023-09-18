@@ -11,7 +11,12 @@ function Home() {
         <div className=' flex justify-center items-center md:justify-start bg-cover bg-no-repeat bg-center h-[600px] w-full ' style={{ backgroundImage: `url(${bikeImg})` }}>
           <h1 className='text-yellow-200'>Plan Your Next Ride Now</h1>
 
+
        </div>
+       <div className='w-24 h-24 bg-gray-700 rounded-full'>
+        
+       </div>
+
         <UserFooter/>  
     </div>
 

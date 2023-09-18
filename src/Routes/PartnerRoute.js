@@ -10,17 +10,31 @@ import PartnerProfilePage from '../Pages/Partner/PartnerProfilePage'
 import { useDispatch,useSelector } from 'react-redux'
 import { addPartner } from '../utils/partnerSlice'
 import PartnerBookingsPage from '../Pages/Partner/PartnerBookingsPage'
+import axios from 'axios'
+import { partnerApi } from '../config/api'
 
 
 
 function Partner() {
   const dispatch =useDispatch()
 
-  useEffect(() => {
-    const partnerDetails = JSON.parse(localStorage.getItem('partner'));
-    if (partnerDetails) {
-      dispatch(addPartner({ token: partnerDetails.token, username: partnerDetails.username }));
+  const checkIfPartner =async(token)=>{
+    console.log("reached check if Partner");
+    const  response=await axios.post(`${partnerApi}/checkIfPartner`,null,{
+      headers: {
+        Authorization: `Bearer ${token}`
     }
+    })
+
+    if (response.data.success){
+        dispatch(addPartner({ token: response.data.data.token, username: response.data.data.username }));
+    }
+  }
+
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem('token'));
+    token && checkIfPartner(token)
+    
   }, []);
 
   const partner = useSelector(store=>store.partner.partnerD)

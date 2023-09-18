@@ -169,7 +169,7 @@ const handleApply=async(req,res)=>{
       forCheckAvailability.dropTime
       ){
         getAllBikes()
-      toast.success("everything ok")
+      toast.success("changes applied")
     }
 }
 
