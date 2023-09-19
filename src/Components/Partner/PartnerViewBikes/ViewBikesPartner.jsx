@@ -7,6 +7,8 @@ import { partnerApi } from '../../../config/api'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
+import {TiDelete} from 'react-icons/ti'
+import Swal from 'sweetalert2'
 
 
 function ViewBikesPartner() {
@@ -68,6 +70,41 @@ function ViewBikesPartner() {
     findBikes()
   }, [page])
 
+  const alertDelete=(id)=>{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#32CD32',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Delete Bike'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteBike(id)
+      }
+    })
+  }
+
+  const deleteBike=async(id)=>{
+    try {
+      const response =await Axios.delete(`${partnerApi}/deleteBike?id=${id}`)
+      if(response.data.success){
+        const bikeIndexToDelete = bikes.findIndex((bike) => bike._id === id);
+        if (bikeIndexToDelete !== -1) {
+          const updatedBikes = [...bikes];
+          updatedBikes.splice(bikeIndexToDelete, 1);
+          setbikes(updatedBikes);
+        }
+        toast.success(response.data.message)
+      }else{
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      
+    }
+  }
+
   return (
     <>
       <div className={`mx-auto flex w-full ${!isOpen ? 'justify-start' : 'justify-between'} `}>
@@ -102,6 +139,8 @@ function ViewBikesPartner() {
                         <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Plate Number</th>
                         <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Engine CC</th>
                         <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Actions</th>
+                        <th className='w-9 p-3 text-sm font-semibold tracking-wide text-left'>delete</th>
+
                       </tr>
                     </thead>
                     <tbody className='divide-y divide-gray-100'>
@@ -117,6 +156,8 @@ function ViewBikesPartner() {
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.plateNumber}</td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.engineCC}</td>
                             {bike.status ? <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => handleStatus(bike._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Hide</button></td> : <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => handleStatus(bike._id)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>Unhide</button></td>}
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left '><TiDelete onClick={()=>alertDelete(bike._id)} className='cursor-pointer text-red-600' size={24}/></td>
+
                           </tr>
                         );
                       })}
