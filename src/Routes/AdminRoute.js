@@ -5,12 +5,15 @@ import PartnerRequest from "../Pages/Admin/PartnerRequestsPage";
 import PartnerSingleViewPage from "../Pages/Admin/PartnerSingleViewPage";
 import UserManagement from "../Pages/Admin/UserManagement";
 import PartnerVerifiedList from "../Pages/Admin/PartnerVerifiedList";
+import AdminLoginPage from "../Pages/Admin/AdminLoginPage"
+
 
 function Admin() {
   return (
     
     <Routes>
         <Route path="/" element={<AdminDashboadPage/>}/>
+        <Route path="/login" element={<AdminLoginPage/>}/>
         <Route path="/partnerRequests" element={<PartnerRequest/>}/>
         <Route path="/partnerSingleView" element={<PartnerSingleViewPage/>}/>
         <Route path="/users" element={<UserManagement/>}/>

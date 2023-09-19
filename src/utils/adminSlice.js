@@ -11,12 +11,12 @@ const adminSlice =createSlice({
     reducers:{
         addAdmin:(state,action)=>{
             console.log(action.payload,"action payload");
-            state.userD.token=action.payload.token;
-            state.userD.name=action.payload.username;
+            state.adminD.token=action.payload.token;
+            state.adminD.name=action.payload.username;
         },
         removeAdmin:(state,action)=>{
-            state.userD.id=null
-            state.userD.name=null
+            state.adminD.id=null
+            state.adminD.name=null
         }
     }
 })

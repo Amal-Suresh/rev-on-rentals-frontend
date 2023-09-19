@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import bckimage from '../../../images/loginBackground.png'
 import Axios from 'axios'
-import { partnerApi } from '../../../config/api'
+import { adminApi } from '../../../config/api'
 import { useDispatch } from 'react-redux'
-import {addPartner} from '../../../utils/partnerSlice'
+import {addAdmin} from '../../../utils/adminSlice'
 import {toast} from 'react-hot-toast'
 
 
-function LoginPartner() {
+function AdminLogin() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const initialValues = { email: "", password: ""}
@@ -30,17 +30,19 @@ function LoginPartner() {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             const submitForm = async(formValues)=>{
                 try {
-                const response = await Axios.post(`${partnerApi}/login`,formValues)
+                const response = await Axios.post(`${adminApi}/login`,formValues)
                if(response.data.success){
-                localStorage.setItem('partner', JSON.stringify(response.data.data));
-                dispatch(addPartner({token:response.data.data.token,username:response.data.data.username}))
+                console.log(response.data.data.token,"uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+                const token=response.data.data.token
+                localStorage.setItem('token',JSON.stringify(token));
+                dispatch(addAdmin({token:token,username:response.data.data.name}))
                 toast.success(response.data.message);
-                navigate('/partner')   
+                navigate('/admin')   
                }else{
                     toast.error(response.data.message)
                }           
                 } catch (error) {
-                    console.log(error.message);
+                    console.log(error);
                     
                 }
             }
@@ -86,7 +88,7 @@ function LoginPartner() {
                         <div className="flex flex-col  bg-yellow-300 rounded-xl mx-auto shadow-[0_35px_60px_15px_rgba(0,0,0,0.3)] overflow-hidden w-[21rem]">
 
                             <div className="w-full  py-5 px-4" >
-                                <h2 className="text-2xl text-center font-semibold mb-4">Partner Login</h2>
+                                <h2 className="text-2xl text-center font-semibold mb-4">Admin Login</h2>
 
                                 <form onSubmit={handleSubmit}>
                                     
@@ -98,11 +100,11 @@ function LoginPartner() {
                                         <input type="text" placeholder="Password" className="border rounded-md border-gray-400 py-1 px-2 w-full" value={formValues.password} onChange={handleChange} name="password" />
                                     </div>
                                     <p className='text-sm text-red-600'>{formErrors.password}</p>
-                                    <div className="mt-2 flex justify-end">
+                                    {/* <div className="mt-2 flex justify-end">
                                         <p onClick={()=>navigate('/partner/forgotpass')} className='font-semibold text-gray-600 hover:text-black cursor-pointer'>forgot password ?</p>
-                                    </div>
+                                    </div> */}
                                    
-                                    <div className="mt-2">
+                                    <div className="mt-5">
                                         <button type='submit' className="w-full bg-black py-2 text-center text-white font-bold text-md hover:bg-gray-900 hover:text-yellow-400 rounded-md ">Login</button>
 
                                     </div>
@@ -125,4 +127,4 @@ function LoginPartner() {
     )
 }
 
-export default LoginPartner
+export default AdminLogin
