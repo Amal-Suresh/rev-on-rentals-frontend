@@ -67,7 +67,7 @@ function PaymentSuccess() {
                             <div>
                                 <div className="md:px-24 px-2 flex justify-end text-center">
                                     <ReactToPrint
-                                        trigger={() =>  <p className=" text-green-500 font-bold py-3">print Invoice</p>}
+                                        trigger={() =>  <p className=" text-green-500 font-bold py-3 cursor-pointer">print invoice</p>}
                                         content={() => componentRef.current}
                                         
                                     />
@@ -143,19 +143,21 @@ function PaymentSuccess() {
 
 
                                                 </div>
+
+                                                <div className='flex flex-row justify-between'>
+                                                    <p className='px-2 font-semibold'>Helmet</p>
+                                                    <p className='px-2 font-semibold'>{orderDetails?.helmet}</p>
+                                                </div>
+
                                                 {hours <= 24 ? <div className='flex flex-row justify-between pb-2'>
                                                     <p className='px-2 font-semibold'>Minimum 24.0 hour charges applicable</p>
                                                     <p className='px-2 font-semibold'>{orderDetails?.rent}</p>
                                                 </div> : <div className='flex flex-row justify-between pb-2'>
-                                                    <p className='px-2 font-semibold'>rent for {hours} hours</p>
+                                                    <p className='px-2 font-semibold'>Rent for {hours} hours</p>
                                                     <p className='px-2 font-semibold'>{orderDetails?.rent}</p>
                                                 </div>}
 
-                                                <div className='flex flex-row justify-between'>
-                                                    <p className='px-2 font-semibold'>Extra Helmet</p>
-                                                    <p className='px-2 font-semibold'>200</p>
-
-                                                </div>
+                                        
                                                 <div className='flex flex-row justify-between'>
                                                     <p className='px-2 font-semibold'>Discount</p>
                                                     <p className='px-2 font-semibold'>{orderDetails?.discountAmount}</p>
@@ -174,7 +176,7 @@ function PaymentSuccess() {
                                                     <p className='px-2 font-semibold'>SGST</p>
                                                     <p className='px-2 font-semibold'>{(Number(orderDetails?.grandTotal) - (orderDetails?.totalAmount)) / 2}</p>
                                                 </div>
-
+                                                <hr />
                                                 <div className='flex flex-row justify-between'>
                                                     <p className='px-2 font-semibold'>Grand Total</p>
                                                     <p className='px-2 font-semibold'>{orderDetails?.grandTotal}</p>
