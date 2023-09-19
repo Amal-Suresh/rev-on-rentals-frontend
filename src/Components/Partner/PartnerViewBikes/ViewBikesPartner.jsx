@@ -86,6 +86,23 @@ function ViewBikesPartner() {
     })
   }
 
+  const alertHideUnhide=(id)=>{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#32CD32',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Change Status'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleStatus(id)
+      }
+    })
+
+  }
+
   const deleteBike=async(id)=>{
     try {
       const response =await Axios.delete(`${partnerApi}/deleteBike?id=${id}`)
@@ -155,7 +172,7 @@ function ViewBikesPartner() {
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.rentPerHour}</td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.plateNumber}</td>
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{bike.engineCC}</td>
-                            {bike.status ? <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => handleStatus(bike._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Hide</button></td> : <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => handleStatus(bike._id)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>Unhide</button></td>}
+                            {bike.status ? <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => alertHideUnhide(bike._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Hide</button></td> : <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => alertHideUnhide(bike._id)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>Unhide</button></td>}
                             <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left '><TiDelete onClick={()=>alertDelete(bike._id)} className='cursor-pointer text-red-600' size={24}/></td>
 
                           </tr>
