@@ -206,9 +206,7 @@ function CheckOut() {
                                 <div className='flex flex-row justify-between'>
                                     <p className='px-2 font-semibold'>Number of Helmet (?)</p>
                                     <select onChange={(e) => {
-                                        e.target.value === "1" ? setTotal(total - 200) : setTotal(rent + 200)
-                                        e.target.value === "1" ? setGrandTotal(grandTotal - 58) : setGrandTotal(grandTotal + 58)
-
+            
                                         setHelmet(e.target.value)
 
 
@@ -245,13 +243,7 @@ function CheckOut() {
                         <hr />
 
 
-                        {helmet === '2' ? <div className='mt-2 flex flex-row justify-between'>
-                            <p className='px-2'>Extra Helmet</p>
-                            <p className='px-2'>200</p>
-                        </div> : <div className='mt-2 flex flex-row justify-between'>
-                            <p className='px-2'>Extra Helmet</p>
-                            <p className='px-2'>nil</p>
-                        </div>}
+                       
                         <div className='mt-2 flex flex-row justify-between'>
                             <p className='px-2'>Booking Fee</p>
                             <p className='px-2'>{total}</p>
