@@ -32,7 +32,7 @@ function LoginPartner() {
                 try {
                 const response = await Axios.post(`${partnerApi}/login`,formValues)
                if(response.data.success){
-                localStorage.setItem('partner', JSON.stringify(response.data.data));
+                localStorage.setItem('token', JSON.stringify(response.data.data.token));
                 dispatch(addPartner({token:response.data.data.token,username:response.data.data.username}))
                 toast.success(response.data.message);
                 navigate('/partner')   

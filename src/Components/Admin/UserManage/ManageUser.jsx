@@ -5,6 +5,7 @@ import { AiOutlineClose } from 'react-icons/ai'
 import Axios from 'axios'
 import { adminApi } from '../../../config/api'
 import { toast } from 'react-hot-toast'
+import Swal from 'sweetalert2'
 
 
 function ManageUser() {
@@ -23,6 +24,23 @@ function ManageUser() {
     } catch (error) {
 
     }
+  }
+  
+  const statusAlert=(id)=>{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#32CD32',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Change Status'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleStatus(id)
+      }
+    })
+
   }
 
 
@@ -87,7 +105,7 @@ function ManageUser() {
                         <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{user.fname}</td>
                         <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{user.lname}</td>
                         <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{user.email}</td>
-                        {user.status?<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>handleStatus(user._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Block</button></td>:<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>handleStatus(user._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Unblock</button></td>}
+                        {user.status?<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>statusAlert(user._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Block</button></td>:<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>statusAlert(user._id)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>Unblock</button></td>}
                         
                        </tr>
 
