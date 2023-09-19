@@ -6,6 +6,7 @@ import Axios from 'axios'
 import { adminApi } from '../../../config/api'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import Swal from 'sweetalert2'
 
 
 
@@ -24,6 +25,23 @@ function PartnerVerified() {
       } catch (error) {
   
       }
+    }
+
+    const statusAlert=(id)=>{
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#32CD32',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Change Status'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handleStatus(id)
+        }
+      })
+  
     }
   
 
@@ -95,7 +113,7 @@ function PartnerVerified() {
                           <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.fname}</td>
                           <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.lname}</td>
                           <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.email}</td>  
-                          {partner.status?<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>handleStatus(partner._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Block</button></td>:<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>handleStatus(partner._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Unblock</button></td>}
+                          {partner.status?<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>statusAlert(partner._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Block</button></td>:<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>statusAlert(partner._id)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>Unblock</button></td>}
                           <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>viewPartner(partner)} className='bg-blue-600 rounded-sm p-1 text-white hover:bg-blue-700 text-sm'>View</button></td>
                           
                          </tr>

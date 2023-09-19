@@ -6,14 +6,15 @@ import Axios from 'axios'
 import { adminApi } from '../../../config/api'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import Swal from 'sweetalert2'
 
 
 function PartnerRequest() {
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
 
   const [requests, setRequests] = useState([])
-  
+
   const findRequest = async () => {
     try {
       const response = await Axios.get(`${adminApi}/partnerRequests`)
@@ -25,20 +26,21 @@ function PartnerRequest() {
     }
   }
 
-  const rejectPartner=async(email)=>{
-    const response= await Axios.get(`${adminApi}/rejectPartner?email=${email}`)
-    if(response.data.success){
+  const rejectPartner = async (email) => {
+    const response = await Axios.get(`${adminApi}/rejectPartner?email=${email}`)
+    if (response.data.success) {
 
-      setRequests(requests.filter((request)=>request.email!==email))
-      
+      setRequests(requests.filter((request) => request.email !== email))
+
     }
   }
 
-  const sendMailPartner=async(email)=>{
+  const sendMailPartner = async (email) => {
     const response = await Axios.get(`${adminApi}/sendMailToPartner?email=${email}`)
-    if(response.data.success){
+    if (response.data.success) {
+      setRequests(response.data.data)
       toast.success(response.data.message)
-    }else{
+    } else {
       toast.error(response.data.message)
 
 
@@ -47,36 +49,72 @@ function PartnerRequest() {
   }
 
 
-  const handleStatus =async(id)=>{
+  const handleStatus = async (id) => {
     try {
       const response = await Axios.put(`${adminApi}/changeStatus?id=${id}`)
-      if(response.data.success){
-        const updatedRequest= response.data.updatedrequest
+      if (response.data.success) {
+        const updatedRequest = response.data.updatedrequest
         const updatedDocumentIdString = updatedRequest._id.toString();
-        const updatedIndex = requests.findIndex(request=>request._id.toString()===updatedDocumentIdString)
-        const updatedDocuments=[...requests]
-        updatedDocuments[updatedIndex]=updatedRequest
+        const updatedIndex = requests.findIndex(request => request._id.toString() === updatedDocumentIdString)
+        const updatedDocuments = [...requests]
+        updatedDocuments[updatedIndex] = updatedRequest
         setRequests(updatedDocuments)
         toast.success(response.data.message)
-      }else{
+      } else {
         toast.error(response.data.message)
-      } 
-    } catch (error ) { 
+      }
+    } catch (error) {
     }
   }
 
-  const viewPartner = (data)=>{
+  const viewPartner = (data) => {
 
-      navigate('/admin/partnerSingleView',{state:{data}})
-      
-      // const response = await Axios.get(`${adminApi}/viewPartner?id=${id}`)
-      // if(response.data.success){
-      //   alert("success")
-      // }
+    navigate('/admin/partnerSingleView', { state: { data } })
+
+    // const response = await Axios.get(`${adminApi}/viewPartner?id=${id}`)
+    // if(response.data.success){
+    //   alert("success")
+    // }
   }
   useEffect(() => {
     findRequest()
   }, [])
+
+  const rejectAlert=(email)=>{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#32CD32',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Reject Request'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        rejectPartner(email)
+      }
+    })
+
+  }
+
+
+
+  const acceptAlert = (email) => {
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#32CD32',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Accept!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        sendMailPartner(email)
+      }
+    })
+  }
 
   return (
     <>
@@ -92,45 +130,46 @@ function PartnerRequest() {
             <h1 className='p-2 text-2xl font-semibold'>Partner Requests</h1>
 
             <div className='p-5 h-screen bg-yellow-200'>
-              
-
-              {requests && 
-              <div className='overflow-auto rounded-s-lg shadow '>
-                <table className='w-full'>
-                  <thead className='bg-gray-50 border-b-2 border-gray-200'>
-                    <tr>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Fname</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Lname</th>
-                      <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Reject</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Accept</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>View</th>
-
-                    </tr>
-                  </thead>
-                  <tbody className='divide-y divide-gray-100'>
-                    {requests.map((partner)=>{
-                      return(
-                      <tr key={partner._id}>
-                        <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.fname}</td>
-                        <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.lname}</td>
-                        <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.email}</td>
-                        <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>rejectPartner(partner.email)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Reject</button></td>
-                        <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>sendMailPartner(partner.email)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Accept</button></td>
-                        <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>viewPartner(partner)} className='bg-blue-600 rounded-sm p-1 text-white hover:bg-blue-700 text-sm'>View</button></td>
-                        
-                       </tr>
-
-                      )
-
-                    })}
-                    
-                  
-                  </tbody>
 
 
-                </table>
-              </div>
+              {requests &&
+                <div className='overflow-auto rounded-s-lg shadow '>
+                  <table className='w-full'>
+                    <thead className='bg-gray-50 border-b-2 border-gray-200'>
+                      <tr>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Fname</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Lname</th>
+                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Reject</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Accept</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>View</th>
+
+                      </tr>
+                    </thead>
+                    <tbody className='divide-y divide-gray-100'>
+                      {requests.map((partner) => {
+                        return (
+                          <tr key={partner._id}>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.fname}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.lname}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.email}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => rejectAlert(partner.email)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Reject</button></td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => acceptAlert(partner.email)} disabled={partner.isVerifed === 'mailSented'} className={`${partner.isVerifed === 'mailSented'&& 'cursor-not-allowed'} bg-green-600 rounded-sm p-1 text-white  hover:bg-green-700 text-sm`}>Accept</button></td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => viewPartner(partner)} className='bg-blue-600 rounded-sm p-1 text-white hover:bg-blue-700 text-sm'>View</button></td>
+
+                          </tr>
+
+                        )
+
+                      })}
+
+
+                    </tbody>
+
+
+                  </table>
+
+                </div>
               }
 
             </div>

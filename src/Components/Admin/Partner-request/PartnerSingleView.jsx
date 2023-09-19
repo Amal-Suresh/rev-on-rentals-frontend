@@ -7,6 +7,7 @@ import  Axios  from 'axios'
 import { adminApi } from '../../../config/api'
 import { toast } from 'react-hot-toast'
 import { FaMapLocationDot } from 'react-icons/fa6'
+import Swal from 'sweetalert2'
 
 
 
@@ -28,6 +29,25 @@ const PartnerSingleView = () => {
       }else{
         toast.error(response.data.message)
       }
+    }
+
+
+    
+    const statusAlert=(email)=>{
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#32CD32',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Change Status'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          verifiyPartner(email)
+        }
+      })
+  
     }
   return (
     <>
@@ -83,7 +103,7 @@ const PartnerSingleView = () => {
 
                                                 </tbody></table>
                                                 <div className='flex justify-center'>
-                                                  <div className='p-3 whitespace-nowrap font-semibold text-sm text-gray-700 text-left'>{partner.isVerifed===false?<button onClick={()=>verifiyPartner(partner.email)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Verify Partner</button>:<button onClick={()=>verifiyPartner(partner.email)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>unverify</button>}</div>
+                                                  <div className='p-3 whitespace-nowrap font-semibold text-sm text-gray-700 text-left'>{partner.isVerifed===false?<button onClick={()=>statusAlert(partner.email)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Verify Partner</button>:<button onClick={()=>statusAlert(partner.email)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>unverify</button>}</div>
                                                 </div>
 
                                           
