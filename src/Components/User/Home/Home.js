@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../Navbar/Navbar'
 import UserFooter from '../Footer/UserFooter'
 import bikeImg from '../../../images/HusqvarnaVitpilen701.jpeg'
+import {TbMessageChatbot} from 'react-icons/tb'
 
 
 function Home() {
@@ -13,7 +14,8 @@ function Home() {
 
 
        </div>
-       <div className='w-24 h-24 bg-gray-700 rounded-full'>
+       <div className='w-20 fixed end-5 bottom-5 h-20 flex justify-center items-center bg-gray-700 rounded-full'>
+        <TbMessageChatbot size={40} className='text-yellow-400' />
         
        </div>
 
