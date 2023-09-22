@@ -4,24 +4,40 @@ import UserFooter from '../Footer/UserFooter'
 import bikeImg from '../../../images/HusqvarnaVitpilen701.jpeg'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { CgCloseO } from 'react-icons/cg'
-import { GrSend } from 'react-icons/gr'
-
+import axios from 'axios'
+import {userApi} from '../../../config/api'
+import { useSelector } from 'react-redux'
 
 function Home() {
   const [chatOpen, setchatOpen] = useState(false)
+  const [message, setMessage] = useState('')
+  const user =useSelector((store)=>store.user.userD)
+
+  const handleChange = (e) => {
+    const { value } = e.target
+    setMessage(value)
+  }
+
+  const handleClick=async()=>{
+    const token = user?.token
+    const response =await axios.post(`${userApi}sendMessage`,{message:message},{
+      headers: {
+        Authorization: `Bearer ${token}`
+    }
+    })
+    console.log(response);
+  }
+
   return (
     <div className='flex flex-col max-w[1600px]'>
       <Navbar />
       <div className=' flex justify-center items-center md:justify-start bg-cover bg-no-repeat bg-center h-[600px] w-full ' style={{ backgroundImage: `url(${bikeImg})` }}>
         <h1 className='text-yellow-200'>Plan Your Next Ride Now</h1>
-
-
       </div>
 
       {chatOpen && <div className='w-[20rem] h-[24rem] fixed end-2 rounded-lg bottom-10 bg-gray-100'>
         <div className='w-full flex justify-between pt-2 px-2'>
           <p className='text-xl text-yellow-400 font-bold'>CHAT WITH US</p>
-
           <CgCloseO onClick={() => { setchatOpen(false) }} size={24} className='text-black' />
         </div>
 
@@ -44,28 +60,19 @@ function Home() {
           </div>
 
         </div>
+
         <div className='flex items-center justify-center'>
-          <input className='w-[75%] text-sm focus:outline-none border border-slate-300 px-3 py-2 rounded-l-lg' type="text" placeholder='Ask Something ?' />
-          <button className='w-[20%] bg-black flex justify-center text-yellow-300 font-bold py-2 rounded-r-lg '>send</button>
+          <input onChange={handleChange} className='w-[75%] text-sm focus:outline-none border border-slate-300 px-3 py-2 rounded-l-lg' type="text" placeholder='Ask Something ?' />
+          <button onClick={handleClick} className='w-[20%] bg-black flex justify-center text-yellow-300 font-bold py-2 rounded-r-lg '>send</button>
         </div>
 
       </div>}
       {!chatOpen && <div onClick={() => { setchatOpen(true) }} className='w-20 fixed end-5 bottom-5 h-20 flex justify-center items-center bg-gray-700 rounded-full'>
         <TbMessageChatbot size={40} className='text-yellow-400' />
-
       </div>}
-
-
-
-
-
 
       <UserFooter />
     </div>
-
-
-
-
   )
 }
 
