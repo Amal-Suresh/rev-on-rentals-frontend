@@ -6,6 +6,7 @@ import PartnerSingleViewPage from "../Pages/Admin/PartnerSingleViewPage";
 import UserManagement from "../Pages/Admin/UserManagement";
 import PartnerVerifiedList from "../Pages/Admin/PartnerVerifiedList";
 import AdminLoginPage from "../Pages/Admin/AdminLoginPage"
+import AdminSideChats from "../Pages/Admin/AdminSideChats";
 
 
 function Admin() {
@@ -18,6 +19,8 @@ function Admin() {
         <Route path="/partnerSingleView" element={<PartnerSingleViewPage/>}/>
         <Route path="/users" element={<UserManagement/>}/>
         <Route path="/partnerVerifiedList" element={<PartnerVerifiedList/>}/>
+        <Route path="/chats" element={<AdminSideChats/>}/>
+
 
         
     </Routes>
