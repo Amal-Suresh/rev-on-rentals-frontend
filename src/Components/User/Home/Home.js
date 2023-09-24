@@ -1,32 +1,74 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../Navbar/Navbar'
 import UserFooter from '../Footer/UserFooter'
 import bikeImg from '../../../images/HusqvarnaVitpilen701.jpeg'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { CgCloseO } from 'react-icons/cg'
 import axios from 'axios'
-import {userApi} from '../../../config/api'
+import { userApi } from '../../../config/api'
 import { useSelector } from 'react-redux'
+import { toast } from 'react-hot-toast'
 
 function Home() {
   const [chatOpen, setchatOpen] = useState(false)
   const [message, setMessage] = useState('')
-  const user =useSelector((store)=>store.user.userD)
+  const [userChats, setUserChats] = useState([])
+  const user = useSelector((store) => store.user.userD)
 
   const handleChange = (e) => {
     const { value } = e.target
     setMessage(value)
   }
 
-  const handleClick=async()=>{
+  const fetchChat = async (token) => {
+    try {
+      const response = await axios.get(`${userApi}fetchIndividualChat`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+
+      })
+      if (response.data.success) {
+        setUserChats(response.data.data)
+        toast.success(response.data.message)
+      } else {
+        toast.error(response.data.message)
+
+      }
+
+    } catch (error) {
+      console.log(error.message);
+
+    }
+  }
+
+
+
+  const handleClick = async () => {
     const token = user?.token
-    const response =await axios.post(`${userApi}sendMessage`,{message:message},{
+    const response = await axios.post(`${userApi}sendMessage`, { message: message }, {
       headers: {
         Authorization: `Bearer ${token}`
-    }
+      }
     })
-    console.log(response);
+    if (response.data.success) {
+      setUserChats(response.data.data)
+      toast.success(response.data.message)
+
+    } else {
+      toast.error(response.data.data)
+    }
   }
+
+
+  useEffect(() => {
+    const token = user?.token
+    token && fetchChat(token)
+
+
+
+
+  }, [user])
 
   return (
     <div className='flex flex-col max-w[1600px]'>
@@ -41,9 +83,28 @@ function Home() {
           <CgCloseO onClick={() => { setchatOpen(false) }} size={24} className='text-black' />
         </div>
 
-        <div className='h-[19rem] w-[20rem] bg-gray-200 px-1 py-2'>
+        <div className='h-[19rem] w-[20rem] bg-gray-200 px-1 py-2 overflow-y-scroll'>
+          {userChats && userChats.map((message) =>
+          (
+            <div className={`w-full flex  ${message.sender === "User" ? 'justify-end' : 'justify-start'}   pt-1`}>
+              {/* 
+              {message.sender === 'Admin' && <div className='w-8 h-8 bg-slate-400 rounded-full'>
+              </div>} */}
 
-          <div className='w-full flex justify-center pt-1'>
+              <div className={`ml-2 min-w-[5rem] bg-slate-300 px-2 py-1  flex flex-col ${message.sender === 'Admin' ? 'rounded-r-md rounded-bl-md' : 'rounded-l-md rounded-br-md'} `}>
+                <p className='text-start text-[15px]'>{message.text}</p>
+
+                <div className='flex justify-end w-full'>
+                  <p className='text-[8px] font-semibold italic'>10:00 am {message.sender === "User" && <span className='pl-1 text-blue-800'>&#10003;&#10003;</span>}</p>
+                </div>
+              </div>
+              {/* {message.sender === 'Admin' && <div className='w-8 h-8 bg-blue-400 rounded-full'></div>} */}
+            </div>
+
+          )
+          )}
+
+          {/* <div className='w-full flex justify-center pt-1'>
             <div className='w-8 h-8 bg-slate-400 rounded-full'>
             </div>
             <div className='w-[80%] h-8 ml-2 bg-slate-500 px-1 rounded-lg'>
@@ -57,7 +118,7 @@ function Home() {
             </div>
             <div className='w-8 h-8 bg-blue-400 rounded-full'>
             </div>
-          </div>
+          </div> */}
 
         </div>
 
