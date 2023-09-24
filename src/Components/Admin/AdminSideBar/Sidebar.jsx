@@ -13,6 +13,8 @@ function SideBar(props) {
           <p className='hover:text-white px-10 py-2  bg-yellow-300 hover:bg-slate-500 cursor-pointer w-full' onClick={()=>navigate('/admin/users')}>User</p>
           <p className='hover:text-white px-10 py-2  bg-yellow-300 hover:bg-slate-500 cursor-pointer w-full' onClick={()=>navigate('/admin/partnerRequests')}>Partner Request</p>
           <p className='hover:text-white px-10 py-2  bg-yellow-300 hover:bg-slate-500 cursor-pointer w-full'  onClick={()=>navigate('/admin/partnerVerifiedList')}>Partners</p>
+          <p className='hover:text-white px-10 py-2  bg-yellow-300 hover:bg-slate-500 cursor-pointer w-full'  onClick={()=>navigate('/admin/chats')}>Chats</p>
+
           <p></p>
           <p></p>
         </div>

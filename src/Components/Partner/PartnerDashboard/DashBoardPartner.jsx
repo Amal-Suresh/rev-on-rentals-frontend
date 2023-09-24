@@ -19,6 +19,7 @@ function DashBoardPartner() {
             <h1 className='py-2 text-3xl font-semibold'>Partner Dashboard</h1>
           </div>
          
+         
         </div>
       </div>
 
