@@ -3,6 +3,8 @@ import SideBarPartner from '../PartnerSideBar/SideBarPartner'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineClose } from 'react-icons/ai'
 import Chart from '../PartnerDashboard/Chart'
+import PieChart from '../PartnerDashboard/PieChart'
+
 
 function DashBoardPartner() {
   const [isOpen, setIsOpen] = useState(false)
@@ -57,7 +59,7 @@ function DashBoardPartner() {
     datasets:[{
       label:"bookings",
       data:datas.map((data)=>data.bokings),
-      backgroundColor:['blue']
+      backgroundColor:['blue','red','gray','purple','green']
     }]
     
   })
@@ -106,6 +108,11 @@ function DashBoardPartner() {
 
             </div>
             <div  className='w-[50%]'>
+
+           <div className='w-80'>
+            <PieChart chartData={bookings}/>
+           </div>
+
 
             </div>
           </div>
