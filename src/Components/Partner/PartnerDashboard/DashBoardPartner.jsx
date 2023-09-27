@@ -72,44 +72,48 @@ function DashBoardPartner() {
         <div className={`absolute flex ${!isOpen ? 'justify-start' : 'justify-end'}z-1  bg-yellow-300 w-[220px]`}>
           {!isOpen ? <GiHamburgerMenu size={35} onClick={() => setIsOpen(!isOpen)} /> : <AiOutlineClose size={35} onClick={() => setIsOpen(!isOpen)} />}
         </div>
-        <div className={`text-4xl text-center ${!isOpen ? 'w-full' : 'w-[83%]'} bg-red-800 `}>
+        <div className={`text-4xl text-center ${!isOpen ? 'w-full' : 'w-[83%]'}`}>
           <div className='w-full bg-yellow-300 '>
             <h1 className='py-2 text-3xl font-semibold'>Partner Dashboard</h1>
           </div>
 
 
-          <div className='w-full bg-red-500 flex justify-evenly p-2'>
+          <div className='w-full flex justify-evenly p-2 py-5 border border-b-yellow-400'>
 
-            <div className='h-[6rem] p-1 w-[12rem] bg-purple-600 rounded-lg'>
-              <p className='text-[20px]'>total bookings</p>
-              <p className='font-bold'>10000</p>
+            <div className='h-[6rem] p-1 w-[12rem] bg-black rounded-lg'>
+              <p className='text-[20px]  text-white font-semibold'>Total bookings</p>
+              <p className='font-bold text-white'>10000</p>
             </div>
 
-            <div className='h-[6rem] p-1 w-[12rem] bg-purple-600 rounded-lg'>
-              <p className='text-[20px]'>Number of Bikes</p>
-              <p className='font-bold'>10000</p>
+            <div className='h-[6rem] p-1 w-[12rem]  bg-black rounded-lg'>
+              <p className='text-[20px] text-white font-semibold'>Number of Bikes</p>
+              <p className='font-bold text-white'>10000</p>
             </div>
 
-            <div className='h-[6rem] p-1 w-[12rem] bg-purple-600 rounded-lg'>
-              <p className='text-[20px]'>hided bike</p>
-              <p className='font-bold'>10000</p>
+            <div className='h-[6rem] p-1 w-[12rem]  bg-black rounded-lg'>
+              <p className='text-[20px] text-white font-semibold'>Hided bike</p>
+              <p className='font-bold text-white'>10000</p>
             </div>
 
-            <div className='h-[6rem] p-1 w-[12rem] bg-purple-600 rounded-lg'>
-              <p className='text-[20px]'>total revenu</p>
-              <p className='font-bold'>10000</p>
+            <div className='h-[6rem] p-1 w-[12rem]  bg-black rounded-lg'>
+              <p className='text-[20px] text-white font-semibold'>Total Revenu</p>
+              <p className='font-bold text-white'>10000</p>
             </div>
 
           </div>
+          
 
           <div className='w-full h-[25rem] flex'>
-            <div className='w-[50%]'>
+            <div className='w-[50%] pl-2'>
+              <p className='text-black underline font-semibold text-[20px]'>weekly sales</p>
               <Chart chartData={bookings}/>
 
             </div>
-            <div  className='w-[50%]'>
+            <div  className='w-[50%] flex flex-col items-center'>
+            <p className='text-black underline font-semibold text-[20px]'>booking & cancel ratio</p>
 
-           <div className='w-80'>
+
+           <div className='w-full flex justify-center'>
             <PieChart chartData={bookings}/>
            </div>
 
