@@ -8,11 +8,15 @@ import axios from 'axios'
 import { userApi } from '../../../config/api'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 function Home() {
   const [chatOpen, setchatOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [userChats, setUserChats] = useState([])
+  const [obj, setObj] = useState([])
+  const navigate=useNavigate()
+
   const user = useSelector((store) => store.user.userD)
 
   const handleChange = (e) => {
@@ -34,6 +38,19 @@ function Home() {
       } else {
         toast.error(response.data.message)
 
+      }
+
+    } catch (error) {
+      console.log(error.message);
+
+    }
+  }
+
+  const findBikes = async () => {
+    try {
+      const response = await axios.get(`${userApi}ourFleet`)
+      if (response.data.success) {
+        setObj(response.data.data)
       }
 
     } catch (error) {
@@ -64,17 +81,56 @@ function Home() {
   useEffect(() => {
     const token = user?.token
     token && fetchChat(token)
-
-
-
+    findBikes()
 
   }, [user])
 
   return (
     <div className='flex flex-col max-w[1600px]'>
       <Navbar />
-      <div className=' flex justify-center items-center md:justify-start bg-cover bg-no-repeat bg-center h-[600px] w-full ' style={{ backgroundImage: `url(${bikeImg})` }}>
-        <h1 className='text-yellow-200'>Plan Your Next Ride Now</h1>
+      <div className=' md:justify-start bg-cover bg-no-repeat bg-center h-[600px] w-full ' style={{ backgroundImage: `url(${bikeImg})` }}>
+        <h1 className='text-yellow-400 mt-[12rem] ml-6 drop-shadow-lg text-[3rem] font-bold  '>Plan Your Next Ride Now</h1>
+<div className='w-[83%] flex justify-center'>
+<button onClick={()=>navigate('/viewBikes')} className='bg-black font-bold text-[1rem] px-4 py-3 cursor-pointer hover:border border-yellow-400  rounded-sm text-white'>BOOK NOW</button>
+
+</div>
+      </div>
+
+
+      <div className='bg-black '>
+        <p className='text-center font-bold text-white text-[3rem] mt-10'>OUR FLEET</p>
+        <div className='grid py-5 md:py-8  grid-cols-1 px- sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 max-w-[1500px]'>
+
+
+          {obj && obj.map((bike) => {
+            return (
+              <div key={bike._id} className='p-1 m-1 rounded border-2 border-gray-900  bg-yellow-300'>
+                <div className='flex w-full justify-center'>
+                  <p className='font-semibold'>{bike.name}</p>
+                </div>
+
+                <div className="block rounded-lg bg-gray-500">
+                  <div className="relative overflow-hidden bg-cover bg-no-repeat" >
+                    <img className="rounded-t-lg relative"
+                      src={`${bike.image[0]}`}
+                      alt="..." />
+
+                  </div>
+                  <div className='px-2 text-white font-semibold'>
+                    <p>Amount {bike.rentPerHour} Per Hour </p>
+                    <p>Engine {bike.engineCC} CC </p>
+                  </div>
+                  <div className="p-1">
+                    <button onClick={()=>navigate('/viewBikes')} className="w-full rounded font-bold py-1 hover:bg-black hover:text-yellow-400 bg-yellow-400">BOOK NOW</button>
+                  </div>
+                </div>
+              </div>
+            )
+          })
+          }
+
+
+        </div>
       </div>
 
       {chatOpen && <div className='w-[20rem] h-[24rem] fixed end-2 rounded-lg bottom-10 bg-gray-100'>

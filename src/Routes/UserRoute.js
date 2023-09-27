@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react'
-import {Routes,Route} from 'react-router-dom'
+import {Routes,Route, Navigate} from 'react-router-dom'
 import UserHome from '../Pages/User/UserHome'
 import JoinUs from '../Components/User/JoinUs/JoinUs'
 import UserTariff from '../Pages/User/UserTariff'
@@ -45,7 +45,7 @@ function User() {
         <Route path='/' element={<UserHome/>} />
         <Route path='/join-us'element={<JoinUs/>}/>
         <Route path='/tariff' element={<UserTariff/>}/>
-        <Route path='/login' element={userToken?<UserHome/>:<UserLoginPage/>}/>
+        <Route path='/login' element={userToken?<Navigate to='/'/>:<UserLoginPage/> }/>
         <Route path='/register' element={userToken?<UserHome/>:<UserRegisterPage/>}/>
         <Route path='/otp' element={userToken?<UserHome/>:<RegisterOtpPage/>}/>
         <Route path='/viewBikes' element={<UserViewBikesPage/>}/>
@@ -55,7 +55,7 @@ function User() {
         <Route path='/verifyForgetPassword' element={<UserForgotPassOtpPage/>}/>
         <Route path='/paymentSuccess' element={<PaymentSuccessPage/>}/>
         <Route path='/orderRatingReview' element={<OrderRatingPage/>}/>
-    </Routes>
+    </Routes> 
     
   )
 }

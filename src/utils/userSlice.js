@@ -15,7 +15,7 @@ const userSlice =createSlice({
             state.userD.name=action.payload.username;
         },
         removeUser:(state,action)=>{
-            state.userD.id=null
+            state.userD.token=null
             state.userD.name=null
         }
     }
