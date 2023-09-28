@@ -79,7 +79,7 @@ function UserProfile() {
         })
         if (response.data.success) {
             setUserDetails(response.data.data);
-
+            dispatch(addUser({ token:token, username: response.data.data.fname+" "+response.data.data.lname}));
             setModalStatus(false)
             toast.success(response.data.message);
           } else {
