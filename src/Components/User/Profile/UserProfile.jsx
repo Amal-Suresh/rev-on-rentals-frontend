@@ -24,7 +24,7 @@ function UserProfile() {
 
     const user =useSelector((store)=>store.user.userD)
     const token =user.token
-    console.log(token,"i got the token");
+    
     const retriveUser =async()=>{
         try {
         
@@ -79,7 +79,8 @@ function UserProfile() {
         })
         if (response.data.success) {
             setUserDetails(response.data.data);
-          
+
+            setModalStatus(false)
             toast.success(response.data.message);
           } else {
             toast.error(response.data.message);
