@@ -52,8 +52,11 @@ function CheckOut() {
         }
     }
 
+    console.log(reviews);
+
     useEffect(() => {
         findBikeDetails()
+
 
     }, [])
 
@@ -278,34 +281,41 @@ function CheckOut() {
 
 
                 <div class="w-full overflow-x-scroll px-3">
-                    <div class="flex gap-2">
-                        <div className='min-w-[300px] h-[180px] max-w-[350px] p-3 rounded-md bg-slate-400'>
-
-                            <div className='w-full flex'>
-                                <div className='w-14 h-14 bg-black rounded-full'>
-                                </div>
-                                <div className='flex justify-start flex-col'>
-                                    <div className='text-center w-full ml-4'>
-                                        {[1, 2, 3, 4, 5].map((star) => (
-                                            <span className='text-[30px]'
-                                                key={star}
-                                                style={{ color: star <= Number("2") ? 'gold' : 'gray' }}>
-                                                ★
-                                            </span>
-                                        ))}
+                    <div class="flex gap-2 py-5">
+                        {reviews && reviews.map((review) => (
+                            <div key={review._id} className='min-w-[300px] h-[180px] max-w-[350px] p-3 rounded-md bg-slate-200'>
+                                <div className='w-full flex'>
+                                    <img className='w-14 h-14 bg-black rounded-full' src={review.user.image} alt='userProfile'/>
+                                    
+                                    <div className='flex justify-start flex-col'>
+                                        <div className='text-center w-full ml-4'>
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                <span className='text-[30px]'
+                                                    key={star}
+                                                    style={{ color: star <= Number(review.rating) ? 'gold' : 'gray' }}>
+                                                    ★
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <div className='ml-6 font-bold'>{review.user.fname} {review.user.lname}</div>
                                     </div>
-                                    <div className='ml-6 font-bold'>AMAL SURESH</div>
+                                </div>
+                                <div className='py-4' >
+                                    <p className='text-justify text-sm'>{review.message}</p>
+                                </div>
+                                <div >
+                                    <p className='text-end text-[14px] font-semibold'>{new Date(review.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</p>
                                 </div>
                             </div>
-                            <div className='py-4' >
-                                <p className='text-justify text-sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae rem iste ut excepturi itaque error? </p>
-                            </div>
-                            <div >
-                                <p className='text-end text-[14px] font-semibold'> 12 aug 2023</p>
-                            </div>
-                        </div>
+
+                        ))
+
+                        }
+
 
                     </div>
+
+
                 </div>
                 <div>
                     <UserFooter />
