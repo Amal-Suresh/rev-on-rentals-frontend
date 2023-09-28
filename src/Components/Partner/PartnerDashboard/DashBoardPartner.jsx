@@ -1,68 +1,88 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import SideBarPartner from '../PartnerSideBar/SideBarPartner'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineClose } from 'react-icons/ai'
 import Chart from '../PartnerDashboard/Chart'
 import PieChart from '../PartnerDashboard/PieChart'
+import axios from 'axios'
+import { partnerApi } from '../../../config/api'
+import { useSelector } from 'react-redux'
 
 
 function DashBoardPartner() {
   const [isOpen, setIsOpen] = useState(false)
-  const datas=[
-    {
-      id:1,
-      day:"monday",
-      bokings:10,
-      cancelled:2,
-    },
-    {
-      id:2,
-      day:"tuesday",
-      bokings:19,
-      cancelled:9,
-    },
-    {
-      id:3,
-      day:"wednesday",
-      bokings:18,
-      cancelled:2,
-    },
-    {
-      id:4,
-      day:"thesday",
-      bokings:10,
-      cancelled:2,
-    },
-    {
-      id:5,
-      day:"friday",
-      bokings:15,
-      cancelled:6,
-    },
-    {
-      id:6,
-      day:"satuerday",
-      bokings:16,
-      cancelled:8,
-    },
-    {
-      id:7,
-      day:"sunday",
-      bokings:79,
-      cancelled:10,
-    },
+  const [weekly,setWeekly]=useState('')
+  const [dashDetails,setDashDetails]=useState({})
+  const [monthly,setMonthly]=useState('')
+  const partner = useSelector((store) => store.partner.partnerD)
+    const token = partner.token
 
-  ]
 
-  const [bookings,setBooking] =useState({
-    labels:datas.map((data)=>data.day),
-    datasets:[{
-      label:"bookings",
-      data:datas.map((data)=>data.bokings),
-      backgroundColor:['blue','red','gray','purple','green']
-    }]
+  const bookingBikesRevenuCount=async()=>{
+    const response=await axios.get(`${partnerApi}/fetchBookingBikesRevenu`,{
+      headers: {
+        Authorization: `Bearer ${token}`
+    }
+      
+    })
+    if(response.data.success){
+      let datas=response.data.currentWeek
+      console.log(datas);
+      setWeekly({
+        labels:datas.map((data)=>data.dayName),
+        datasets:[{
+          label:"bookings",
+          data:datas.map((data)=>data.count),
+          backgroundColor:['#0af5f5']
+        }]
+        
+      })
+      setDashDetails(response.data.data)
+    } 
+  }
+
+  const monthlySalesRatio=async()=>{
+    const response=await axios.get(`${partnerApi}//monthlySalesRatio`,{
+      headers: {
+        Authorization: `Bearer ${token}`
+    }
+      
+    })
+    if(response.data.success){
+      let values=response.data.data
+      setMonthly({
+          labels:['cancelled','completed'],
+          datasets:[{
+            label:"bookings",
+            data:[values.cancelled,values.completed],
+            backgroundColor:['#f50a0a','#0af53d']
+          }]
+          
+        })
+
+    }
     
-  })
+  }
+
+
+  useEffect(()=>{
+    bookingBikesRevenuCount()
+    monthlySalesRatio()
+   
+  },[])
+
+ 
+
+  // const [bookings,setBooking] =useState({
+  //   labels:datas.map((data)=>data.day),
+  //   datasets:[{
+  //     label:"bookings",
+  //     data:datas.map((data)=>data.count),
+  //     backgroundColor:['gray']
+  //   }]
+    
+  // })
+
   return (
     <div>
       <div className={`mx-auto flex w-full ${!isOpen ? 'justify-start' : 'justify-between'} `}>
@@ -82,22 +102,22 @@ function DashBoardPartner() {
 
             <div className='h-[6rem] p-1 w-[12rem] bg-black rounded-lg'>
               <p className='text-[20px]  text-white font-semibold'>Total bookings</p>
-              <p className='font-bold text-white'>10000</p>
+              <p className='font-bold text-white'>{dashDetails.totalBookingCount}</p>
             </div>
 
             <div className='h-[6rem] p-1 w-[12rem]  bg-black rounded-lg'>
               <p className='text-[20px] text-white font-semibold'>Number of Bikes</p>
-              <p className='font-bold text-white'>10000</p>
+              <p className='font-bold text-white'>{dashDetails.allBikesCount}</p>
             </div>
 
             <div className='h-[6rem] p-1 w-[12rem]  bg-black rounded-lg'>
               <p className='text-[20px] text-white font-semibold'>Hided bike</p>
-              <p className='font-bold text-white'>10000</p>
+              <p className='font-bold text-white'>{dashDetails.bikeHided}</p>
             </div>
 
             <div className='h-[6rem] p-1 w-[12rem]  bg-black rounded-lg'>
               <p className='text-[20px] text-white font-semibold'>Total Revenu</p>
-              <p className='font-bold text-white'>10000</p>
+              <p className='font-bold text-white'>{dashDetails.totalRevenu}</p>
             </div>
 
           </div>
@@ -106,7 +126,7 @@ function DashBoardPartner() {
           <div className='w-full h-[25rem] flex'>
             <div className='w-[50%] pl-2'>
               <p className='text-black underline font-semibold text-[20px]'>weekly sales</p>
-              <Chart chartData={bookings}/>
+              {weekly && <Chart chartData={weekly}/>}
 
             </div>
             <div  className='w-[50%] flex flex-col items-center'>
@@ -114,7 +134,8 @@ function DashBoardPartner() {
 
 
            <div className='w-full flex justify-center'>
-            <PieChart chartData={bookings}/>
+           {monthly && <PieChart chartData={monthly}/>}
+            
            </div>
 
 

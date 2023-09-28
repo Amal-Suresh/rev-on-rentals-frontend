@@ -10,13 +10,12 @@ const partnerSlice =createSlice({
     },
     reducers:{
         addPartner:(state,action)=>{
-            console.log(action.payload,action.payload.token,"action payload");
             state.partnerD.token=action.payload.token;
             state.partnerD.name=action.payload.username;
     
         },
         removePartner:(state,action)=>{
-            state.partnerD.id=null
+            state.partnerD.token=null
             state.partnerD.name=null
         }
     }
