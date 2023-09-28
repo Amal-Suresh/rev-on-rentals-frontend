@@ -81,7 +81,11 @@ function CheckOut() {
         );
         const totalHours = dropDateTime.diff(pickUpDateTime, 'hours');
         setHours(totalHours)
+        if(totalHours<24){
+            return rentPerHour*24
+        }else{
         return totalHours * rentPerHour
+        }
     }
 
     const handleSubmit = async () => {
