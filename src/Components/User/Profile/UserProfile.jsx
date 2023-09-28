@@ -80,19 +80,6 @@ function UserProfile() {
         if (response.data.success) {
             setUserDetails(response.data.data);
           
-            // Parse the JSON string from localStorage
-            const localUser = JSON.parse(localStorage.getItem('user'));
-
-            const newUserName=userDetails.fname + ' ' + userDetails.lname;
-            // Update the username property in the object
-            localUser.username = newUserName
-           
-          
-            // Convert the updated object back into a JSON string
-            const updatedLocalUser = JSON.stringify(localUser);
-        
-            localStorage.setItem('user', updatedLocalUser);
-          
             toast.success(response.data.message);
           } else {
             toast.error(response.data.message);
