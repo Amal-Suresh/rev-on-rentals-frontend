@@ -15,18 +15,25 @@ function BookingsByUser() {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const [bookings, setBookings] = useState([])
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
 
 
+  const handleClick = (index) => {
+    setPage(index + 1)
+  }
 
   const findBookings = async () => {
     try {
-      const response = await Axios.get(`${partnerApi}/findBookings`, {
+      const response = await Axios.get(`${partnerApi}/findBookings?page=${page}`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
       })
       if (response.data.success) {
         setBookings(response.data.data)
+        setPage(response.data.page)
+        setTotalPages(response.data.totalPages)
         toast.success(response.data.message)
       } else {
         toast.error(response.data.message)
@@ -44,7 +51,7 @@ function BookingsByUser() {
         id:id 
       }
       
-      console.log(id);
+      
 
       const response = await Axios.post(`${partnerApi}/changeBookingStatus`,data, {
         headers: {
@@ -76,7 +83,7 @@ function BookingsByUser() {
 
   useEffect(() => {
     findBookings()
-  }, [])
+  }, [page])
 
 
 
@@ -178,6 +185,18 @@ function BookingsByUser() {
                   </table>
                 </div>
               }
+               <div className='max-w-[1600px] bg-gray-500 py-1 flex justify-center'>
+                {totalPages > 0 &&
+                  [...Array(totalPages)].map((val, index) => (
+                    <button
+                      className={`${page === index + 1 ? 'bg-black' : 'bg-black'} text-sm py-2 px-4 rounded-md m-1 text-white ${page === index + 1 ? 'font-bold' : 'font-normal'} focus:outline-none focus:ring focus:ring-offset-2`}
+                      key={index}
+                      onClick={() => handleClick(index)}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+              </div>
 
             </div>
           </div>

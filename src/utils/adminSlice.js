@@ -15,7 +15,7 @@ const adminSlice =createSlice({
             state.adminD.name=action.payload.username;
         },
         removeAdmin:(state,action)=>{
-            state.adminD.id=null
+            state.adminD.token=null
             state.adminD.name=null
         }
     }

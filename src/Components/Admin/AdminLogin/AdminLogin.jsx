@@ -32,7 +32,6 @@ function AdminLogin() {
                 try {
                 const response = await Axios.post(`${adminApi}/login`,formValues)
                if(response.data.success){
-                console.log(response.data.data.token,"uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
                 const token=response.data.data.token
                 localStorage.setItem('token',JSON.stringify(token));
                 dispatch(addAdmin({token:token,username:response.data.data.name}))
@@ -100,10 +99,6 @@ function AdminLogin() {
                                         <input type="text" placeholder="Password" className="border rounded-md border-gray-400 py-1 px-2 w-full" value={formValues.password} onChange={handleChange} name="password" />
                                     </div>
                                     <p className='text-sm text-red-600'>{formErrors.password}</p>
-                                    {/* <div className="mt-2 flex justify-end">
-                                        <p onClick={()=>navigate('/partner/forgotpass')} className='font-semibold text-gray-600 hover:text-black cursor-pointer'>forgot password ?</p>
-                                    </div> */}
-                                   
                                     <div className="mt-5">
                                         <button type='submit' className="w-full bg-black py-2 text-center text-white font-bold text-md hover:bg-gray-900 hover:text-yellow-400 rounded-md ">Login</button>
 

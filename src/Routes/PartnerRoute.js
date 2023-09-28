@@ -19,7 +19,6 @@ function Partner() {
   const dispatch =useDispatch()
 
   const checkIfPartner =async(token)=>{
-    console.log("reached check if Partner");
     const  response=await axios.post(`${partnerApi}/checkIfPartner`,null,{
       headers: {
         Authorization: `Bearer ${token}`
