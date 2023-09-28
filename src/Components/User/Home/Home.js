@@ -34,7 +34,6 @@ function Home() {
       })
       if (response.data.success) {
         setUserChats(response.data.data)
-        toast.success(response.data.message)
       } else {
         toast.error(response.data.message)
 
@@ -159,22 +158,6 @@ function Home() {
 
           )
           )}
-
-          {/* <div className='w-full flex justify-center pt-1'>
-            <div className='w-8 h-8 bg-slate-400 rounded-full'>
-            </div>
-            <div className='w-[80%] h-8 ml-2 bg-slate-500 px-1 rounded-lg'>
-              <p>hai</p>
-            </div>
-          </div>
-
-          <div className='w-full flex justify-center pt-1'>
-            <div className='w-[80%] h-8 mr-2 bg-blue-500 px-1 rounded-lg'>
-              <p>hai</p>
-            </div>
-            <div className='w-8 h-8 bg-blue-400 rounded-full'>
-            </div>
-          </div> */}
 
         </div>
 
