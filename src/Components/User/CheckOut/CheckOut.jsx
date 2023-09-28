@@ -22,6 +22,7 @@ function CheckOut() {
     const [bookingDetails, setBookingDeails] = useState(location.state.updatedData)
     const bike = bookingDetails.bike
     const [ponits, setPoints] = useState([])
+    const [reviews, setReviews] = useState([])
     const [hours, setHours] = useState()
     const [rent, setRent] = useState(0)
     const [helmet, setHelmet] = useState(1)
@@ -36,9 +37,7 @@ function CheckOut() {
         try {
             const response = await axios.get(`${userApi}getBikeDetails?id=${bike}`)
             if (response.data.success) {
-
-
-                console.log(response.data.data);
+                setReviews(response.data.review)
                 setBikeDetails(response.data.data)
                 setPoints(response.data.locations)
                 const rentAmount = calculateRent(response.data.data.rentPerHour)
@@ -47,7 +46,7 @@ function CheckOut() {
                 setRent(rentAmount)
                 setTotal(rentAmount)
             }
-            console.log(response.data.data);
+            ;
         } catch (error) {
 
         }
@@ -87,7 +86,6 @@ function CheckOut() {
         if (pickDropPoints.pickUpPoint !== '' && pickDropPoints.dropPoint !== '') {
             const response = await axios.post(`${userApi}bookbike`, { amount: grandTotal })
             initPayment(response.data.data)
-            toast.success("ok good")
         } else {
             toast.error("select pick up and drop point")
         }
@@ -206,7 +204,7 @@ function CheckOut() {
                                 <div className='flex flex-row justify-between'>
                                     <p className='px-2 font-semibold'>Number of Helmet (?)</p>
                                     <select onChange={(e) => {
-            
+
                                         setHelmet(e.target.value)
 
 
@@ -243,7 +241,7 @@ function CheckOut() {
                         <hr />
 
 
-                       
+
                         <div className='mt-2 flex flex-row justify-between'>
                             <p className='px-2'>Booking Fee</p>
                             <p className='px-2'>{total}</p>
@@ -274,6 +272,39 @@ function CheckOut() {
                         <div className='mt-5 flex justify-center'>
                             <button onClick={handleSubmit} className=' bg-yellow-300 w-full py-2 rounded-md hover:bg-yellow-400 font-bold'>Make payment</button>
                         </div>
+                    </div>
+                </div>
+
+
+
+                <div class="w-full overflow-x-scroll px-3">
+                    <div class="flex gap-2">
+                        <div className='min-w-[300px] h-[180px] max-w-[350px] p-3 rounded-md bg-slate-400'>
+
+                            <div className='w-full flex'>
+                                <div className='w-14 h-14 bg-black rounded-full'>
+                                </div>
+                                <div className='flex justify-start flex-col'>
+                                    <div className='text-center w-full ml-4'>
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <span className='text-[30px]'
+                                                key={star}
+                                                style={{ color: star <= Number("2") ? 'gold' : 'gray' }}>
+                                                ★
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <div className='ml-6 font-bold'>AMAL SURESH</div>
+                                </div>
+                            </div>
+                            <div className='py-4' >
+                                <p className='text-justify text-sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae rem iste ut excepturi itaque error? </p>
+                            </div>
+                            <div >
+                                <p className='text-end text-[14px] font-semibold'> 12 aug 2023</p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div>

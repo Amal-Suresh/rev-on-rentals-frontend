@@ -38,7 +38,6 @@ function Home() {
         toast.error(response.data.message)
 
       }
-
     } catch (error) {
       console.log(error.message);
 
@@ -51,10 +50,7 @@ function Home() {
       if (response.data.success) {
         setObj(response.data.data)
       }
-
     } catch (error) {
-      console.log(error.message);
-
     }
   }
 
@@ -72,7 +68,6 @@ function Home() {
       toast.success(response.data.message)
 
     } else {
-      toast.error(response.data.data)
     }
   }
 
