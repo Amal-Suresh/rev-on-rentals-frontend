@@ -38,7 +38,7 @@ const handleLogout=()=>{
       <nav className='bg-black max-w-[1500px] flex justify-between items-center h-[5rem] w-[92%] mx-auto'>
         <div className='flex items-center'>
           <img className='w-16 rounded-full' src={logo} alt="logo" />
-          <p className='text-white font-bold text-[2rem] pl-4 hidden md:block hover:cursor-pointer'>REV-ON-RENTALS</p>
+          <p className='text-white font-bold text-[2.5rem] pl-4 hidden md:block hover:cursor-pointer font-passion tracking-wider'>REV-ON-RENTALS</p>
           {/* <img className='hidden md:block ml-5 w-44 h-13 hover:cursor-pointer' src={logo1} alt="logo" /> */}
         </div>
         <div className={`${navLink} z-10 bg-black mt-8 md:mt-0  md:static md:min-h-fit md:w-auto absolute min-h-[70vh] left-0 top-[-100%] w-full flex items-center px-5`}>

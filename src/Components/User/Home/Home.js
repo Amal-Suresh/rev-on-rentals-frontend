@@ -83,16 +83,16 @@ function Home() {
     <div className='flex flex-col max-w[1600px]'>
       <Navbar />
       <div className=' md:justify-start bg-cover bg-no-repeat bg-center h-[600px] w-full ' style={{ backgroundImage: `url(${bikeImg})` }}>
-        <h1 className='text-yellow-400 mt-[12rem] ml-6 drop-shadow-lg text-[3rem] font-bold  '>Plan Your Next Ride Now</h1>
+        <h1 className='text-yellow-400 mt-[12rem] ml-6 drop-shadow-lg text-[3rem] font-bold font-rubik-vinyl  '>Plan Your Next Ride Now</h1>
 <div className='w-[83%] flex justify-center'>
-<button onClick={()=>navigate('/viewBikes')} className='bg-black font-bold text-[1rem] px-4 py-3 cursor-pointer hover:border border-yellow-400  rounded-sm text-white'>BOOK NOW</button>
+<button onClick={()=>navigate('/viewBikes')} className='bg-black font-bold text-[1rem] px-4 py-3 cursor-pointer hover:border border-yellow-400 rounded-sm text-white'>BOOK NOW</button>
 
 </div>
       </div>
 
 
       <div className='bg-black '>
-        <p className='text-center font-bold text-white text-[3rem] mt-10'>OUR FLEET</p>
+        <p className='text-center font-bold text-white text-[2.2rem] mt-10 font-passion tracking-wider'>OUR FLEET</p>
         <div className='grid py-5 md:py-8  grid-cols-1 px- sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 max-w-[1500px]'>
 
 
