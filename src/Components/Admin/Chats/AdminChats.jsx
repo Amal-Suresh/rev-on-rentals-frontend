@@ -7,6 +7,7 @@ import { adminApi } from '../../../config/api'
 import { toast } from 'react-hot-toast'
 import {io} from 'socket.io-client'
 import { socketApi } from '../../../config/api'
+import {GrSend} from 'react-icons/gr'
 
 function AdminChats() {
   const Socket = io.connect(socketApi)
@@ -64,10 +65,14 @@ function AdminChats() {
 
    
   }
+  useEffect(() => {
+    fetchChats()
+  }, [])
 
   useEffect(() => {
-    // Listen for incoming messages from the server
+   
      Socket.on('receive_message', (data) => {
+     
       setIndividualChat((prevMessages) => [...prevMessages, data]);
     });
    return()=>{
@@ -78,9 +83,7 @@ function AdminChats() {
 
 
 
-  useEffect(() => {
-    fetchChats()
-  }, [])
+  
 
   return (
     <>
@@ -105,7 +108,7 @@ function AdminChats() {
                     <div className='flex flex-col w-[90%]'>
                       <div className='flex flex-row justify-between w-full px-3'>
                         <p className='text-[19px] font-bold'>{chat.userDetails.fname} {chat.userDetails.lname}</p>
-                        <p className='text-[10px]'>10:00 am</p>
+                        <p className='text-[10px]'>{chat.time}</p>
                       </div>
                       <div className='px-4 flex justify-start'>
                         <p className='text-[15px] text-start'>{chat.text}</p>
@@ -123,7 +126,7 @@ function AdminChats() {
                         <p className='text-start text-[20px]'>{message.text}</p>
 
                         <div className='flex justify-end w-full'>
-                          <p className='text-[8px]'>10:00 am</p>
+                          <p className='text-[8px]'>{message.time}</p>
                         </div>
 
                       </div>
@@ -133,9 +136,9 @@ function AdminChats() {
                 </div>
                 <div className=' bottom-0 end-0 w-full h-16'>
                   <div className=' my-1 flex justify-center items-center py-2 '>
-                    <div className='border border-black rounded-full w-[82%] pl-2'>
-                      <input onChange={handleOnChange} value={textToSent} className='w-[80%] text-lg my-2 px-3 outline-none rounded-l-lg ' type="text" placeholder='Type a message' />
-                      <button onClick={sendMessage} className='ml-6 text-[20px] font-bold bg-yellow-300 hover:bg-yellow-400 pr-16 pl-2 pt-3 pb-2 rounded-r-full'>send</button>
+                    <div className='border border-black flex flex-row justify-between'>
+                      <input onChange={handleOnChange} value={textToSent} className='w-full text-lg my-2 px-3 outline-none rounded-l-lg ' type="text" placeholder='Type a message' />
+                      <button onClick={sendMessage} className='ml-6 text-[20px] font-bold bg-yellow-300 hover:bg-yellow-400 px-4 py-2'><GrSend/></button>  
                     </div>
                   </div>
                 </div>
