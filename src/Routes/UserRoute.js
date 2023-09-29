@@ -28,7 +28,7 @@ function User() {
     }
     })
     if(response.data.success){
-        dispatch(addUser({ token: response.data.data.token, username: response.data.data.name }));
+        dispatch(addUser({ token: response.data.data.token, username: response.data.data.name ,id:response.data.data.id}));
     }
   }
 

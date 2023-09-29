@@ -5,8 +5,11 @@ import { AiOutlineClose } from 'react-icons/ai'
 import Axios from 'axios'
 import { adminApi } from '../../../config/api'
 import { toast } from 'react-hot-toast'
+import {io} from 'socket.io-client'
+import { socketApi } from '../../../config/api'
 
 function AdminChats() {
+  const Socket = io.connect(socketApi)
   const [isOpen, setIsOpen] = useState(false)
   const [chats, setChats] = useState([])
   const [individualChat, setIndividualChat] = useState([])
@@ -44,21 +47,53 @@ function AdminChats() {
   }
 
   const sendMessage = async () => {
-    if (!textToSent) {
-      toast.error("type some text to sent")
-    } else {
-      const id = individualChat[0].user
-      const data = {
-        id,
-        textToSent
+    
+      if(textToSent!==''){
+      const userId= individualChat[0]?.user
+      console.log(userId,"user id admin side");
+      const newMessage = {
+        user:userId,
+        text: textToSent,
+        sender:"Admin",
+      };
+      await Socket.emit('send_message', newMessage);
+      setTextToSent('')
+      }else{
+        toast.success("message box can't be null")
       }
-      const response = await Axios.post(`${adminApi}/replyToUser`, data)
-      if (response.data.success) {
-        setIndividualChat(response.data.data)
-        toast.success("message sented successfully")
-      }
-    }
+
+   
   }
+
+  useEffect(() => {
+    // Listen for incoming messages from the server
+     Socket.on('receive_message', (data) => {
+      setIndividualChat((prevMessages) => [...prevMessages, data]);
+    });
+   return()=>{
+    Socket.disconnect()
+  }
+
+  }, [textToSent]);
+
+
+
+  // const sendMessage = async () => {
+  //   if (!textToSent) {
+  //     toast.error("type some text to sent")
+  //   } else {
+  //     const id = individualChat[0].user
+  //     const data = {
+  //       id,
+  //       textToSent
+  //     }
+  //     const response = await Axios.post(`${adminApi}/replyToUser`, data)
+  //     if (response.data.success) {
+  //       setIndividualChat(response.data.data)
+  //       toast.success("message sented successfully")
+  //     }
+  //   }
+  // }
 
   useEffect(() => {
     fetchChats()
@@ -116,7 +151,7 @@ function AdminChats() {
                 <div className=' bottom-0 end-0 w-full h-16'>
                   <div className=' my-1 flex justify-center items-center py-2 '>
                     <div className='border border-black rounded-full w-[82%] pl-2'>
-                      <input onChange={handleOnChange} className='w-[80%] text-lg my-2 px-3 outline-none rounded-l-lg ' type="text" placeholder='Type a message' />
+                      <input onChange={handleOnChange} value={textToSent} className='w-[80%] text-lg my-2 px-3 outline-none rounded-l-lg ' type="text" placeholder='Type a message' />
                       <button onClick={sendMessage} className='ml-6 text-[20px] font-bold bg-yellow-300 hover:bg-yellow-400 pr-16 pl-2 pt-3 pb-2 rounded-r-full'>send</button>
                     </div>
                   </div>

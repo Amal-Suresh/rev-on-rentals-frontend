@@ -5,7 +5,8 @@ const partnerSlice =createSlice({
     initialState:{
         partnerD:{
             token:null,
-            name:null
+            name:null,
+
         } 
     },
     reducers:{
@@ -17,6 +18,8 @@ const partnerSlice =createSlice({
         removePartner:(state,action)=>{
             state.partnerD.token=null
             state.partnerD.name=null
+           
+
         }
     }
 })

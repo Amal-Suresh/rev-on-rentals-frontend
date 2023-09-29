@@ -9,8 +9,14 @@ import { userApi } from '../../../config/api'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import {io} from 'socket.io-client'
+import { socketApi } from '../../../config/api'
+
 
 function Home() {
+
+  const Socket = io.connect(socketApi)
+
   const [chatOpen, setchatOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [userChats, setUserChats] = useState([])
@@ -53,24 +59,34 @@ function Home() {
     } catch (error) {
     }
   }
-
-
-
   const handleClick = async () => {
-    const token = user?.token
-    const response = await axios.post(`${userApi}sendMessage`, { message: message }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    if(user?.token) {
+      if(message!==''){
+        const userId= user?.id
+      const newMessage = {
+        user:userId,
+        text: message,
+        sender:"User",
+      };
+      await Socket.emit('send_message', newMessage);
+      setMessage('')
+      }else{
+        toast.error("message box can't be null")
       }
-    })
-    if (response.data.success) {
-      setUserChats(response.data.data)
-      toast.success(response.data.message)
 
-    } else {
+    }else{
+      navigate('/login')
     }
   }
-
+  useEffect(() => {
+    // Listen for incoming messages from the server
+     Socket.on('receive_message', (data) => {
+      setUserChats((prevMessages) => [...prevMessages, data]);
+    });
+   return()=>{
+    Socket.disconnect()
+  }
+  }, [userChats]);
 
   useEffect(() => {
     const token = user?.token
@@ -157,7 +173,7 @@ function Home() {
         </div>
 
         <div className='flex items-center justify-center'>
-          <input onChange={handleChange} className='w-[75%] text-sm focus:outline-none border border-slate-300 px-3 py-2 rounded-l-lg' type="text" placeholder='Ask Something ?' />
+          <input onChange={handleChange} value={message} className='w-[75%] text-sm focus:outline-none border border-slate-300 px-3 py-2 rounded-l-lg' type="text" placeholder='Ask Something ?' />
           <button onClick={handleClick} className='w-[20%] bg-black flex justify-center text-yellow-300 font-bold py-2 rounded-r-lg '>send</button>
         </div>
 
