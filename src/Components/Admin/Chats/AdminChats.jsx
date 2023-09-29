@@ -16,7 +16,7 @@ function AdminChats() {
   const [individualChat, setIndividualChat] = useState([])
   const [textToSent, setTextToSent] = useState('')
 
-  const fetchChats = async (req, res) => {
+  const fetchChats = async () => {
     try {
       const response = await Axios.get(`${adminApi}/fetchChat`)
       if (response.data.success) {
@@ -79,7 +79,7 @@ function AdminChats() {
     Socket.disconnect()
   }
 
-  }, [textToSent]);
+  }, [individualChat,Socket]);
 
 
 

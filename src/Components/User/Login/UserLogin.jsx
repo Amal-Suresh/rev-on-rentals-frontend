@@ -34,7 +34,7 @@ function UserLogin() {
                         const response =await userLogin(formValues)
                     if (response.data.success) {
                         localStorage.setItem('token', JSON.stringify(response.data.data.token));
-                        dispatch(addUser({token:response.data.data.token,username:response.data.data.username}))
+                        dispatch(addUser({token:response.data.data.token,username:response.data.data.username,id:response.data.data.id}))
                         toast.success(response.data.message);
                     } else {
                         toast.error(response.data.message);
