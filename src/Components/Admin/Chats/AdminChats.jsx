@@ -78,23 +78,6 @@ function AdminChats() {
 
 
 
-  // const sendMessage = async () => {
-  //   if (!textToSent) {
-  //     toast.error("type some text to sent")
-  //   } else {
-  //     const id = individualChat[0].user
-  //     const data = {
-  //       id,
-  //       textToSent
-  //     }
-  //     const response = await Axios.post(`${adminApi}/replyToUser`, data)
-  //     if (response.data.success) {
-  //       setIndividualChat(response.data.data)
-  //       toast.success("message sented successfully")
-  //     }
-  //   }
-  // }
-
   useEffect(() => {
     fetchChats()
   }, [])

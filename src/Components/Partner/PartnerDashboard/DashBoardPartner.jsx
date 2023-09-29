@@ -42,7 +42,7 @@ function DashBoardPartner() {
   }
 
   const monthlySalesRatio=async()=>{
-    const response=await axios.get(`${partnerApi}//monthlySalesRatio`,{
+    const response=await axios.get(`${partnerApi}/monthlySalesRatio`,{
       headers: {
         Authorization: `Bearer ${token}`
     }
