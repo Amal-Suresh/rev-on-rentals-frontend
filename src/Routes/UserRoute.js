@@ -59,8 +59,6 @@ function User() {
         <Route path='/orderRatingReview' element={<OrderRatingPage/>}/>
         <Route path='/error500' element={<Page500/>}/>
         <Route path='/error404' element={<Page404/>}/>
-
-
     </Routes> 
     
   )
