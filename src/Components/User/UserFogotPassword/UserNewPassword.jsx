@@ -3,6 +3,7 @@ import { userApi } from '../../../config/api'
 import Axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import {forgetPasswordOtp} from '../../../config/clientEndPoints'
 
 
 function UserNewPassword() {
@@ -25,9 +26,8 @@ function UserNewPassword() {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             const submitForm = async(formValues)=>{
                 try {
-                   
-                const response = await Axios.post(`${userApi}forgetpassword`,formValues)
-                
+                    const response = await forgetPasswordOtp(formValues)
+                // const response = await Axios.post(`${userApi}forgetpassword`,formValues)
                if(response.data.success){
                     toast.success(response.data.message)
                     navigate("/verifyForgetPassword",{state:{formValues}})

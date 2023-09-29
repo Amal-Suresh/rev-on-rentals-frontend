@@ -17,6 +17,8 @@ import PaymentSuccessPage from '../Pages/User/PaymentSuccessPage'
 import OrderRatingPage from '../Pages/User/OrderRatingPage'
 import axios from 'axios'
 import { userApi } from '../config/api'
+import Page500 from '../Pages/User/Page500'
+import Page404 from '../Pages/User/Page404'
 
 
 function User() {
@@ -55,6 +57,10 @@ function User() {
         <Route path='/verifyForgetPassword' element={<UserForgotPassOtpPage/>}/>
         <Route path='/paymentSuccess' element={<PaymentSuccessPage/>}/>
         <Route path='/orderRatingReview' element={<OrderRatingPage/>}/>
+        <Route path='/error500' element={<Page500/>}/>
+        <Route path='/error404' element={<Page404/>}/>
+
+
     </Routes> 
     
   )

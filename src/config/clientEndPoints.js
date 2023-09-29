@@ -33,12 +33,10 @@ const submitUserDetailsOtp =async(userEmail)=>{
 // fetch userdetails for userProfile
 const fetchUserProfile =async()=>{
     try {
-        console.log("pppppppppppppppppppppppppppppppppp");
       const response = await userAxiosInstance.post(`userProfile`,null)
-      console.log(response,"oooooooooooooooooooooooooooooooooo");
       return response
     } catch (error) {
-        console.log(error.message,"////////////////////////"); 
+        console.log(error.message); 
     }
 }
 
@@ -46,11 +44,9 @@ const fetchUserProfile =async()=>{
 const updateUserProfile=async(formData)=>{
     try {
         const response =await userAxiosInstance.post(`editUserProfile`,formData)
-        console.log(response,";;;;;;;;;;;;;;;;;;")
         return response
     } catch (error) {
         console.log(error.message);
-        
     }
 }
 
@@ -76,16 +72,37 @@ const userLogin =async(formValues)=>{
     }
 
 }
-
+//forget password
 const forgetPasswordNewpass=async(userData,joinedOtp)=>{
     try {
         const response=await userAxiosInstance.post(`verifyForgotOtp`,{data:userData,otp:joinedOtp})
+        return response
+    } catch (error) {
+        console.log(error.message); 
+    }
+}
+
+const forgePasswordResendOtp=async(userData)=>{
+    try {
+        const response =await userAxiosInstance.post(`forgetPassResendOtp`,{email:userData.email})
         return response
     } catch (error) {
         console.log(error.message);
         
     }
 }
+
+//forgetPassword first otp
+const forgetPasswordOtp =async(formValues)=>{
+    try {
+        const response = await userAxiosInstance.post(`forgetpassword`,formValues)
+        return response
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+}
+
 
 
 export{
@@ -96,6 +113,8 @@ export{
     updateUserProfile,
     uploadUserProof,
     userLogin,
-    forgetPasswordNewpass
+    forgetPasswordNewpass,
+    forgePasswordResendOtp,
+    forgetPasswordOtp
 
 }

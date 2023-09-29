@@ -1,13 +1,8 @@
 import axios from 'axios'
 import { adminApi,userApi,partnerApi } from './api'
-
-
 const TIMEOUT_DURATION = 110000;
+
 const createAxiosInstanceWithInterceptor=(baseURL,tokenName)=>{
-
-    console.log(baseURL,"llllllllllllllllllll------------------BaseURl");
-    console.log(tokenName,"llllllllllllllllll-------------------Token NAme");
-
     const instance =axios.create({
         baseURL:baseURL,
         timeout:TIMEOUT_DURATION
@@ -30,9 +25,7 @@ const createAxiosInstanceWithInterceptor=(baseURL,tokenName)=>{
         error=>{
             if(error.response){
                 if(error.response.status===401){
-                    console.log(error.message,"ooooooooooooiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
                     window.location.href='/error404'
-
                 }else if(error.response.status===500){
                     window.location.href='/error500'
                 }else{
