@@ -8,6 +8,7 @@ import {toast} from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import {addUser} from '../../../utils/userSlice'
 import UserRideHistory from '../RideHistory/UserRideHistory'
+import UserFooter from '../Footer/UserFooter'
 
 function UserProfile() {
     const dispatch = useDispatch()
@@ -264,7 +265,11 @@ function UserProfile() {
             </div>
                 }
             </div>
-        </div>
+
+            <div>
+                <UserFooter/>
+            </div>
+    </div>
   )
 }
 

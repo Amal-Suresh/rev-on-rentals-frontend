@@ -41,8 +41,8 @@ const handleLogout=()=>{
           <p className='text-white font-bold text-[2.5rem] pl-4 hidden md:block hover:cursor-pointer font-passion tracking-wider'>REV-ON-RENTALS</p>
           {/* <img className='hidden md:block ml-5 w-44 h-13 hover:cursor-pointer' src={logo1} alt="logo" /> */}
         </div>
-        <div className={`${navLink} z-10 bg-black mt-8 md:mt-0  md:static md:min-h-fit md:w-auto absolute min-h-[70vh] left-0 top-[-100%] w-full flex items-center px-5`}>
-          <ul className='flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8'>
+        <div className={`${navLink} z-10 bg-black  md:static md:min-h-fit md:w-auto absolute min-h-[50vh] left-0 top-[-100%] w-full flex items-center px-5`}>
+          <ul className='flex md:flex-row flex-col items-center md:gap-[4vw] gap-8'>
             <li>
               <p onClick={()=>navigate('/')} className='hover:text-yellow-400 text-yellow-300 hover:cursor-pointer font-semibold'>Home</p>
             </li>
