@@ -171,10 +171,6 @@ function Home() {
       </div>):(!chatOpen && <div onClick={() => { navigate('/login') }} className='w-20 fixed end-5 bottom-5 h-20 flex justify-center items-center bg-gray-700 rounded-full'>
         <TbMessageChatbot size={40} className='text-yellow-400' />
       </div>)}
-      {/* {!chatOpen && <div onClick={() => { setchatOpen(true) }} className='w-20 fixed end-5 bottom-5 h-20 flex justify-center items-center bg-gray-700 rounded-full'>
-        <TbMessageChatbot size={40} className='text-yellow-400' />
-      </div>} */}
-
       <UserFooter />
     </div>
   )
