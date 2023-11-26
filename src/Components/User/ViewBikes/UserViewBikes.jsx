@@ -423,7 +423,6 @@ const handleBooking =async(id)=>{
                   </div>
                   <div className="p-1">
                     {user?.token? <button onClick={()=>handleBooking(bike._id)} className="w-full rounded font-bold py-1 hover:bg-black hover:text-yellow-400 bg-yellow-400">BOOK NOW</button>: <button onClick={()=>navigate("/login")} className="w-full rounded font-bold py-1 hover:bg-black hover:text-yellow-400 bg-yellow-400">BOOK NOW</button>}
-                    {/* <button onClick={()=>handleBooking(bike._id)} className="w-full rounded font-bold py-1 hover:bg-black hover:text-yellow-400 bg-yellow-400">BOOK NOW</button> */}
                   </div>
                 </div>
               </div>

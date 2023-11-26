@@ -15,6 +15,7 @@ import UserNewPasswordPage from '../Pages/User/UserNewPasswordPage'
 import UserForgotPassOtpPage from '../Pages/User/UserForgotPassOtpPage'
 import PaymentSuccessPage from '../Pages/User/PaymentSuccessPage'
 import OrderRatingPage from '../Pages/User/OrderRatingPage'
+import UserOffers from '../Pages/User/UserOffers'
 import axios from 'axios'
 import { userApi } from '../config/api'
 import Page500 from '../Pages/User/Page500'
@@ -51,12 +52,13 @@ function User() {
         <Route path='/register' element={userToken?<UserHome/>:<UserRegisterPage/>}/>
         <Route path='/otp' element={userToken?<UserHome/>:<RegisterOtpPage/>}/>
         <Route path='/viewBikes' element={<UserViewBikesPage/>}/>
-        <Route path='/userProfile' element={userToken?<UserProfilePage/>:<UserLoginPage/>}/>
-        <Route path='/checkOut' element={<CheckOutPage/>}/>
+        <Route path='/userProfile' element={userToken?<UserProfilePage/>:<Navigate to='/login'/>}/>
+        <Route path='/checkOut' element={userToken?<CheckOutPage/>:<Navigate to='/login'/>}/>
         <Route path='/forgotPassword' element={<UserNewPasswordPage/>}/>
         <Route path='/verifyForgetPassword' element={<UserForgotPassOtpPage/>}/>
-        <Route path='/paymentSuccess' element={<PaymentSuccessPage/>}/>
-        <Route path='/orderRatingReview' element={<OrderRatingPage/>}/>
+        <Route path='/paymentSuccess' element={userToken?<PaymentSuccessPage/>:<Navigate to='/login'/>}/>
+        <Route path='/orderRatingReview' element={userToken?<OrderRatingPage/>:<Navigate to='/login'/>}/>
+        <Route path='/offers' element={<UserOffers/>}/>
         <Route path='/error500' element={<Page500/>}/>
         <Route path='/error404' element={<Page404/>}/>
     </Routes> 
