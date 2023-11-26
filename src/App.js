@@ -11,7 +11,6 @@ function App() {
   reverseOrder={false}
 />
    <Router>
-    
       <Routes>
         <Route path='/*' element={<User/>}/>
         <Route path='admin/*' element={<Admin/>}/>

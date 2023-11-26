@@ -9,7 +9,7 @@ import { userApi } from '../../../config/api'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import {io} from 'socket.io-client'
+import { io } from 'socket.io-client'
 import { socketApi } from '../../../config/api'
 
 
@@ -21,7 +21,7 @@ function Home() {
   const [message, setMessage] = useState('')
   const [userChats, setUserChats] = useState([])
   const [obj, setObj] = useState([])
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   const user = useSelector((store) => store.user.userD)
 
@@ -36,17 +36,14 @@ function Home() {
         headers: {
           Authorization: `Bearer ${token}`
         }
-
       })
       if (response.data.success) {
         setUserChats(response.data.data)
       } else {
         toast.error(response.data.message)
-
       }
     } catch (error) {
       console.log(error.message);
-
     }
   }
 
@@ -60,39 +57,37 @@ function Home() {
     }
   }
   const handleClick = async () => {
-    if(user?.token) {
-      if(message!==''){
-        const userId= user?.id
-      const newMessage = {
-        user:userId,
-        text: message,
-        sender:"User",
-      };
-      await Socket.emit('send_message', newMessage);
-      setMessage('')
-      }else{
+    if (user?.token) {
+      if (message !== '') {
+        const userId = user?.id
+        const newMessage = {
+          user: userId,
+          text: message,
+          sender: "User",
+        };
+        await Socket.emit('send_message', newMessage);
+        setMessage('')
+      } else {
         toast.error("message box can't be null")
       }
-
-    }else{
+    } else {
       navigate('/login')
     }
   }
   useEffect(() => {
     // Listen for incoming messages from the server
-     Socket.on('receive_message', (data) => {
+    Socket.on('receive_message', (data) => {
       setUserChats((prevMessages) => [...prevMessages, data]);
     });
-   return()=>{
-    Socket.disconnect()
-  }
+    return () => {
+      Socket.disconnect()
+    }
   }, [userChats]);
 
   useEffect(() => {
     const token = user?.token
     token && fetchChat(token)
     findBikes()
-
   }, [user])
 
   return (
@@ -100,46 +95,39 @@ function Home() {
       <Navbar />
       <div className=' md:justify-start bg-cover bg-no-repeat bg-center h-[600px] w-full ' style={{ backgroundImage: `url(${bikeImg})` }}>
         <h1 className='text-yellow-400 mt-[12rem] ml-6 drop-shadow-lg text-[3rem] font-bold font-rubik-vinyl  '>Plan Your Next Ride Now</h1>
-<div className='w-[83%] flex justify-center'>
-<button onClick={()=>navigate('/viewBikes')} className='bg-black font-bold text-[1rem] px-4 py-3 cursor-pointer hover:border border-yellow-400 rounded-sm text-white'>BOOK NOW</button>
-
-</div>
+        <div className='w-[83%] flex justify-center'>
+          <button onClick={() => navigate('/viewBikes')} className='bg-black font-bold text-[1rem] px-4 py-3 cursor-pointer hover:border border-yellow-400 rounded-sm text-white'>BOOK NOW</button>
+        </div>
       </div>
 
 
       <div className='bg-black '>
         <p className='text-center font-bold text-white text-[2.2rem] mt-10 font-passion tracking-wider'>OUR FLEET</p>
         <div className='grid py-5 md:py-8  grid-cols-1 px- sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 max-w-[1500px]'>
-
-
           {obj && obj.map((bike) => {
             return (
               <div key={bike._id} className='p-1 m-1 rounded border-2 border-gray-900  bg-yellow-300'>
                 <div className='flex w-full justify-center'>
                   <p className='font-semibold'>{bike.name}</p>
                 </div>
-
                 <div className="block rounded-lg bg-gray-500">
                   <div className="relative overflow-hidden bg-cover bg-no-repeat" >
                     <img className="rounded-t-lg relative"
                       src={`${bike.image[0]}`}
                       alt="..." />
-
                   </div>
                   <div className='px-2 text-white font-semibold'>
                     <p>Amount {bike.rentPerHour} Per Hour </p>
                     <p>Engine {bike.engineCC} CC </p>
                   </div>
                   <div className="p-1">
-                    <button onClick={()=>navigate('/viewBikes')} className="w-full rounded font-bold py-1 hover:bg-black hover:text-yellow-400 bg-yellow-400">BOOK NOW</button>
+                    <button onClick={() => navigate('/viewBikes')} className="w-full rounded font-bold py-1 hover:bg-black hover:text-yellow-400 bg-yellow-400">BOOK NOW</button>
                   </div>
                 </div>
               </div>
             )
           })
           }
-
-
         </div>
       </div>
 
@@ -178,9 +166,14 @@ function Home() {
         </div>
 
       </div>}
-      {!chatOpen && <div onClick={() => { setchatOpen(true) }} className='w-20 fixed end-5 bottom-5 h-20 flex justify-center items-center bg-gray-700 rounded-full'>
+      {user?.token ? (!chatOpen && <div onClick={() => { setchatOpen(true) }} className='w-20 fixed end-5 bottom-5 h-20 flex justify-center items-center bg-gray-700 rounded-full'>
         <TbMessageChatbot size={40} className='text-yellow-400' />
-      </div>}
+      </div>):(!chatOpen && <div onClick={() => { navigate('/login') }} className='w-20 fixed end-5 bottom-5 h-20 flex justify-center items-center bg-gray-700 rounded-full'>
+        <TbMessageChatbot size={40} className='text-yellow-400' />
+      </div>)}
+      {/* {!chatOpen && <div onClick={() => { setchatOpen(true) }} className='w-20 fixed end-5 bottom-5 h-20 flex justify-center items-center bg-gray-700 rounded-full'>
+        <TbMessageChatbot size={40} className='text-yellow-400' />
+      </div>} */}
 
       <UserFooter />
     </div>
