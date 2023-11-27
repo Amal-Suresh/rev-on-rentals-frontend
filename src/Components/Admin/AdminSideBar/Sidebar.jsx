@@ -1,7 +1,15 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {removeAdmin} from '../../../utils/adminSlice'
 function SideBar(props) {
   const navigate =useNavigate()
+  const dispatch =useDispatch()
+  const handleAdminLogout=()=>{
+    dispatch(removeAdmin())
+    localStorage.removeItem('token')
+  }
+
  
   return (
     <>
@@ -13,7 +21,10 @@ function SideBar(props) {
           <p className='hover:text-white px-10 py-2  bg-yellow-300 hover:bg-slate-500 cursor-pointer w-full' onClick={()=>navigate('/admin/users')}>User</p>
           <p className='hover:text-white px-10 py-2  bg-yellow-300 hover:bg-slate-500 cursor-pointer w-full' onClick={()=>navigate('/admin/partnerRequests')}>Partner Request</p>
           <p className='hover:text-white px-10 py-2  bg-yellow-300 hover:bg-slate-500 cursor-pointer w-full'  onClick={()=>navigate('/admin/partnerVerifiedList')}>Partners</p>
+          <p className='hover:text-white px-10 py-2  bg-yellow-300 hover:bg-slate-500 cursor-pointer w-full'  onClick={()=>navigate('/admin/coupons')}>Coupons</p>
           <p className='hover:text-white px-10 py-2  bg-yellow-300 hover:bg-slate-500 cursor-pointer w-full'  onClick={()=>navigate('/admin/chats')}>Chats</p>
+          <p className='hover:text-white px-10 py-2  bg-yellow-300 hover:bg-slate-500 cursor-pointer w-full'  onClick={handleAdminLogout}>Logout</p>
+
 
           <p></p>
           <p></p>

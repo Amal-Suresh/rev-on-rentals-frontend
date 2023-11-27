@@ -8,7 +8,7 @@ import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 
 
-function PartnerAddBikes() {
+function AddCoupon() {
     const partner = useSelector((store) => store.partner.partnerD)
     console.log(partner,"partner");
     const token = partner.token
@@ -233,4 +233,4 @@ function PartnerAddBikes() {
     )
 }
 
-export default PartnerAddBikes
+export default AddCoupon

@@ -7,6 +7,8 @@ import UserManagement from "../Pages/Admin/UserManagement";
 import PartnerVerifiedList from "../Pages/Admin/PartnerVerifiedList";
 import AdminLoginPage from "../Pages/Admin/AdminLoginPage"
 import AdminSideChats from "../Pages/Admin/AdminSideChats";
+import AdminViewCoupons from "../Pages/Admin/AdminViewCoupons";
+import AdminAddCoupons from "../Pages/Admin/AdminAddCoupons";
 import axios from "axios";
 import { adminApi } from "../config/api";
 import { addAdmin } from "../utils/adminSlice";
@@ -41,6 +43,8 @@ function Admin() {
         <Route path="/users" element={admin.token?<UserManagement/>:<Navigate to='/admin/login'/>}/>
         <Route path="/partnerVerifiedList" element={admin.token?<PartnerVerifiedList/>:<Navigate to='/admin/login'/>}/>
         <Route path="/chats" element={admin.token?<AdminSideChats/>:<Navigate to='/admin/login'/>}/> 
+        <Route path="/addCoupon" element={admin.token?<AdminAddCoupons/>:<Navigate to='/admin/login'/>}/> 
+        <Route path="/coupons" element={admin.token?<AdminViewCoupons/>:<Navigate to='/admin/login'/>}/> 
     </Routes>
   )
 }
