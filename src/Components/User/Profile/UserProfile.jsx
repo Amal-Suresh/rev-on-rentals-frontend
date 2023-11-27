@@ -53,7 +53,6 @@ function UserProfile() {
         const newvalue =value.trim()
         setEditData({...editData,[name]:newvalue,})
       
-
     }
 
     const handleProfileImg =(e)=>{

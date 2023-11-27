@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import SideBar from '../AdminSideBar/Sidebar'
+import { AiOutlinePlusCircle } from 'react-icons/ai'
+
 
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { AiOutlineClose } from 'react-icons/ai'
@@ -8,46 +10,154 @@ import { adminApi } from '../../../config/api'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
-import {TiDelete} from 'react-icons/ti'
+import { TiDelete } from 'react-icons/ti'
 import Swal from 'sweetalert2'
 
 
 function ViewCoupons() {
-    const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [modalStatus, setModalStatus] = useState(false)
+  const initialValues = { couponCode: "", couponName: "" ,limit:"",expireDate:"",minPurchase:"",discountValue:"",maxDiscount:""}
 
-   const navigate = useNavigate()
-  
+  const [formValues, setFormValues] = useState(initialValues)
+
+
+
+  const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    const newvalue = value.trim()
+    setFormValues({ ...formValues, [name]: newvalue, });
+};
+
+ const handleSubmit=(e)=>{
+  e.preventDefault()
+  console.log(formValues,"llllllllllllllllllllllllllll");
+
+ }
+
 
 
 
   return (
     <>
-    <div className={`mx-auto flex w-full ${!isOpen ? 'justify-start' : 'justify-between'} `}>
-      <div className={`${!isOpen ? 'none' : 'block'}`}>
-        <SideBar isOpen={isOpen} />
-      </div>
-      <div className={`absolute flex ${!isOpen ? 'justify-start' : 'justify-end'}z-1  bg-yellow-300 w-[220px]`}>
-        {!isOpen ? <GiHamburgerMenu size={35} onClick={() => setIsOpen(!isOpen)} /> : <AiOutlineClose size={35} onClick={() => setIsOpen(!isOpen)} />}
-      </div>
-      <div className={`text-4xl text-center ${!isOpen ? 'w-full' : 'w-[83%]'} bg-red-800 `}>
-        <div className='w-full bg-yellow-300 '>
-          <h1 className='p-2 text-2xl font-semibold'>Partner Requests</h1>
-
-          <div className='p-5 h-screen bg-yellow-200'>
+      <div className={`mx-auto flex w-full ${!isOpen ? 'justify-start' : 'justify-between'} `}>
+        <div className={`${!isOpen ? 'none' : 'block'}`}>
+          <SideBar isOpen={isOpen} />
+        </div>
+        <div className={`absolute flex ${!isOpen ? 'justify-start' : 'justify-end'}z-1  bg-yellow-300 w-[220px]`}>
+          {!isOpen ? <GiHamburgerMenu size={35} onClick={() => setIsOpen(!isOpen)} /> : <AiOutlineClose size={35} onClick={() => setIsOpen(!isOpen)} />}
+        </div>
+        <div className={`text-4xl text-center ${!isOpen ? 'w-full' : 'w-[83%]'} bg-red-800 `}>
+          <div className='w-full bg-yellow-300 '>
+            <h1 className='p-2 text-2xl font-semibold'>COUPONS </h1>
 
 
-            {/* {requests && */}
+
+            <div className='p-5 h-screen bg-yellow-200'>
+              <div className="flex justify-end px-5 my-3">
+                <button className="block text-white bg-emerald-400 hover:bg-emerald-600  font-medium rounded-lg text-sm px-3 py-2 text-center " type="button" onClick={() => setModalStatus(true)}>ADD NEW COUPON</button>
+              </div>
+
+
+
+              <div className={`flex justify-center items-center fixed top-0 left-0 right-0 z-50 ${modalStatus ? 'block' : 'hidden'} w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
+                <div className="relative w-full max-w-md max-h-full">
+
+                  <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal"
+                      onClick={() => {
+
+                        setModalStatus(false)
+                      }}>
+                      X
+                      <span className="sr-only">Close modal</span>
+                    </button>
+                    <div className="px-6 py-6 lg:px-8">
+                      <h3 className="text-center mb-4 text-xl font-medium text-gray-900 dark:text-emerald-500">Add Coupon</h3>
+                      <form className="space-y-6">
+                        <div className="photo-wrapper p-2 flex flex-col justify-center items-center ">
+                          <div className=' flex justify-start'>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Coupon image </label>
+                          </div>
+                          <label className='absolute text-transparent hover:text-black ' htmlFor="profileFile"> <AiOutlinePlusCircle size={32} /></label>
+                          <input type="file" name='image' className='invisible hidden' id='profileFile' />
+                          <img className="w-[15rem] h-30 rounded-lg mx-auto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyjIETUUbI4Zxo0mIbafwIS6P3gEfxazlf-21gorP2nH937_nWnGI9E7SpK9fHWDiGzXs&usqp=CAU" alt='ss' />
+                          {/* <p>{profileImg ? profileImg.name : ""}</p> */}
+                        </div>
+                        <div>
+                          <div className=' flex justify-start'>
+                            <label className="text-startmb-2 text-sm font-medium text-gray-900 dark:text-white">Coupon Name</label>
+                          </div>
+                          <input onChange={handleChange} type="text" name="couponName" value={formValues.couponName} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Enter Coupon Name" required />
+                        </div>
+                        <div>
+                          <div className=' flex justify-start'>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Coupon Code</label>
+                          </div>
+                          <input onChange={handleChange} type="text" name="couponCode" value={formValues.couponCode} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Enter Coupon Code" required />
+                        </div>
+
+                        <div>
+                          <div className=' flex justify-start'>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount value</label>
+                          </div>
+                          <input onChange={handleChange} type="number" value={formValues.discountValue} name="discountValue" placeholder="Enter Discount value" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                        </div>
+                        <div>
+                          <div className=' flex justify-start'>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Min Purchase</label>
+                          </div>
+                          <input onChange={handleChange} type="number" value={formValues.minPurchase} name="minPurchase" placeholder="Enter Min Purchase" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                        </div>
+
+                        <div>
+                          <div className=' flex justify-start'>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Max Discount</label>
+                          </div>
+                          <input onChange={handleChange} value={formValues.maxDiscount} type="number" name="maxDiscount" placeholder="Enter Max Discount" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                        </div>
+                        <div>
+                          <div className=' flex justify-start'>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expire Date</label>
+                          </div>
+                          <input onChange={handleChange}  value={formValues.expireDate} type="date" name="expireDate" placeholder="Select Expire Date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                        </div>
+                        <div>
+                          <div className=' flex justify-start'>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Limit</label>
+                          </div>
+                          <input onChange={handleChange} value={formValues.limit} type="number" name="limit" placeholder="Enter Limit" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                        </div>
+                       
+
+
+
+                        <button onClick={handleSubmit} className="w-full text-white bg-emerald-300 hover:bg-emerald-600 focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-600 dark:focus:ring-emerald-800">Save</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              {/* {requests && */}
               <div className='overflow-auto rounded-s-lg shadow '>
                 <table className='w-full'>
                   <thead className='bg-gray-50 border-b-2 border-gray-200'>
                     <tr>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Fname</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Lname</th>
-                      <th className='p-3 text-sm font-semibold tracking-wide text-left'>Email</th>
+                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Image</th>
+                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>C.Name</th>
+                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>C.Code</th>
+                      <th className='p-3 w-24 text-sm font-semibold tracking-wide text-left'>Discount value</th>
+                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Min Purchase</th>
+                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Max Discount</th>
+                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Expire Date</th>
+                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Limit</th>
                       <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Status</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Reject</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Accept</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>View</th>
+
 
                     </tr>
                   </thead>
@@ -76,13 +186,13 @@ function ViewCoupons() {
                 </table>
 
               </div>
-            {/* } */}
+              {/* } */}
 
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </>
+    </>
 
 
   )
