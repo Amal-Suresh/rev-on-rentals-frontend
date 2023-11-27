@@ -45,6 +45,7 @@ function ViewCoupons() {
 
 
   const navigate = useNavigate()
+  
   const handleChange = (e) => {
     const { value, name } = e.target;
     const newvalue = value.trim()

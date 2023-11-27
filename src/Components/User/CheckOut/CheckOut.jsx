@@ -30,6 +30,48 @@ function CheckOut() {
     const [grandTotal, setGrandTotal] = useState(0)
     const [pickDropPoints, setPickDropPoints] = useState({ pickUpPoint: "", dropPoint: "" })
 
+    const [couponAppiled,setCouponApplied]=useState(false)
+    const [discount,setDiscount]=useState(0)
+    const [coupon,setCoupon]=useState("")
+
+    const applyCoupon=async()=>{
+        try {
+            if(!coupon){
+                toast.error('enter coupon')
+                return
+            }
+            const token = user.token
+            let data={
+                grandTotal,
+                coupon
+            }
+            const responce=await axios.post(`${userApi}applyCoupon`,data,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+           if(responce.data.success){
+            setCouponApplied(true)
+            setDiscount(responce.data.data.discount)
+            setGrandTotal(responce.data.data.distotal)
+            toast.success("coupon appiled")
+           }else{
+            toast.error(responce.data.data.message)
+           }
+            
+        } catch (error) {
+            console.log(error.message);
+            
+        }
+    }
+
+    const handleCode = (e) => {
+        const { value } = e.target;
+        console.log(value); // Check if this logs the correct value
+        setCoupon(value);
+    }
+
 
 
 
@@ -52,7 +94,7 @@ function CheckOut() {
         }
     }
 
-    console.log(reviews);
+   
 
     useEffect(() => {
         findBikeDetails()
@@ -120,7 +162,7 @@ function CheckOut() {
 
     const createBooking = async (details) => {
         const token = user.token
-        let dataForBooking = { ...details, ...pickDropPoints, grandTotal, total, helmet, rent, hours, ...bookingDetails, partnerId: bikeDetails.partnerId._id }
+        let dataForBooking = { ...details, ...pickDropPoints, grandTotal, total, helmet, rent,coupon,discount, hours, ...bookingDetails, partnerId: bikeDetails.partnerId._id }
         const response = await axios.post(`${userApi}verifyPayment`, dataForBooking, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -135,6 +177,14 @@ function CheckOut() {
             toast.error(response.data.message)
         }
 
+
+    }
+
+    const removeCoupon=()=>{
+        setGrandTotal(discount+grandTotal)
+        setDiscount(0)
+        setCouponApplied(false)
+        toast.error("coupon removed")
 
     }
 
@@ -265,15 +315,15 @@ function CheckOut() {
 
                         <div className='mt-2 flex flex-row justify-between'>
                             <p className='px-2'>Discount Amount</p>
-                            <p className='px-2'>0</p>
+                            <p className='px-2'>{discount}</p>
                         </div>
                         <div className='mt-2 flex flex-row justify-between'>
                             <p className='px-2'>Total Amount</p>
                             <p className='px-2'>{grandTotal}</p>
                         </div>
                         <div className='flex flex-row justify-between py-2 bg-black rounded-md mt-2'>
-                            <input className='w-[15rem] ml-2 text-black placeholder:text-black p-1 rounded-md bg-slate-400' type="text" name="" id="" placeholder='Enter Coupon Code' />
-                            <button className='mr-2 text-yellow-400 px-2 hover:text-yellow-300'>Apply</button>
+                            <input className='w-[15rem] ml-2 text-black placeholder:text-black p-1 rounded-md bg-slate-400' type="text" name="code" onChange={handleCode} value={coupon}  placeholder='Enter Coupon Code' />
+                            {couponAppiled?<button onClick={removeCoupon} className='mr-2 text-yellow-400 px-2 hover:text-yellow-300'>Remove</button>:<button onClick={applyCoupon} className='mr-2 text-yellow-400 px-2 hover:text-yellow-300'>Apply</button>}
 
                         </div>
                         <div className='mt-5 flex justify-center'>
