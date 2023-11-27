@@ -12,30 +12,105 @@ import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { TiDelete } from 'react-icons/ti'
 import Swal from 'sweetalert2'
+import axios from 'axios'
 
 
 function ViewCoupons() {
   const [isOpen, setIsOpen] = useState(false)
   const [modalStatus, setModalStatus] = useState(false)
-  const initialValues = { couponCode: "", couponName: "" ,limit:"",expireDate:"",minPurchase:"",discountValue:"",maxDiscount:""}
-
+  const initialValues = { couponCode: "", couponName: "", limit: "", expireDate: "", minPurchase: "", discountValue: "", maxDiscount: "" }
+  const [imgUrl, setImgUrl] = useState(null)
+  const [imgCoupon, setImgCoupon] = useState(null)
   const [formValues, setFormValues] = useState(initialValues)
+  const [coupons, setCoupons] = useState([])
+
+  const fetchData = async (req, res) => {
+    try {
+      const response = await axios.get(`${adminApi}/coupons`)
+      console.log(response.data);
+      if (response.data.success) {
+        setCoupons(response.data.data)
+      }
+
+    } catch (error) {
+      console.log(error.message);
+
+    }
+  }
+  useEffect(() => {
+    fetchData()
+
+  }, [])
 
 
 
   const navigate = useNavigate()
-
   const handleChange = (e) => {
     const { value, name } = e.target;
     const newvalue = value.trim()
     setFormValues({ ...formValues, [name]: newvalue, });
-};
+  };
 
- const handleSubmit=(e)=>{
-  e.preventDefault()
-  console.log(formValues,"llllllllllllllllllllllllllll");
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!imgCoupon) {
+      toast.error("select image")
+    } else {
+      const formData = new FormData()
+      formData.append('image', imgCoupon)
+      for (const [key, value] of Object.entries(formValues)) {
+        formData.append(key, value)
+      }
+      const response = await axios.post(`${adminApi}/addCoupon`, formData)
+      if (response.data.success) {
+        setModalStatus(false)
+        setImgCoupon(null)
+        setImgUrl(null)
+        fetchData()
+        toast.success(response.data.message)
+      }
 
- }
+
+    }
+
+
+  }
+
+  const handleImg = (e) => {
+    const file = e.target.files[0]
+    const url = URL.createObjectURL(file)
+    setImgUrl(url)
+    setImgCoupon(file)
+  }
+
+  const changestatus=async(id)=>{
+    try {
+     
+      const response =await axios.get(`${adminApi}/changeCouponStatus?id=${id}`)
+      if(response.data.success){
+        toast.success(response.data.message)
+        fetchData()
+      }
+      
+    } catch (error) {
+      console.log(error.message);
+      
+    }
+  }
+  const deleteCoupon=async(id)=>{
+    try {
+      
+      const response =await axios.get(`${adminApi}/deleteCoupon?id=${id}`)
+      if(response.data.success){
+        toast.success(response.data.message)
+        fetchData()
+      }
+      
+    } catch (error) {
+      console.log(error.message);
+      
+    }
+  }
 
 
 
@@ -82,9 +157,9 @@ function ViewCoupons() {
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Coupon image </label>
                           </div>
                           <label className='absolute text-transparent hover:text-black ' htmlFor="profileFile"> <AiOutlinePlusCircle size={32} /></label>
-                          <input type="file" name='image' className='invisible hidden' id='profileFile' />
-                          <img className="w-[15rem] h-30 rounded-lg mx-auto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyjIETUUbI4Zxo0mIbafwIS6P3gEfxazlf-21gorP2nH937_nWnGI9E7SpK9fHWDiGzXs&usqp=CAU" alt='ss' />
-                          {/* <p>{profileImg ? profileImg.name : ""}</p> */}
+                          <input onChange={handleImg} type="file" name='image' className='invisible hidden' id='profileFile' />
+                          <img className="w-[15rem] h-30 rounded-lg mx-auto" src={imgUrl ? imgUrl : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyjIETUUbI4Zxo0mIbafwIS6P3gEfxazlf-21gorP2nH937_nWnGI9E7SpK9fHWDiGzXs&usqp=CAU"} alt='ss' />
+                          <p className='text-[20px] text-gray-400'>{imgCoupon ? imgCoupon.name : ""}</p>
                         </div>
                         <div>
                           <div className=' flex justify-start'>
@@ -122,7 +197,7 @@ function ViewCoupons() {
                           <div className=' flex justify-start'>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expire Date</label>
                           </div>
-                          <input onChange={handleChange}  value={formValues.expireDate} type="date" name="expireDate" placeholder="Select Expire Date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                          <input onChange={handleChange} value={formValues.expireDate} type="date" name="expireDate" placeholder="Select Expire Date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
                         </div>
                         <div>
                           <div className=' flex justify-start'>
@@ -130,7 +205,7 @@ function ViewCoupons() {
                           </div>
                           <input onChange={handleChange} value={formValues.limit} type="number" name="limit" placeholder="Enter Limit" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
                         </div>
-                       
+
 
 
 
@@ -143,50 +218,56 @@ function ViewCoupons() {
 
 
 
-              {/* {requests && */}
-              <div className='overflow-auto rounded-s-lg shadow '>
-                <table className='w-full'>
-                  <thead className='bg-gray-50 border-b-2 border-gray-200'>
-                    <tr>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Image</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>C.Name</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>C.Code</th>
-                      <th className='p-3 w-24 text-sm font-semibold tracking-wide text-left'>Discount value</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Min Purchase</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Max Discount</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Expire Date</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Limit</th>
-                      <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Status</th>
+              {coupons &&
+                <div className='overflow-auto rounded-s-lg shadow '>
+                  <table className='w-full'>
+                    <thead className='bg-gray-50 border-b-2 border-gray-200'>
+                      <tr>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Image</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>C.Name</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>C.Code</th>
+                        <th className='p-3 w-24 text-sm font-semibold tracking-wide text-left'>Discount value</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Min Purchase</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Max Discount</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Expire Date</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Limit</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Status</th>
+                        <th className='w-24 p-3 text-sm font-semibold tracking-wide text-left'>Delete</th>
 
 
-                    </tr>
-                  </thead>
-                  <tbody className='divide-y divide-gray-100'>
-                    {/* {requests.map((partner) => {
-                      return (
-                        <tr key={partner._id}>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.fname}</td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.lname}</td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.email}</td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{partner.isVerifed}</td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => rejectAlert(partner.email)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Reject</button></td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => acceptAlert(partner.email)} disabled={partner.isVerifed === 'mailSented'} className={`${partner.isVerifed === 'mailSented'&& 'cursor-not-allowed'} bg-green-600 rounded-sm p-1 text-white  hover:bg-green-700 text-sm`}>Accept</button></td>
-                          <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={() => viewPartner(partner)} className='bg-blue-600 rounded-sm p-1 text-white hover:bg-blue-700 text-sm'>View</button></td>
 
-                        </tr>
-
-                      )
-
-                    })} */}
+                      </tr>
+                    </thead>
+                    <tbody className='divide-y divide-gray-100'>
+                      {coupons.map((coupon) => {
+                        return (
+                          <tr key={coupon._id}>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><img className='w-30 h-20' src={coupon.image} alt="img" /></td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{coupon.couponName}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{coupon.couponCode}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{coupon.discountValue}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{coupon.minPurchase}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{coupon.maxDiscount}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{coupon.expireDate}</td>
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'>{coupon.limit}</td>
+                            {coupon.status?<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>changestatus(coupon._id)} className='bg-red-600 rounded-sm p-1 text-white hover:bg-red-700 text-sm'>Deactivate</button></td>:<td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button  onClick={()=>changestatus(coupon._id)} className='bg-green-600 rounded-sm p-1 text-white hover:bg-green-700 text-sm'>Activate</button></td>}
+                            <td className='p-3 whitespace-nowrap text-sm text-gray-700 text-left'><button onClick={()=>deleteCoupon(coupon._id)} className='text-red-600 font-bold'  >X</button></td>
 
 
-                  </tbody>
+                          </tr>
+
+                        )
+
+                      })}
 
 
-                </table>
+                    </tbody>
 
-              </div>
-              {/* } */}
+
+                  </table>
+
+                </div>
+              }
 
             </div>
           </div>
