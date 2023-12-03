@@ -93,7 +93,7 @@ function Home() {
   return (
     <div className='flex flex-col max-w[1600px]'>
       <Navbar />
-      <div className=' md:justify-start bg-cover bg-no-repeat bg-center h-[600px] w-full ' style={{ backgroundImage: `url(${bikeImg})` }}>
+      <div className=' md:justify-start bg-cover bg-no-repeat bg-center  h-[600px] w-full ' style={{ backgroundImage: `url(${bikeImg})` }}>
         <h1 className='text-yellow-400 mt-[12rem] ml-6 drop-shadow-lg text-[3rem] font-bold font-rubik-vinyl  '>Plan Your Next Ride Now</h1>
         <div className='w-[83%] flex justify-center'>
           <button onClick={() => navigate('/viewBikes')} className='bg-black font-bold text-[1rem] px-4 py-3 cursor-pointer hover:border border-yellow-400 rounded-sm text-white'>BOOK NOW</button>

@@ -3,6 +3,7 @@ import Navbar from '../Navbar/Navbar'
 import bikeImg from '../../../images/HusqvarnaVitpilen701.jpeg'
 import  toast  from 'react-hot-toast'
 import { registerPartnerRequest } from '../../../config/partnerEndPoints'
+import UserFooter from '../Footer/UserFooter'
 
 function JoinUs() {
 
@@ -127,6 +128,7 @@ function JoinUs() {
                     </div>
                 </div>
             </div>
+            <UserFooter/>
         </div>
     )
 }

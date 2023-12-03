@@ -31,7 +31,9 @@ const Offers = () => {
   return (
     <div>
         <Navbar/>
-        <h1 className='font-bold absolute text-[2rem]  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow-400  drop-shadow-lg font-rubik-vinyl [word-spacing:15px]'>REV-ON Offers Check it out</h1>
+        <h1 className='md:block hidden font-bold absolute text-[2rem]  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow-400  drop-shadow-lg font-rubik-vinyl [word-spacing:15px]'>REV-ON Offers Check it out</h1>
+        <p className='  md:hidden block font-bold absolute top-[9rem] left-[6rem] text-[10px] text-yellow-400  drop-shadow-lg font-rubik-vinyl [word-spacing:15px]'>REV-ON Offers Check it out</p>
+
         <img src={bikeImg} alt="bike img"/>
 
         <div className='bg-black '>
