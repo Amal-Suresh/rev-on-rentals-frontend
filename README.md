@@ -13,9 +13,6 @@
 3. [Screenshots](#screenshots)  
 4. [Technologies Used](#technologies-used)  
 5. [Installation](#installation)  
-6. [Contributing](#contributing) (Optional)  
-7. [License](#license) (Optional)  
-
 ---
 
 ## **Introduction** 📖
@@ -57,18 +54,13 @@
 
 ## **Screenshots** 📸
 
-1. **User Dashboard**:  
-   ![User Dashboard](./screenshots/user-dashboard.png)  
-   *User Dashboard showing available bikes and booking options.*
+### **Home Page**:  
+![Home Page](https://drive.google.com/uc?export=view&id=1DaEcv44tKDIff-uZhbKpMkB3jjkm83Qn)  
+*Home Page showing the platform's features and introduction.*
 
-2. **Admin Dashboard**:  
-   ![Admin Dashboard](./screenshots/admin-dashboard.png)  
-   *Admin Dashboard showing user and partner management.*
-
-3. **Partner Dashboard**:  
-   ![Partner Dashboard](./screenshots/partner-dashboard.png)  
-   *Partner Dashboard showing bookings and revenue.*
-
+### **Bikes Page**:  
+![Bikes Page](https://drive.google.com/uc?export=view&id=1axurkBNwRwfFHLUPtxBsYGPu_kzAhzC3)  
+*Bikes Page displaying available bikes for rent with booking options.*
 ---
 
 ## **Technologies Used** ⚙️
