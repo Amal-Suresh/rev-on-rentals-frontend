@@ -1,28 +1,26 @@
-Here’s an updated **README** with icons and a more visually appealing format using Markdown. I’ve used **emoji icons** to represent various sections and make it more engaging:
-
----
-
 # **Rev-On Rental - Bike Rental Platform** 🏍️
 
-Rev-On Rental is a **full-stack bike rental platform** built with **MERN stack** (MongoDB, Express.js, React, Node.js). It allows users to rent bikes for specific times and dates. Partners can list their bikes, track bookings, and manage revenue. The platform also provides an **admin dashboard** for managing users, partners, and offers features like coupons and online payments.
+[![Live Link](https://img.shields.io/badge/Live%20Link-Click%20Here-brightgreen)](https://rev-on-rentals.vercel.app/)
+
+**Rev-On Rental** is a **full-stack bike rental platform** built with the **MERN stack** (MongoDB, Express.js, React, Node.js). It allows users to rent bikes for specific times and dates. Partners can list their bikes, track bookings, and manage revenue. The platform also provides an **admin dashboard** for managing users, partners, and offers features like coupons and online payments.
 
 ---
 
 ## **Table of Contents** 📚
 
-1. [Introduction](#introduction) 
-2. [Features](#features) 
-3. [Screenshots](#screenshots) 
-4. [Technologies Used](#technologies-used) 
-5. [Installation](#installation) 
-6. [Contributing](#contributing) (Optional) 
-7. [License](#license) (Optional) 
+1. [Introduction](#introduction)  
+2. [Features](#features)  
+3. [Screenshots](#screenshots)  
+4. [Technologies Used](#technologies-used)  
+5. [Installation](#installation)  
+6. [Contributing](#contributing) (Optional)  
+7. [License](#license) (Optional)  
 
 ---
 
 ## **Introduction** 📖
 
-Rev-On Rental is a platform that offers easy **bike rentals** for users. It connects users with partners who can list their bikes on the platform. The project provides features like **online payment**, **partner revenue tracking**, an **admin dashboard**, and a **real-time chat system** for user support.
+**Rev-On Rental** is a platform offering easy **bike rentals** for users. It connects users with partners who can list their bikes on the platform. The project provides features like **online payment**, **partner revenue tracking**, an **admin dashboard**, and a **real-time chat system** for user support.
 
 ---
 
@@ -59,26 +57,29 @@ Rev-On Rental is a platform that offers easy **bike rentals** for users. It conn
 
 ## **Screenshots** 📸
 
-![User Dashboard](./screenshots/user-dashboard.png)  
-*User Dashboard showing available bikes and booking options.*
+1. **User Dashboard**:  
+   ![User Dashboard](./screenshots/user-dashboard.png)  
+   *User Dashboard showing available bikes and booking options.*
 
-![Admin Dashboard](./screenshots/admin-dashboard.png)  
-*Admin Dashboard showing user and partner management.*
+2. **Admin Dashboard**:  
+   ![Admin Dashboard](./screenshots/admin-dashboard.png)  
+   *Admin Dashboard showing user and partner management.*
 
-![Partner Dashboard](./screenshots/partner-dashboard.png)  
-*Partner Dashboard showing bookings and revenue.*
+3. **Partner Dashboard**:  
+   ![Partner Dashboard](./screenshots/partner-dashboard.png)  
+   *Partner Dashboard showing bookings and revenue.*
 
 ---
 
 ## **Technologies Used** ⚙️
 
-- **Frontend:**
+- **Frontend**:
   - React.js ⚛️
   - Redux (for state management) 🛠️
   - Socket.io-client (for real-time chat) 💬
   - Tailwind CSS (for styling) 🌟
-  
-- **Backend:**
+
+- **Backend**:
   - Node.js (Express.js) 🚀
   - MongoDB (database) 🗄️
   - Mongoose (ODM) 🐱
@@ -90,20 +91,20 @@ Rev-On Rental is a platform that offers easy **bike rentals** for users. It conn
 
 ## **Installation** ⚡
 
-### **1. Clone the repository**
+### **1. Clone the Repository**
 
 Clone both the frontend and backend repositories to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/rev-on-rental-frontend.git
-git clone https://github.com/yourusername/rev-on-rental-backend.git
+git clone https://github.com/Amal-Suresh/rev-on-rentals-frontend.git
+git clone https://github.com/Amal-Suresh/rev-on-rentals.git
 ```
 
 ### **2. Set up the Backend**
 
 1. Navigate to the backend folder:
    ```bash
-   cd rev-on-rental-backend
+   cd rev-on-rentals
    ```
 
 2. Install dependencies:
@@ -111,18 +112,8 @@ git clone https://github.com/yourusername/rev-on-rental-backend.git
    npm install
    ```
 
-3. Set environment variables in `.env` file:
 
-   ```
-   KEY_ID=your_razorpay_key_id
-   KEY_SECRET=your_razorpay_key_secret
-   DATABASE=mongodb_connection_url
-   EMAIL_USER=your_email_user
-   EMAIL_PASSWORD=your_email_password
-   JWT_SECRET_KEY=your_jwt_secret_key
-   ```
-
-4. Run the backend server:
+3. Run the backend server:
    ```bash
    npm start
    ```
@@ -139,31 +130,8 @@ git clone https://github.com/yourusername/rev-on-rental-backend.git
    npm install
    ```
 
-3. Set environment variables in `.env` file:
 
-   ```
-   # Razorpay API Keys
-KEY_ID='rzp_your_key_id_here'
-KEY_SECRET='your_key_secret_here'
-
-# Database Connection URL
-DATABASE='your_mongo_connection_string_here'
-
-# Email Configuration
-EMAIL_USER='your_email@example.com'
-EMAIL_PASSWORD='your_email_password_here'
-
-# Cloudinary Configuration (for file storage)
-CLOUD_NAME='your_cloud_name_here'
-CLOUD_API_KEY='your_cloud_api_key_here'
-CLOUD_API_SECRET='your_cloud_api_secret_here'
-
-# JWT Secret Key
-JWT_SECRET_KEY='your_jwt_secret_key_here'
-
-   ```
-
-4. Run the frontend server:
+3. Run the frontend server:
    ```bash
    npm start
    ```
